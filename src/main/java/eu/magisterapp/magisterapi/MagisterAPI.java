@@ -28,10 +28,10 @@ public class MagisterAPI {
 
         connection.delete(urls.SESSION);
 
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
 
-        data.put("Gebruikersnaam", Credentials.username);
-        data.put("Wachtwoord", Credentials.password);
+        data.put("Gebruikersnaam", username);
+        data.put("Wachtwoord", password);
 
         connection.post(urls.LOGIN, data);
 

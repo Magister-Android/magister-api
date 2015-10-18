@@ -29,7 +29,6 @@ public class Response {
         if (headers.get("Set-Cookie") == null) return null;
 
         return null;
-
     }
 
 }

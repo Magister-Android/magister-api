@@ -44,6 +44,8 @@ public class MagisterConnection {
             connection.connect();
 
             storeCookies(connection);
+
+            System.out.println("Performed DELETE request on " + location);
         }
 
         catch (IOException e)
@@ -76,20 +78,8 @@ public class MagisterConnection {
 
             storeCookies(connection);
 
-            InputStream input = connection.getInputStream();
-
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-
-            String output;
-
-            while ((output = br.readLine()) != null)
-            {
-                sb.append(output);
-            }
-
-            System.out.println(sb.toString());
+            System.out.println("Performed POST request on " + location);
+            System.out.println(getResult(connection.getInputStream()));
         }
 
         catch (IOException e)
@@ -98,6 +88,49 @@ public class MagisterConnection {
         }
 
         return true;
+    }
+
+    public Boolean get(String location)
+    {
+        try
+        {
+            URL url = new URL(location);
+
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Cookie", getCurrentCookies());
+            connection.setRequestProperty("User-Agent", API_USER_AGENT);
+
+            connection.connect();
+
+            storeCookies(connection);
+
+            System.out.println("Performed GET request on " + location);
+            System.out.println(getResult(connection.getInputStream()));
+        }
+
+        catch (IOException e)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected String getResult(InputStream ir) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(ir));
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+
+        while ((line = br.readLine()) != null)
+        {
+            sb.append(line);
+        }
+
+        return sb.toString();
     }
 
     protected void storeCookies(HttpsURLConnection connection)
