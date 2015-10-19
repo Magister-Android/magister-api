@@ -9,6 +9,15 @@ public class Main {
     {
         MagisterAPI api = new MagisterAPI("zernike", Credentials.username, Credentials.password);
 
-        api.attemptLogin();
+        try
+        {
+            api.connect();
+        }
+
+        catch (BadResponseException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

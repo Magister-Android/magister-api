@@ -28,7 +28,7 @@ public class MagisterConnection {
         this.password = password;
     }
 
-    public Boolean delete(String location)
+    public Response delete(String location)
     {
         try
         {
@@ -45,18 +45,16 @@ public class MagisterConnection {
 
             storeCookies(connection);
 
-            System.out.println("Performed DELETE request on " + location);
+            return Response.fromConnection(connection);
         }
 
         catch (IOException e)
         {
-            return false;
+            return null;
         }
-
-        return true;
     }
 
-    public Boolean post(String location, Map<String, String> data)
+    public Response post(String location, Map<String, String> data)
     {
         try
         {
@@ -78,19 +76,16 @@ public class MagisterConnection {
 
             storeCookies(connection);
 
-            System.out.println("Performed POST request on " + location);
-            System.out.println(getResult(connection.getInputStream()));
+            return Response.fromConnection(connection);
         }
 
         catch (IOException e)
         {
-            return false;
+            return null;
         }
-
-        return true;
     }
 
-    public Boolean get(String location)
+    public Response get(String location)
     {
         try
         {
@@ -106,31 +101,13 @@ public class MagisterConnection {
 
             storeCookies(connection);
 
-            System.out.println("Performed GET request on " + location);
-            System.out.println(getResult(connection.getInputStream()));
+            return Response.fromConnection(connection);
         }
 
         catch (IOException e)
         {
-            return false;
+            return null;
         }
-
-        return true;
-    }
-
-    protected String getResult(InputStream ir) throws IOException
-    {
-        BufferedReader br = new BufferedReader(new InputStreamReader(ir));
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-
-        while ((line = br.readLine()) != null)
-        {
-            sb.append(line);
-        }
-
-        return sb.toString();
     }
 
     protected void storeCookies(HttpsURLConnection connection)
@@ -175,10 +152,9 @@ public class MagisterConnection {
         return result.length() > 0 ? result.substring(0, result.length() - 1) : "";
     }
 
-    public void disconnect()
+    public Integer getCookieCount()
     {
-        // TODO later moeten we hier de sessie timer weer op 0 zetten.
-        cookieJar = new CookieManager();
+        return cookieJar.getCookieStore().getCookies().size();
     }
 
 }
