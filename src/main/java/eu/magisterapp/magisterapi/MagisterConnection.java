@@ -6,6 +6,7 @@ import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,7 @@ public class MagisterConnection {
 
         catch (IOException e)
         {
+						e.printStackTrace();
             return null;
         }
     }
@@ -143,9 +145,9 @@ public class MagisterConnection {
 
         for (Map.Entry entry : data.entrySet())
         {
-            result += URLEncoder.encode(entry.getKey().toString(), "UTF-8")
+            result += URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8.name())
                    + '='
-                   + URLEncoder.encode(entry.getValue().toString(), "UTF-8")
+                   + URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8.name())
                    + '&';
         }
 

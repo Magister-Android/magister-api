@@ -1,6 +1,11 @@
 package eu.magisterapp.magisterapi;
 
+import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.Map;
 import org.json.*;
 
@@ -12,6 +17,7 @@ public class MagisterAPI {
     protected String school;
     protected String username;
     protected String password;
+		protected int leerlingnummer;
     protected URLS urls;
     protected MagisterConnection connection;
 
@@ -25,12 +31,12 @@ public class MagisterAPI {
         this.username = username;
         this.password = password;
 
-        this.urls = new URLS(school);
+        this.urls = new URLS(school, 0);
     }
 
     public Boolean connect() throws BadResponseException
     {
-        MagisterConnection connection = new MagisterConnection(username, password);
+        connection = new MagisterConnection(username, password);
 
         connection.delete(urls.SESSION);
 
@@ -49,10 +55,17 @@ public class MagisterAPI {
             throw new BadResponseException(message);
         }
 
+				// TODO Hier moet nog met /api/account info over de user opgehaald worden, die ID hebben we nodig voor een request naar de api
+				System.out.println(loginResponse.getJson().toString());
+
         connectedAt = System.currentTimeMillis();
 
         return true;
     }
+
+		public Afspraak getAfspraken(Date start, Date end){
+			return new Afspraak(connection, start, end);
+		}
 
     public Boolean isConnected()
     {
@@ -70,4 +83,24 @@ public class MagisterAPI {
         connectedAt = 0;
     }
 
+		/**
+		 *
+		 * @param date De datum zoals hij in de magister response staat
+		 * @return De date in een Date object
+		 * @throws ParseException
+		 */
+		public static Date stringToDate(String date) throws ParseException {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'");
+			return df.parse(date);
+		}
+
+		/**
+		 *
+		 * @param date Een Date object
+		 * @return De date object naar een string om in een GET request te gebruiken
+		 */
+		public static String dateToString(Date date) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			return df.format(date);
+		}
 }
