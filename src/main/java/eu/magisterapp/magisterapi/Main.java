@@ -13,7 +13,9 @@ public class Main {
 
         try
         {
-            System.out.println(api.getPersoon().getNaam());
+            System.out.println(api.getAccount().getNaam());
+
+            System.out.println(api.getConnection().get(URLS.aanmeldingen(12130)).getBody());
         }
 
         catch(ParseException | BadResponseException e)

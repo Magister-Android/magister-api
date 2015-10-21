@@ -8,7 +8,7 @@ import java.text.ParseException;
 /**
  * Created by max on 21-10-15.
  */
-public class Persoon extends Module
+public class Account extends Module
 {
     public Integer Id;
     public String Roepnaam;
@@ -24,7 +24,7 @@ public class Persoon extends Module
 
     protected MagisterConnection con;
 
-    public Persoon(MagisterConnection con, String url) throws ParseException
+    public Account(MagisterConnection con, String url) throws ParseException
     {
         this.con = con;
 

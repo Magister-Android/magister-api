@@ -1,8 +1,6 @@
 package eu.magisterapp.magisterapi;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Sibren Talens <me@sibrentalens.com>
@@ -37,7 +35,7 @@ public class Afspraak extends Module {
 
 	// TODO Vind de datatypen uit van de velden die null zijn
 
-	public Afspraak(MagisterConnection con, Date start, Date end, Persoon persoon){
-		Response afspraakResponse = ;
+	public Afspraak(MagisterConnection con, Date start, Date end, Account account){
+		return;
 	}
 }

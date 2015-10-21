@@ -1,7 +1,5 @@
 package eu.magisterapp.magisterapi;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,21 +30,21 @@ public class MagisterAPI {
         this.username = username;
         this.password = password;
 
-        this.urls = new URLS(school);
+        URLS.setSchool(school);
     }
 
     public Boolean connect() throws BadResponseException
     {
         connection = new MagisterConnection(username, password);
 
-        connection.delete(urls.SESSION);
+        connection.delete(URLS.session());
 
         Map<String, String> data = new HashMap<>();
 
         data.put("Gebruikersnaam", username);
         data.put("Wachtwoord", password);
 
-        Response loginResponse = connection.post(urls.LOGIN, data);
+        Response loginResponse = connection.post(URLS.login(), data);
 
         if (loginResponse.isError())
         {
@@ -61,24 +59,15 @@ public class MagisterAPI {
         return true;
     }
 
-    public Persoon getPersoon() throws BadResponseException, ParseException
+    public Account getAccount() throws BadResponseException, ParseException
     {
-        if (! isConnected())
-        {
-            connect();
-        }
-
-        return new Persoon(connection, urls.ACCOUNT);
+        return new Account(getConnection(), URLS.account());
     }
 
     public Afspraak getAfspraken(Date start, Date end) throws BadResponseException
     {
-        if (! isConnected())
-        {
-            connect();
-        }
-
-        return new Afspraak(connection, start, end, urls.afspraken(0)); // TODO maak iets dat ll nummers fixt
+        return null;
+        // return new Afspraak(getConnection(), start, end, urls.afspraken(0)); // TODO maak iets dat ll nummers fixt
     }
 
     public Boolean isConnected()
@@ -95,6 +84,13 @@ public class MagisterAPI {
     {
         connection = null;
         connectedAt = 0;
+    }
+
+    public MagisterConnection getConnection() throws BadResponseException
+    {
+        if (! isConnected()) connect();
+
+        return connection;
     }
 
     /**
