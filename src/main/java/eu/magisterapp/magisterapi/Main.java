@@ -1,5 +1,7 @@
 package eu.magisterapp.magisterapi;
 
+import java.text.ParseException;
+
 /**
  * Created by max on 18-10-15.
  */
@@ -11,12 +13,12 @@ public class Main {
 
         try
         {
-            api.connect();
+            System.out.println(api.getPersoon().getNaam());
         }
 
-        catch (BadResponseException e)
+        catch(ParseException | BadResponseException e)
         {
-            System.out.println(e.getMessage());
+            // asdf
         }
 
     }

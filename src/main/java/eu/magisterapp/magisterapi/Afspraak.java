@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Sibren Talens <me@sibrentalens.com>
  * Krijg een instance van deze class door MagisterAPI.getAfspraken();
  */
-public class Afspraak {
+public class Afspraak extends Module {
 	// Ik heb deze namen ook niet bedacht, dit is hoe ze in de API staan,
 	// en het leek me wel zo netjes om die te houden
 	public int Id;
@@ -37,7 +37,7 @@ public class Afspraak {
 
 	// TODO Vind de datatypen uit van de velden die null zijn
 
-	public Afspraak(MagisterConnection con, Date start, Date end){
-		Response afspraakResponse = con.get("kl");
+	public Afspraak(MagisterConnection con, Date start, Date end, Persoon persoon){
+		Response afspraakResponse = ;
 	}
 }
