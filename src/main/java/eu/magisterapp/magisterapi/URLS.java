@@ -1,5 +1,7 @@
 package eu.magisterapp.magisterapi;
 
+import java.util.Date;
+
 /**
  * Created by max on 18-10-15.
  */
@@ -37,14 +39,17 @@ public class URLS
         return api(leerling.Id);
     }
 
-    public static String afspraken(Integer leerling)
+    public static String afspraken(Integer leerling, Date van, Date tot, Boolean status)
     {
-        return api(leerling) + "/afspraken";
+        return api(leerling) + "/afspraken?van="
+                + MagisterAPI.dateToString(van)
+                + "&tot=" + MagisterAPI.dateToString(tot)
+                + "&status=" + (status ? "1" : "0");
     }
 
-    public static String afspraken(Account leerling)
+    public static String afspraken(Account leerling, Date van, Date tot, Boolean status)
     {
-        return afspraken(leerling.Id);
+        return afspraken(leerling.Id, van, tot, status);
     }
 
     public static String aanmeldingen(Integer leerling)

@@ -64,10 +64,9 @@ public class MagisterAPI {
         return new Account(getConnection(), URLS.account());
     }
 
-    public Afspraak getAfspraken(Date start, Date end) throws BadResponseException
+    public AfspraakList getAfspraken(Date start, Date end) throws BadResponseException, ParseException
     {
-        return null;
-        // return new Afspraak(getConnection(), start, end, urls.afspraken(0)); // TODO maak iets dat ll nummers fixt
+        return new AfspraakList(getConnection(), start, end, getAccount());
     }
 
     public Boolean isConnected()
