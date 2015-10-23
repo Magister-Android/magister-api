@@ -1,5 +1,6 @@
 package eu.magisterapp.magisterapi;
 
+import com.sun.istack.internal.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,15 +10,19 @@ import java.util.*;
 /**
  * Created by max on 23-10-15.
  */
-public class AfspraakList extends ArrayList<Afspraak>
+public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspraak>
 {
     protected JSONArray raw;
 
-    protected HashMap<Integer, Afspraak> parsed = new HashMap<>();
+    protected Map<Integer, Afspraak> parsed = new HashMap<>();
 
-    public AfspraakList(MagisterConnection con, Date van, Date tot, Account account)
+    private int current = 0;
+
+    public AfspraakList(MagisterConnection con, Date van, Date tot, Boolean status, Account account)
     {
-        String url = URLS.afspraken(account, van, tot, true);
+        String url = URLS.afspraken(account, van, tot, status);
+
+        System.out.println(url);
 
         Response response = con.get(url);
 
@@ -71,21 +76,46 @@ public class AfspraakList extends ArrayList<Afspraak>
         }
     }
 
-    public Map<Integer, Afspraak> getDay(Date day) throws ParseException
+    public List<Afspraak> getDay(Date day) throws ParseException
     {
         parseRemaining();
 
-        Map<Integer, Afspraak> result = new HashMap<>();
+        List<Afspraak> result = new ArrayList<>();
 
         parsed.forEach( (i, afspraak) -> {
-            if (afspraak.isOp(day)) result.put(i, afspraak);
+            if (afspraak.isOp(day)) result.add(afspraak);
         });
 
         return result;
     }
 
     @Override
-    public boolean isEmpty() {
-        return size() == 0;
+    public Iterator<Afspraak> iterator()
+    {
+        return new Iterator<Afspraak>()
+        {
+            @Override
+            public boolean hasNext()
+            {
+                return current < size();
+            }
+
+            @Override
+            public Afspraak next()
+            {
+                if (hasNext())
+                {
+                    return get(current++);
+                }
+
+                throw new NoSuchElementException("There are no more elements. Check hasNext(), doofus.");
+            }
+
+            @Override
+            public void remove()
+            {
+                throw new UnsupportedOperationException("I am too lazy to implement this.");
+            }
+        };
     }
 }

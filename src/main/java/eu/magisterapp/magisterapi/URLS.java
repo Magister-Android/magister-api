@@ -41,10 +41,10 @@ public class URLS
 
     public static String afspraken(Integer leerling, Date van, Date tot, Boolean status)
     {
-        return api(leerling) + "/afspraken?van="
-                + MagisterAPI.dateToString(van)
+        return api(leerling) + "/afspraken?status="
+                + (status ? "1" : "0")
                 + "&tot=" + MagisterAPI.dateToString(tot)
-                + "&status=" + (status ? "1" : "0");
+                + "&van=" + MagisterAPI.dateToString(van);
     }
 
     public static String afspraken(Account leerling, Date van, Date tot, Boolean status)

@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,6 +20,7 @@ public class Afspraak extends Module {
 	// en het leek me wel zo netjes om die te houden
 	public int Id;
 	public Date Start, Einde;
+	public Integer LesuurVan, LesuurTotMet;
 	public boolean DuurtHeleDag;
 	public String Omschrijving;
 	public String Lokatie;
@@ -39,7 +41,7 @@ public class Afspraak extends Module {
 	public int OpdrachtId;
 	public boolean HeeftBijlagen;
 
-	protected SimpleDateFormat testformat = new SimpleDateFormat("yyyy-mm-dd");
+	protected SimpleDateFormat testformat = new SimpleDateFormat("yyyy-MM-dd");
 
 	// 6 is wss vakantie en volgens mata is 1 huiswerk, 3 tentamen, 4 schriftelijk en 13 is denk ik les
 	// TODO Maak hier een mooie enum van
@@ -57,6 +59,8 @@ public class Afspraak extends Module {
 		Id = getNullableInt(afspraak, "Id");
 		Start = getNullableDate(afspraak, "Start");
 		Einde = getNullableDate(afspraak, "Einde");
+		LesuurVan = getNullableInt(afspraak, "LesuurVan");
+		LesuurTotMet = getNullableInt(afspraak, "LesuurTotMet");
 		DuurtHeleDag = getNullableBoolean(afspraak, "DuurtHeleDag");
 		Omschrijving = getNullableString(afspraak, "Omschrijving");
 		Lokatie = Locatie = getNullableString(afspraak, "Lokatie");
@@ -110,13 +114,20 @@ public class Afspraak extends Module {
 		public String Naam;
 		public String Docentcode;
 
-		public Pattern achternaamPattern = Pattern.compile("\\w+$");
-
 		public Docent(JSONObject vak)
 		{
 			Id = getNullableInt(vak, "Id");
 			Naam = getNullableString(vak, "Naam");
 			Docentcode = getNullableString(vak, "Docentcode");
+		}
+
+		public String getFullName()
+		{
+			if (Naam.isEmpty()) return "";
+
+			if (! Naam.contains(" ")) return Docentcode; // De aardige mensen op het zernike hebben een typfout gemaakt.
+
+			return Naam.charAt(0) + ". " + Naam.substring(Naam.lastIndexOf(' ') + 1);
 		}
 	}
 
@@ -143,14 +154,39 @@ public class Afspraak extends Module {
 
 		for (Docent docent : Docenten)
 		{
-			result += docent.Naam.charAt(0);
-			result += ". ";
-			result += docent.achternaamPattern.matcher(docent.Naam).toString();
-			result += ", ";
+			result += docent.getFullName() + ", ";
 		}
 
 		if (result.isEmpty()) return result;
 
-		return result.substring(0, -2);
+		return result.substring(0, result.length() - 2);
+	}
+
+	public String getVakken()
+	{
+		String result = "";
+
+		for (Vak vak : Vakken)
+		{
+			result += vak.Naam + ", ";
+		}
+
+		if (result.isEmpty() || result.length() > 20) return Omschrijving;
+
+		return result.substring(0, result.length() - 2);
+	}
+
+	public String getLokalen()
+	{
+		String result = "";
+
+		for (Lokaal lokaal : Lokalen)
+		{
+			result += lokaal.Naam + ", ";
+		}
+
+		if (result.isEmpty()) return Locatie;
+
+		return result.substring(0, result.length() - 2);
 	}
 }
