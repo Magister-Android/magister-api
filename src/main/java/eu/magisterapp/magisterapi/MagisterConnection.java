@@ -18,8 +18,11 @@ public class MagisterConnection {
 
     protected String username;
     protected String password;
+    
+    // TODO Doe dit globaal of in een class waar het logischer is
+    public static String API_VERSION = "0.0.69";
 
-    protected final String API_USER_AGENT = "GET REKT MOTHERFUCKERS";
+    protected final String API_USER_AGENT = "Magister API/" + API_VERSION + " Java/" + System.getProperty("java.version");
 
     protected CookieManager cookieJar = new CookieManager();
 
