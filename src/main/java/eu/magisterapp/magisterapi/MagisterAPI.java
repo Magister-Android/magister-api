@@ -3,9 +3,14 @@ package eu.magisterapp.magisterapi;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.Map;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.json.*;
 
 /**
@@ -116,5 +121,11 @@ public class MagisterAPI {
     public static String dateToString(Date date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
+    }
+
+    public static Date getStartOfWeek(String date)
+    {
+        return null;
+
     }
 }

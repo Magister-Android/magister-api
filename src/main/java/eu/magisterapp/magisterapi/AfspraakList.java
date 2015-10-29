@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -76,7 +77,16 @@ public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspra
         }
     }
 
-    public List<Afspraak> getDay(Date day) throws ParseException
+    public List<Afspraak> getForDay(String ymd) throws ParseException
+    {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = format.parse(ymd);
+
+        return getForDay(date);
+    }
+
+    public List<Afspraak> getForDay(Date day) throws ParseException
     {
         parseRemaining();
 

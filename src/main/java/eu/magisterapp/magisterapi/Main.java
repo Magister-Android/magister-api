@@ -22,7 +22,7 @@ public class Main {
 
             // kut java
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date van = format.parse("2015-10-23");
+            Date van = format.parse("2015-10-26");
             Date tot = format.parse("2015-10-30");
 
             AfspraakList afspraken = api.getAfspraken(van, tot);
