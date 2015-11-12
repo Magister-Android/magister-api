@@ -53,8 +53,7 @@ public class Afspraak extends Module {
 		parseResponse(afspraak);
 	}
 
-	protected void parseResponse(JSONObject afspraak) throws ParseException
-	{
+	protected void parseResponse(JSONObject afspraak) throws ParseException {
 		Id = getNullableInt(afspraak, "Id");
 		Start = getNullableDate(afspraak, "Start");
 		Einde = getNullableDate(afspraak, "Einde");
@@ -77,20 +76,17 @@ public class Afspraak extends Module {
 		// dan maar for loops lol
 
 		JSONArray vakArray = afspraak.getJSONArray("Vakken");
-		for (Integer i = 0; i < vakArray.length(); i++)
-		{
+		for (Integer i = 0; i < vakArray.length(); i++) {
 			Vakken.add(new Vak(vakArray.getJSONObject(i)));
 		}
 
 		JSONArray docentArray = afspraak.getJSONArray("Docenten");
-		for (Integer i = 0; i < docentArray.length(); i++)
-		{
+		for (Integer i = 0; i < docentArray.length(); i++) {
 			Docenten.add(new Docent(docentArray.getJSONObject(i)));
 		}
 
 		JSONArray lokaalArray = afspraak.getJSONArray("Lokalen");
-		for (Integer i = 0; i < lokaalArray.length(); i++)
-		{
+		for (Integer i = 0; i < lokaalArray.length(); i++) {
 			Lokalen.add(new Lokaal(lokaalArray.getJSONObject(i)));
 		}
 	}
@@ -187,5 +183,10 @@ public class Afspraak extends Module {
 		if (result.isEmpty()) return Locatie;
 
 		return result.substring(0, result.length() - 2);
+	}
+
+	public Boolean valtUit()
+	{
+		return Status == 0;
 	}
 }

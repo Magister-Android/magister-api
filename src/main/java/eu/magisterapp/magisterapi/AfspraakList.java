@@ -21,7 +21,7 @@ public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspra
 
     private int current = 0;
 
-    public AfspraakList(MagisterConnection con, Date van, Date tot, Boolean status, Account account)
+    public AfspraakList(MagisterConnection con, LocalDate van, LocalDate tot, Boolean status, Account account)
     {
         String url = URLS.afspraken(account, van, tot, status);
 

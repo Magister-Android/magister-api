@@ -1,5 +1,7 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.LocalDate;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,13 +22,10 @@ public class Main {
         {
             System.out.println(api.getAccount().getNaam());
 
-            // kut java
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date van = format.parse("2015-10-26");
-            Date tot = format.parse("2015-10-30");
+            LocalDate van = LocalDate.now();
+            LocalDate tot = van;
 
-            AfspraakList afspraken = api.getAfspraken(van, tot);
-
+            AfspraakList afspraken = api.getAfspraken(van, tot, false);
 
             // Dit dumpt je rooster vanaf 2015-10-23 (maandag) tot en met 2015-10-30 (vrijdag)
             // in dit formaat:
@@ -36,7 +35,7 @@ public class Main {
             // s_lo - Kext                   -> Beschrijving (er is geen Vakken.Naam)
             // acv - WOL - sA51acv - K012    -> Beschrijving (Vakken.Naam > 20 tekens en dat is kut)
             for (Afspraak afspraak : afspraken) {
-                System.out.println(afspraak.getVakken() + " - " + afspraak.getLokalen());
+                System.out.println(afspraak.getVakken() + " - " + afspraak.getLokalen() + " - " + afspraak.Status + " - " + afspraak.Type);
             }
         }
 

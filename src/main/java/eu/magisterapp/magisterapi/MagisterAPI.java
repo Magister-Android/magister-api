@@ -1,5 +1,6 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -61,14 +62,14 @@ public class MagisterAPI {
         return new Account(getConnection(), URLS.account());
     }
 
-    public AfspraakList getAfspraken(Date start, Date end) throws BadResponseException, ParseException
+    public AfspraakList getAfspraken(LocalDate start, LocalDate end) throws BadResponseException, ParseException
     {
-        return getAfspraken(start, end, true);
+        return getAfspraken(start, end, false);
     }
 
-    public AfspraakList getAfspraken(Date start, Date end, Boolean status) throws BadResponseException, ParseException
+    public AfspraakList getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws BadResponseException, ParseException
     {
-        return new AfspraakList(getConnection(), start, end, status, getAccount());
+        return new AfspraakList(getConnection(), start, end, geenUitval, getAccount());
     }
 
     public Boolean isConnected()
