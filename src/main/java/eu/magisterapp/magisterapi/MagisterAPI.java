@@ -1,17 +1,11 @@
 package eu.magisterapp.magisterapi;
 
-import java.text.DateFormat;
+import org.json.JSONObject;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.Map;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.json.*;
 
 /**
  * Created by max on 18-10-15.
@@ -21,8 +15,6 @@ public class MagisterAPI {
     protected String school;
     protected String username;
     protected String password;
-    protected int leerlingnummer;
-    protected URLS urls;
     protected MagisterConnection connection;
 
     protected long connectedAt;
@@ -102,30 +94,4 @@ public class MagisterAPI {
         return connection;
     }
 
-    /**
-     *
-     * @param date De datum zoals hij in de magister response staat
-     * @return De date in een Date object
-     * @throws ParseException
-     */
-    public static Date stringToDate(String date) throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'");
-        return df.parse(date);
-    }
-
-    /**
-     *
-     * @param date Een Date object
-     * @return De date object naar een string om in een GET request te gebruiken
-     */
-    public static String dateToString(Date date) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return df.format(date);
-    }
-
-    public static Date getStartOfWeek(String date)
-    {
-        return null;
-
-    }
 }

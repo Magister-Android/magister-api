@@ -1,5 +1,6 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -31,12 +32,10 @@ public class Module {
         return object.getInt(key);
     }
 
-    protected Date getNullableDate(JSONObject object, String key) throws ParseException
+    protected LocalDate getNullableDate(JSONObject object, String key) throws ParseException
     {
         if (object.isNull(key)) return null;
 
-        return MagisterAPI.stringToDate(object.getString(key));
+        return Utils.stringToDate(object.getString(key));
     }
-
-
 }

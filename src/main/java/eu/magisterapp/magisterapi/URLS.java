@@ -43,8 +43,8 @@ public class URLS
     {
         return api(leerling) + "/afspraken?status="
                 + (status ? "1" : "0")
-                + "&tot=" + MagisterAPI.dateToString(tot)
-                + "&van=" + MagisterAPI.dateToString(van);
+                + "&tot=" + Utils.dateToString(tot)
+                + "&van=" + Utils.dateToString(van);
     }
 
     public static String afspraken(Account leerling, Date van, Date tot, Boolean status)

@@ -1,5 +1,6 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Sibren Talens <me@sibrentalens.com>
@@ -19,7 +18,7 @@ public class Afspraak extends Module {
 	// Ik heb deze namen ook niet bedacht, dit is hoe ze in de API staan,
 	// en het leek me wel zo netjes om die te houden
 	public int Id;
-	public Date Start, Einde;
+	public LocalDate Start, Einde;
 	public Integer LesuurVan, LesuurTotMet;
 	public boolean DuurtHeleDag;
 	public String Omschrijving;
@@ -141,11 +140,11 @@ public class Afspraak extends Module {
 		}
 	}
 
-	public Boolean isOp(Date dag)
+	public Boolean isOp(LocalDate dag)
 	{
 		return testformat.format(Start).equals(testformat.format(dag))
 			|| testformat.format(Einde).equals(testformat.format(dag))
-			|| (dag.after(Start) && dag.before(Einde));
+			|| (dag.isAfter(Start) && dag.isBefore(Einde));
 	}
 
 	public String getDocenten()

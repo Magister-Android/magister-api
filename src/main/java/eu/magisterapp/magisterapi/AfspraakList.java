@@ -1,6 +1,8 @@
 package eu.magisterapp.magisterapi;
 
 import com.sun.istack.internal.NotNull;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -79,14 +81,10 @@ public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspra
 
     public List<Afspraak> getForDay(String ymd) throws ParseException
     {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        Date date = format.parse(ymd);
-
-        return getForDay(date);
+        return getForDay(Utils.stringToDate(ymd));
     }
 
-    public List<Afspraak> getForDay(Date day) throws ParseException
+    public List<Afspraak> getForDay(LocalDate day) throws ParseException
     {
         parseRemaining();
 
