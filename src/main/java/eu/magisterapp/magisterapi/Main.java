@@ -22,8 +22,8 @@ public class Main {
         {
             System.out.println(api.getAccount().getNaam());
 
-            LocalDate van = LocalDate.now();
-            LocalDate tot = van;
+            LocalDate van = Utils.now();
+            LocalDate tot = Utils.deltaDays(7);
 
             AfspraakList afspraken = api.getAfspraken(van, tot, false);
 
@@ -34,9 +34,9 @@ public class Main {
             // kwt - null                    -> Beschrijving (er is geen Vakken.Naam) -> null omdat er geen lokaal is (ook op magister niet)
             // s_lo - Kext                   -> Beschrijving (er is geen Vakken.Naam)
             // acv - WOL - sA51acv - K012    -> Beschrijving (Vakken.Naam > 20 tekens en dat is kut)
-            for (Afspraak afspraak : afspraken) {
-                System.out.println(afspraak.getVakken() + " - " + afspraak.getLokalen() + " - " + afspraak.Status + " - " + afspraak.Type);
-            }
+
+
+
         }
 
         catch(ParseException | BadResponseException e)

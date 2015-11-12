@@ -1,5 +1,6 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -54,6 +55,11 @@ public class Utils {
         return day.withDayOfWeek(DateTimeConstants.MONDAY);
     }
 
+    public static LocalDate getStartOfWeek()
+    {
+        return LocalDate.now().withDayOfWeek(DateTimeConstants.MONDAY);
+    }
+
     /**
      * Geef de laatste dag (vrijdag) van een week waar een gegeven datum in valt.
      * @param date de datum
@@ -63,5 +69,20 @@ public class Utils {
     {
         LocalDate day = new LocalDate(date);
         return day.withDayOfWeek(DateTimeConstants.FRIDAY);
+    }
+
+    public static LocalDate getEndOfWeek()
+    {
+        return LocalDate.now().withDayOfWeek(DateTimeConstants.FRIDAY);
+    }
+
+    public static LocalDate now()
+    {
+        return LocalDate.now();
+    }
+
+    public static LocalDate deltaDays(int days)
+    {
+        return LocalDate.now().plusDays(days);
     }
 }
