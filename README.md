@@ -17,7 +17,7 @@ api.getAfspraken("29-10-2015");
 Dit doet dan een lookup in een SQLite db:
 
 ```sql
-SELECT * FROM afspraken WHERE date == "29-10-2015"
+SELECT * FROM afspraken WHERE date = "29-10-2015"
 ```
 
 Als de resultaten hiervan niet bestaan, haal de betreffende week op van magister, en tyf dat in de db.
