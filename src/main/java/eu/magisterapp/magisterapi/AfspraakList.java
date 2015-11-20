@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import com.sun.istack.internal.NotNull;
+// import com.sun.istack.internal.NotNull;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.json.JSONArray;

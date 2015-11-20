@@ -21,11 +21,16 @@ public class Main {
         try
         {
             System.out.println(api.getAccount().getNaam());
+            System.out.println(api.getAccount().getId());
 
             LocalDate van = Utils.now();
-            LocalDate tot = Utils.deltaDays(7);
+            LocalDate tot = Utils.deltaDays(1);
 
             AfspraakList afspraken = api.getAfspraken(van, tot, false);
+
+            for(int i = 0; i < afspraken.size(); i++)
+                System.out.println(afspraken.get(i).getVakken() + " -> " + afspraken.get(i).getLokalen());
+
 
             // Dit dumpt je rooster vanaf 2015-10-23 (maandag) tot en met 2015-10-30 (vrijdag)
             // in dit formaat:

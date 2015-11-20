@@ -55,4 +55,8 @@ public class Account extends Module
         return GebruikGeboortenaam ? OfficieleVoornaam + " " + OfficieleAchternaam : Roepnaam + " " + Achternaam;
     }
 
+    public int getId(){
+        return Id;
+    }
+
 }
