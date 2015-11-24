@@ -188,4 +188,19 @@ public class Afspraak extends Module {
 	{
 		return Status == 0;
 	}
+
+	public LocalDate getDay()
+	{
+		return Start;
+	}
+
+	public String getDayString()
+	{
+		return getDay().dayOfWeek().getAsText();
+	}
+
+	public Integer getDayConstant()
+	{
+		return getDay().dayOfWeek().get();
+	}
 }

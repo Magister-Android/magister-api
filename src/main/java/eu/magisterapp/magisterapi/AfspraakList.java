@@ -17,7 +17,9 @@ public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspra
 {
     protected JSONArray raw;
 
-    protected Map<Integer, Afspraak> parsed = new HashMap<>();
+    protected List<Afspraak> parsed = new ArrayList<>();
+
+    protected Map<Integer, List<Afspraak>> dagen = new HashMap<>();
 
     private int current = 0;
 
@@ -50,26 +52,35 @@ public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspra
 
         for (int i = 0; i < size(); i++)
         {
-            if (parsed.containsKey(i)) continue;
+            if (parsed.contains(i)) continue;
 
-            parsed.put(i, new Afspraak(raw.getJSONObject(i)));
+            parsed.add(new Afspraak(raw.getJSONObject(i)));
         }
+    }
+
+    private Afspraak parse(Integer i) throws ParseException
+    {
+        if (parsed.contains(i)) return null;
+
+        Afspraak afspraak = new Afspraak(raw.getJSONObject(i));
+
+        parsed.add(afspraak);
+        dagen.get(afspraak.getDayConstant()); // TODO
+
+        return null;
     }
 
     @Override
     public Afspraak get(int index)
     {
-        if (parsed.containsKey(index))
+        if (parsed.contains(index))
         {
             return parsed.get(index);
         }
 
         try
         {
-            Afspraak afspraak = new Afspraak(raw.getJSONObject(index));
-            parsed.put(index, afspraak);
-
-            return afspraak;
+            return parse(index);
         }
 
         catch (ParseException e)
@@ -90,7 +101,7 @@ public class AfspraakList extends ArrayList<Afspraak> implements Iterable<Afspra
 
         List<Afspraak> result = new ArrayList<>();
 
-        parsed.forEach( (i, afspraak) -> {
+        parsed.forEach( (afspraak) -> {
             if (afspraak.isOp(day)) result.add(afspraak);
         });
 

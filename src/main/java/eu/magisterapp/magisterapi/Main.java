@@ -23,8 +23,8 @@ public class Main {
             System.out.println(api.getAccount().getNaam());
             System.out.println(api.getAccount().getId());
 
-            LocalDate van = Utils.deltaDays(1);
-            LocalDate tot = Utils.deltaDays(1);
+            LocalDate van = Utils.now();
+            LocalDate tot = Utils.now();
 
             AfspraakList afspraken = api.getAfspraken(van, tot, false);
 
