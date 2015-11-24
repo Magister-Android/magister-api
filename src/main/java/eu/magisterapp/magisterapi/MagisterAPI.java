@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -62,14 +61,14 @@ public class MagisterAPI {
         return new Account(getConnection(), URLS.account());
     }
 
-    public AfspraakList getAfspraken(LocalDate start, LocalDate end) throws BadResponseException, ParseException
+    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end) throws BadResponseException, ParseException
     {
         return getAfspraken(start, end, false);
     }
 
-    public AfspraakList getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws BadResponseException, ParseException
+    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws BadResponseException, ParseException
     {
-        return new AfspraakList(getConnection(), start, end, geenUitval, getAccount());
+        return AfspraakFactory.fetch(getConnection(), start, end, geenUitval, getAccount());
     }
 
     public Boolean isConnected()
