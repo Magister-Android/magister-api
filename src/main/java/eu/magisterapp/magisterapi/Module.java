@@ -4,7 +4,6 @@ import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Created by max on 21-10-15.

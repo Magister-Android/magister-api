@@ -1,13 +1,9 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.util.Iterator;
-import java.util.Locale;
 
 /**
  * Created by max on 18-10-15.

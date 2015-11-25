@@ -2,7 +2,6 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 
-import java.util.Date;
 
 /**
  * Created by max on 18-10-15.
