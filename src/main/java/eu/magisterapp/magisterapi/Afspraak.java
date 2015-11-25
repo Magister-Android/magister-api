@@ -194,9 +194,9 @@ public class Afspraak extends Module {
 		return Start;
 	}
 
-	public String getDayString()
+	public String getDateString()
 	{
-		return getDay().dayOfWeek().getAsText();
+		return getDay().toString("yyyy-MM-dd");
 	}
 
 	public Integer getDayConstant()

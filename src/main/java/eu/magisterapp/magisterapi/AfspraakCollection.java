@@ -1,9 +1,8 @@
 package eu.magisterapp.magisterapi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import org.joda.time.LocalDate;
+
+import java.util.*;
 
 /**
  * Created by max on 24-11-15.
@@ -27,11 +26,11 @@ public class AfspraakCollection implements Iterable<Afspraak> {
         afspraken.add(afspraak);
     }
 
-    public Integer getFirstDay()
+    public LocalDate getFirstDay()
     {
         if (afspraken.size() == 0) return null;
 
-        return afspraken.get(0).getDayConstant();
+        return afspraken.get(0).getDay();
     }
 
     public Iterator<Afspraak> iterator() {
@@ -52,14 +51,6 @@ public class AfspraakCollection implements Iterable<Afspraak> {
 
                 throw new NoSuchElementException("There are no more elements left.");
             }
-
-            public boolean isLastOfDay() {
-                return !(hasNext() && getCurrentDay().equals(afspraken.get(current + 1).getDayConstant()));
-            }
-
-            public Integer getCurrentDay() {
-                return afspraken.get(current).getDayConstant();
-            }
         };
     }
 
@@ -68,7 +59,7 @@ public class AfspraakCollection implements Iterable<Afspraak> {
         return new Iterator<AfspraakCollection>() {
 
             int current = 0; // eerste element
-            int currDay = afspraken.get(current).getDayConstant(); // eerste dag
+            String currDay = afspraken.get(current).getDateString(); // eerste dag
 
 
             @Override
@@ -85,7 +76,7 @@ public class AfspraakCollection implements Iterable<Afspraak> {
 
                 while (hasNext())
                 {
-                    if (currDay != (currDay = getCurrentDay(current))) break;
+                    if (!Objects.equals(currDay, currDay = getCurrentDay(current))) break;
 
                     collection.add(afspraken.get(current++));
                 }
@@ -93,9 +84,9 @@ public class AfspraakCollection implements Iterable<Afspraak> {
                 return collection;
             }
 
-            private int getCurrentDay(int i)
+            private String getCurrentDay(int i)
             {
-                return afspraken.get(i).getDayConstant();
+                return afspraken.get(i).getDateString();
             }
         };
     }
