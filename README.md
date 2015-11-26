@@ -56,7 +56,7 @@ while (it.hasNext())
 
 	String dag = dag.getFirstDay().toString("EEEE"); // Monday, Tuesday.. etc
 
-	// Hierna kun je over elke dag itereren zoals in het bovenstaande voorbeeld aangegeven
+	// Hierna kun je over elk uur itereren zoals in het bovenstaande voorbeeld aangegeven
 
 	for (Afspraak afspraak : dag)
 	{
