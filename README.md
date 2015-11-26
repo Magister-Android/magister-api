@@ -2,34 +2,66 @@
 The API that our App will be using to fetch data from a magister site.
 
 
-# Dit is misschien hoe we dingen gaan doen:
+# Dit is hoe dingen gedaan zijn:
 
-We kunnen in de API steeds een dag tegelijk ophalen ofzo:
+De API wordt gebruikt om shit op te halen. De parent code is verantwoordelijk
+voor het cachen hiervan (in ons geval is dat onze [Magister app](https://github.com/Magister-Android/Magister-Android)).
+
+## Het ophalen van lessen
+
+Het ophalen van lesen kan op de volgende manier(en) gedaan worden:
 
 ```java
 
-MagisterAPI api = new MagisterAPI(...)
+MagisterAPI api = new MagisterAPI(...);
 
-api.getAfspraken("29-10-2015");
+// haal afspraken van nu tot en met over 1 week op.
+AfspraakCollection afspraken = api.getAfspraken(Utils.now(), Utils.deltaDays(7));
 
 ```
 
-Dit doet dan een lookup in een SQLite db:
-
-```sql
-SELECT * FROM afspraken WHERE date = "29-10-2015"
-```
-
-Als de resultaten hiervan niet bestaan, haal de betreffende week op van magister, en tyf dat in de db.
+Voor een iteratie over elke afspraak kan het volgende gedaan worden:
 
 ```java
-if (results.length() == 0)
+
+Iterator<Afspraak> it = afspraken.iterator();
+
+while (it.hasNext())
 {
-	// in MagisterAPI
-	AfspraakList afspraken = MagisterConnection.getAfspraken(getStartOfWeek("29-10-2015"), getEndOfWeek("29-10-2015"));
+	Afspraak afspraak = it.next();
 
-	sqlitedb.insert(afspraken);
-
-	return afspraken.getForDay("29-10-2015");
+	//
 }
+
+// Dit is hetzelfde als dit:
+
+for (Afspraak afspraak : afspraken)
+{
+	//
+}
+
+```
+
+Om de afspraken dag voor dag te doorlopen kan dit worden gedaan:
+
+```java
+
+Iterator<AfspraakCollection> it = afspraken.dayIterator();
+
+while (it.hasNext())
+{
+	AfspraakCollection dag = it.next();
+
+	// dag is een collection met alle afspraken voor die dag. Je kan hiervan een JodaTime LocalDate instance krijgen:
+
+	String dag = dag.getFirstDay().toString("EEEE"); // Monday, Tuesday.. etc
+
+	// Hierna kun je over elke dag itereren zoals in het bovenstaande voorbeeld aangegeven
+
+	for (Afspraak afspraak : dag)
+	{
+		//
+	}
+}
+
 ```
