@@ -54,7 +54,7 @@ while (it.hasNext())
 
 	// dag is een collection met alle afspraken voor die dag. Je kan hiervan een JodaTime LocalDate instance krijgen:
 
-	String dag = dag.getFirstDay().toString("EEEE"); // Monday, Tuesday.. etc
+	String weekdag = dag.getFirstDay().toString("EEEE"); // Monday, Tuesday.. etc
 
 	// Hierna kun je over elk uur itereren zoals in het bovenstaande voorbeeld aangegeven
 
