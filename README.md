@@ -4,8 +4,12 @@ The API that our App will be using to fetch data from a magister site.
 
 # Progress
 
+
+#### Dit moet af:
 - [x] Afspraken
 - [ ] Cijfers
+
+#### Dit is optioneel:
 - [ ] ELO
   - [ ] Studiewijzers
   - [ ] Opdrachten
