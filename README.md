@@ -2,6 +2,19 @@
 The API that our App will be using to fetch data from a magister site.
 
 
+# Progress
+
+
+###### Dit moet af:
+- [x] Afspraken
+- [ ] Cijfers
+
+###### Dit is optioneel:
+- [ ] ELO
+  - [ ] Studiewijzers
+  - [ ] Opdrachten
+- [ ] Keuzeles invul shit
+
 # Dit is hoe dingen gedaan zijn:
 
 De API wordt gebruikt om shit op te halen. De parent code is verantwoordelijk
