@@ -47,11 +47,21 @@ public class Afspraak extends Module {
 
 	// TODO Vind de datatypen uit van de velden die null zijn
 
+	/**
+	 * Create a new afspraak form a JSONObject
+	 * @param  afspraak       JSONObject as provided by org.json
+	 * @throws ParseException If parsing fails
+	 */
 	public Afspraak(JSONObject afspraak) throws ParseException
 	{
 		parseResponse(afspraak);
 	}
 
+	/**
+	 * Parse the response object and set the local variables
+	 * @param  afspraak       The JSONObject
+	 * @throws ParseException If parsing fails
+	 */
 	protected void parseResponse(JSONObject afspraak) throws ParseException {
 		Id = getNullableInt(afspraak, "Id");
 		Start = getNullableDate(afspraak, "Start");
@@ -75,6 +85,10 @@ public class Afspraak extends Module {
 		// dan maar for loops lol
 
 		JSONArray vakArray = afspraak.getJSONArray("Vakken");
+
+
+
+
 		for (Integer i = 0; i < vakArray.length(); i++) {
 			Vakken.add(new Vak(vakArray.getJSONObject(i)));
 		}
@@ -90,6 +104,10 @@ public class Afspraak extends Module {
 		}
 	}
 
+	/**
+	 * Subclass Vak
+	 * to store the subject and it's id
+	 */
 	public class Vak
 	{
 		public Integer Id;
@@ -102,6 +120,9 @@ public class Afspraak extends Module {
 		}
 	}
 
+	/**
+	 * Subclass Docent
+	 */
 	public class Docent
 	{
 		public Integer Id;
@@ -115,6 +136,11 @@ public class Afspraak extends Module {
 			Docentcode = getNullableString(vak, "Docentcode");
 		}
 
+
+		/**
+		 * Return the full name of a teacher
+		 * @return The full name
+		 */
 		public String getFullName()
 		{
 			if (Naam.isEmpty()) return "";
@@ -125,10 +151,18 @@ public class Afspraak extends Module {
 		}
 	}
 
+	/**
+	 * Subclass Lokaal
+	 */
 	public class Lokaal
 	{
 		public String Naam;
 
+		/**
+		 * [Lokaal description]
+		 * @param  lokaal [description]
+		 * @return        [description]
+		 */
 		public Lokaal(JSONObject lokaal)
 		{
 			Naam = getNullableString(lokaal, "Naam");
