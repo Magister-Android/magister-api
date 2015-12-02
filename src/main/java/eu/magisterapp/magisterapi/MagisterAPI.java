@@ -71,6 +71,15 @@ public class MagisterAPI {
         return AfspraakFactory.fetch(getConnection(), start, end, geenUitval, getAccount());
     }
 
+    public AanmeldingenList getAanmeldingen(Account account) throws BadResponseException, ParseException
+    {
+        String url = URLS.aanmeldingen(account);
+
+        Response response = getConnection().get(url);
+
+        return AanmeldingenList.fromResponse(response);
+    }
+
     public Boolean isConnected()
     {
         return connection != null // er is een verbinding gemaakt
