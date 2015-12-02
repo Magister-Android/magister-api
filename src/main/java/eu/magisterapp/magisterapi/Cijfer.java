@@ -12,7 +12,7 @@ public class Cijfer extends Module
 {
 
     public final Integer CijferId;
-    public final float Cijfer;
+    public final String CijferStr;
     public final boolean IsVoldoende;
 
     // public final <iets> IngevoerdDoor; (is null bij mijn cjifers, misschien string (HAB), misschien docent Id)
@@ -35,15 +35,17 @@ public class Cijfer extends Module
     public final boolean VakDispensatie;
     public final boolean VakVrijstelling;
 
-    public Cijfer(JSONObject cijferJson) throws ParseException
+    public Cijfer(JSONObject cijferJson, VakList vaklist) throws ParseException
     {
+
         CijferId = getNullableInt(cijferJson, "CijferId");
-        Cijfer = Float.parseFloat(getNullableString(cijferJson, "CijferStr"));
+        CijferStr = getNullableString(cijferJson, "CijferStr");
         IsVoldoende = getNullableBoolean(cijferJson, "IsVoldoende");
         DatumIngevoerd = getNullableDate(cijferJson, "DatumIngevoerd");
         CijferPeriodeId = getNullableInt(cijferJson, "CijferPeriodeId");
 
-        Vak = new Vak(cijferJson.getJSONObject("Vak"));
+        Integer vakId = cijferJson.getJSONObject("Vak").getInt("Id");
+        Vak = vaklist.getById(vakId);
 
         Inhalen = getNullableBoolean(cijferJson, "Inhalen");
         Vrijstelling = getNullableBoolean(cijferJson, "Vrijstelling");
@@ -57,30 +59,12 @@ public class Cijfer extends Module
         VakVrijstelling = getNullableBoolean(cijferJson, "VakVrijstelling");
     }
 
-    public class Vak
-    {
-        public final Integer Id;
-        public final String Afkorting;
-        public final String Omschrijving;
-        public final Integer Volgnr;
-
-        public Vak(JSONObject vakJson)
-        {
-            Id = getNullableInt(vakJson, "Id");
-            Afkorting = getNullableString(vakJson, "Afkorting");
-            Omschrijving = getNullableString(vakJson, "Omschrijving");
-            Volgnr = getNullableInt(vakJson, "Volgnr");
-        }
-    }
-
     public class CijferKolom
     {
         public final Integer Id;
         public final String KolomNaam;
         public final String KolomNummer;
-        private final Integer nummer; // kolomnummer als int
         public final String KolomVolgNummer;
-        private final Integer volgNummer;
         public final String KolomKop;
         public final String KolomOmschrijving;
         public final Integer KolomSoort;
@@ -94,9 +78,7 @@ public class Cijfer extends Module
             Id = getNullableInt(kolomJson, "Id");
             KolomNaam = getNullableString(kolomJson, "KolomNaam");
             KolomNummer = getNullableString(kolomJson, "KolomNummer");
-            nummer = Integer.parseInt(KolomNummer);
             KolomVolgNummer = getNullableString(kolomJson, "KolomVolgNummer");
-            volgNummer = Integer.parseInt(KolomVolgNummer);
             KolomKop = getNullableString(kolomJson, "KolomKop");
             KolomOmschrijving = getNullableString(kolomJson, "KolomOmschrijving");
             KolomSoort = getNullableInt(kolomJson, "KolomSoort");

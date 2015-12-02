@@ -1,5 +1,6 @@
 package eu.magisterapp.magisterapi;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -23,6 +24,7 @@ public class Response {
     protected String body;
 
     protected JSONObject parsed;
+    protected JSONArray list;
     protected Boolean isJson = false;
 
     public Response(int status, Map<String, List<String>> headers, String body)
@@ -36,7 +38,16 @@ public class Response {
 
         if (headers.get("Content-Type").get(0).contains("application/json"))
         {
-            parsed = new JSONObject(body);
+            if (body.charAt(0) == '[')
+            {
+                list = new JSONArray(body);
+            }
+
+            else
+            {
+                parsed = new JSONObject(body);
+            }
+
             isJson = true;
         }
     }
@@ -76,6 +87,11 @@ public class Response {
     public JSONObject getJson()
     {
         return parsed;
+    }
+
+    public JSONArray getJsonList()
+    {
+        return list;
     }
 
     public String getBody()

@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class Utils {
 
-    private static DateTimeFormatter magisterToDateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'");
+    private final static DateTimeFormatter magisterToDateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'");
 
     /**
      *
@@ -26,6 +26,20 @@ public class Utils {
     public static LocalDate stringToDate(String date) throws ParseException
     {
         return LocalDate.parse(date, magisterToDateFormatter);
+    }
+
+    public static Float parseFloat(String kutfloat)
+    {
+        try
+        {
+            // kut magister gebruikt kommas ipv .
+            return Float.parseFloat(kutfloat.replace(',', '.'));
+        }
+
+        catch (NumberFormatException e)
+        {
+            return null;
+        }
     }
 
     /**

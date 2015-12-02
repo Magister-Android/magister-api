@@ -85,6 +85,11 @@ public class MagisterAPI {
         return getAanmeldingen(getAccount());
     }
 
+    public Aanmelding getCurrentAanmelding() throws BadResponseException, ParseException
+    {
+        return getAanmeldingen().getCurrentAanmelding();
+    }
+
     public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException
     {
         String url = URLS.cijferPerioden(account, aanmelding);
@@ -92,6 +97,34 @@ public class MagisterAPI {
         Response response = getConnection().get(url);
 
         return CijferPerioden.fromResponse(response);
+    }
+
+    public CijferList getCijfers(Account account, Aanmelding aanmelding, VakList vakken) throws BadResponseException, ParseException
+    {
+        String url = URLS.cijfers(account, aanmelding);
+
+        Response response = getConnection().get(url);
+
+        return CijferList.fromResponse(response, vakken);
+    }
+
+    public CijferList getCijfers() throws BadResponseException, ParseException
+    {
+        return getCijfers(getAccount(), getCurrentAanmelding(), getVakken());
+    }
+
+    public VakList getVakken(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException
+    {
+        String url = URLS.vakken(account, aanmelding);
+
+        Response response = getConnection().get(url);
+
+        return VakList.fromResponse(response);
+    }
+
+    public VakList getVakken() throws BadResponseException, ParseException
+    {
+        return getVakken(getAccount(), getCurrentAanmelding());
     }
 
     public Boolean isConnected()

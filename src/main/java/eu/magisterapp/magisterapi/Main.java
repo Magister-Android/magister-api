@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 
 import java.text.ParseException;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * Created by max on 18-10-15.
@@ -20,7 +21,7 @@ public class Main {
             System.out.println(api.getAccount().getId());
 
             LocalDate van = Utils.now();
-            LocalDate tot = Utils.deltaDays(7);
+            LocalDate tot = Utils.deltaDays(1);
 
             AfspraakCollection afspraken = api.getAfspraken(van, tot);
 
@@ -41,6 +42,15 @@ public class Main {
                 }
 
                 System.out.println();
+            }
+
+            System.out.println("\n\nCijfers\n-------");
+
+             CijferList cijfers = api.getCijfers();
+
+            for (Cijfer cijfer : cijfers)
+            {
+                System.out.println(String.format("%25s (%4s): %4s", cijfer.Vak.omschrijving, cijfer.Vak.docent, cijfer.CijferStr));
             }
 
         }

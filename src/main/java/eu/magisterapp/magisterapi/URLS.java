@@ -92,4 +92,9 @@ public class URLS
     {
         return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferperiodenvooraanmelding", jaarlaag.Id);
     }
+
+    public static String vakken(Account account, Aanmelding jaarlaag)
+    {
+        return api(account) + String.format("/aanmeldingen/%d/vakken", jaarlaag.Id);
+    }
 }

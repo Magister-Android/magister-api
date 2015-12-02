@@ -7,6 +7,7 @@ import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,8 @@ public class MagisterConnection {
     protected final String API_USER_AGENT = "Magister API/" + API_VERSION + " Java/" + System.getProperty("java.version");
 
     protected CookieManager cookieJar = new CookieManager();
+
+    private CacheManager<Response> cache = new CacheManager<>();
 
     public MagisterConnection(String username, String password)
     {
@@ -90,6 +93,8 @@ public class MagisterConnection {
 
     public Response get(String location)
     {
+        if (cache.has(location)) return cache.get(location);
+
         try
         {
             URL url = new URL(location);
@@ -104,12 +109,12 @@ public class MagisterConnection {
 
             storeCookies(connection);
 
-            return Response.fromConnection(connection);
+            return cache.put(location, Response.fromConnection(connection));
         }
 
         catch (IOException e)
         {
-						e.printStackTrace();
+			e.printStackTrace();
             return null;
         }
     }
