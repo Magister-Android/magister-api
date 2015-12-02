@@ -75,11 +75,21 @@ public class URLS
 
     public static String cijfers(Integer leerling, Integer jaarlaag)
     {
-        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers", jaarlaag);
+        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding", jaarlaag);
     }
 
     public static String cijfers(Account leerling, Integer jaarlaag)
     {
-        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers", jaarlaag);
+        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding", jaarlaag);
+    }
+
+    public static String cijfers(Account leerling, Aanmelding jaarlaag)
+    {
+        return cijfers(leerling, jaarlaag.Id);
+    }
+
+    public static String cijferPerioden(Account leerling, Aanmelding jaarlaag)
+    {
+        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferperiodenvooraanmelding", jaarlaag.Id);
     }
 }
