@@ -106,7 +106,7 @@ public class Afspraak extends Module {
 
 	/**
 	 * Subclass Vak
-	 * to store the subject and it's id
+	 * to store the subject and its id
 	 */
 	public class Vak
 	{
@@ -138,8 +138,8 @@ public class Afspraak extends Module {
 
 
 		/**
-		 * Return the full name of a teacher
-		 * @return The full name
+		 * Return the shortened full name of a teacher
+		 * @return The shortened full name
 		 */
 		public String getFullName()
 		{

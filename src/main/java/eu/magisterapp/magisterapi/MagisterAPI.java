@@ -80,6 +80,20 @@ public class MagisterAPI {
         return AanmeldingenList.fromResponse(response);
     }
 
+    public AanmeldingenList getAanmeldingen() throws BadResponseException, ParseException
+    {
+        return getAanmeldingen(getAccount());
+    }
+
+    public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException
+    {
+        String url = URLS.cijferPerioden(account, aanmelding);
+
+        Response response = getConnection().get(url);
+
+        return CijferPerioden.fromResponse(response);
+    }
+
     public Boolean isConnected()
     {
         return connection != null // er is een verbinding gemaakt
