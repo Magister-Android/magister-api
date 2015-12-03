@@ -20,7 +20,7 @@ public class VakList {
 
     public VakList(JSONArray list) throws ParseException
     {
-        Map<Integer, Vak> vakList = new HashMap<Integer, Vak>();
+        Map<Integer, Vak> vakList = new HashMap<>();
 
         for (int i = 0; i < list.length(); i++) {
             Vak vak = new Vak(list.getJSONObject(i));

@@ -8,8 +8,8 @@ import java.util.Map;
  */
 public class CacheManager<T> {
 
-    private Map<String, T> cacheRepository = new HashMap<String, T>();
-    private Map<String, Long> expiration = new HashMap<String, Long>();
+    private Map<String, T> cacheRepository = new HashMap<>();
+    private Map<String, Long> expiration = new HashMap<>();
 
     public final Long expiry; // ms
 
@@ -67,8 +67,8 @@ public class CacheManager<T> {
 
     public void clear()
     {
-        cacheRepository = new HashMap<String, T>();
-        expiration = new HashMap<String, Long>();
+        cacheRepository = new HashMap<>();
+        expiration = new HashMap<>();
     }
 
 }

@@ -7,6 +7,7 @@ import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class MagisterConnection {
 
     protected CookieManager cookieJar = new CookieManager();
 
-    private CacheManager<Response> cache = new CacheManager<Response>();
+    private CacheManager<Response> cache = new CacheManager<>();
 
     public MagisterConnection(String username, String password)
     {
@@ -33,26 +34,36 @@ public class MagisterConnection {
         this.password = password;
     }
 
-    public Response delete(String location) throws IOException
+    public Response delete(String location)
     {
-        URL url = new URL(location);
+        try
+        {
+            URL url = new URL(location);
 
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setRequestMethod("DELETE");
-        connection.setRequestProperty("Cookie", getCurrentCookies());
-        connection.setRequestProperty("User-Agent", API_USER_AGENT);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Cookie", getCurrentCookies());
+            connection.setRequestProperty("User-Agent", API_USER_AGENT);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        connection.connect();
+            connection.connect();
 
-        storeCookies(connection);
+            storeCookies(connection);
 
-        return Response.fromConnection(connection);
+            return Response.fromConnection(connection);
+        }
+
+        catch (IOException e)
+        {
+            return null;
+        }
     }
 
-    public Response post(String location, Map<String, String> data) throws IOException
+    public Response post(String location, Map<String, String> data)
     {
+        try
+        {
             URL url = new URL(location);
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -72,26 +83,40 @@ public class MagisterConnection {
             storeCookies(connection);
 
             return Response.fromConnection(connection);
+        }
+
+        catch (IOException e)
+        {
+            return null;
+        }
     }
 
-    public Response get(String location) throws IOException
+    public Response get(String location)
     {
         if (cache.has(location)) return cache.get(location);
 
-        URL url = new URL(location);
+        try
+        {
+            URL url = new URL(location);
 
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Cookie", getCurrentCookies());
-        connection.setRequestProperty("User-Agent", API_USER_AGENT);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Cookie", getCurrentCookies());
+            connection.setRequestProperty("User-Agent", API_USER_AGENT);
 
-        connection.connect();
+            connection.connect();
 
-        storeCookies(connection);
+            storeCookies(connection);
 
-        return cache.put(location, Response.fromConnection(connection));
+            return cache.put(location, Response.fromConnection(connection));
+        }
 
+        catch (IOException e)
+        {
+			e.printStackTrace();
+            return null;
+        }
     }
 
     protected void storeCookies(HttpsURLConnection connection)

@@ -3,7 +3,6 @@ package eu.magisterapp.magisterapi;
 import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,13 +30,13 @@ public class MagisterAPI {
         URLS.setSchool(school);
     }
 
-    public Boolean connect() throws BadResponseException, IOException
+    public Boolean connect() throws BadResponseException
     {
         connection = new MagisterConnection(username, password);
 
         connection.delete(URLS.session());
 
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
 
         data.put("Gebruikersnaam", username);
         data.put("Wachtwoord", password);
@@ -57,22 +56,22 @@ public class MagisterAPI {
         return true;
     }
 
-    public Account getAccount() throws BadResponseException, ParseException, IOException
+    public Account getAccount() throws BadResponseException, ParseException
     {
         return new Account(getConnection(), URLS.account());
     }
 
-    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end) throws BadResponseException, ParseException, IOException
+    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end) throws BadResponseException, ParseException
     {
         return getAfspraken(start, end, false);
     }
 
-    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws BadResponseException, ParseException, IOException
+    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws BadResponseException, ParseException
     {
         return AfspraakFactory.fetch(getConnection(), start, end, geenUitval, getAccount());
     }
 
-    public AanmeldingenList getAanmeldingen(Account account) throws BadResponseException, ParseException, IOException
+    public AanmeldingenList getAanmeldingen(Account account) throws BadResponseException, ParseException
     {
         String url = URLS.aanmeldingen(account);
 
@@ -81,17 +80,17 @@ public class MagisterAPI {
         return AanmeldingenList.fromResponse(response);
     }
 
-    public AanmeldingenList getAanmeldingen() throws BadResponseException, ParseException, IOException
+    public AanmeldingenList getAanmeldingen() throws BadResponseException, ParseException
     {
         return getAanmeldingen(getAccount());
     }
 
-    public Aanmelding getCurrentAanmelding() throws BadResponseException, ParseException, IOException
+    public Aanmelding getCurrentAanmelding() throws BadResponseException, ParseException
     {
         return getAanmeldingen().getCurrentAanmelding();
     }
 
-    public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException, IOException
+    public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException
     {
         String url = URLS.cijferPerioden(account, aanmelding);
 
@@ -100,7 +99,7 @@ public class MagisterAPI {
         return CijferPerioden.fromResponse(response);
     }
 
-    public CijferList getCijfers(Account account, Aanmelding aanmelding, VakList vakken) throws BadResponseException, ParseException, IOException
+    public CijferList getCijfers(Account account, Aanmelding aanmelding, VakList vakken) throws BadResponseException, ParseException
     {
         String url = URLS.cijfers(account, aanmelding);
 
@@ -109,12 +108,12 @@ public class MagisterAPI {
         return CijferList.fromResponse(response, vakken);
     }
 
-    public CijferList getCijfers() throws BadResponseException, ParseException, IOException
+    public CijferList getCijfers() throws BadResponseException, ParseException
     {
         return getCijfers(getAccount(), getCurrentAanmelding(), getVakken());
     }
 
-    public VakList getVakken(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException, IOException
+    public VakList getVakken(Account account, Aanmelding aanmelding) throws BadResponseException, ParseException
     {
         String url = URLS.vakken(account, aanmelding);
 
@@ -123,7 +122,7 @@ public class MagisterAPI {
         return VakList.fromResponse(response);
     }
 
-    public VakList getVakken() throws BadResponseException, ParseException, IOException
+    public VakList getVakken() throws BadResponseException, ParseException
     {
         return getVakken(getAccount(), getCurrentAanmelding());
     }
@@ -144,7 +143,7 @@ public class MagisterAPI {
         connectedAt = 0;
     }
 
-    public MagisterConnection getConnection() throws BadResponseException, IOException
+    public MagisterConnection getConnection() throws BadResponseException
     {
         if (! isConnected()) connect();
 

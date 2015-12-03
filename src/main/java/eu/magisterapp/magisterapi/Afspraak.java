@@ -32,9 +32,9 @@ public class Afspraak extends Module {
 
 	// Dit zijn arrays met daarin weer JSON objects,
 	// Voor ACFuck en shit
-	public List<Vak> Vakken = new ArrayList<Vak>();
-	public List<Docent> Docenten = new ArrayList<Docent>();
-	public List<Lokaal> Lokalen = new ArrayList<Lokaal>();
+	public List<Vak> Vakken = new ArrayList<>();
+	public List<Docent> Docenten = new ArrayList<>();
+	public List<Lokaal> Lokalen = new ArrayList<>();
 
 	public int OpdrachtId;
 	public boolean HeeftBijlagen;
