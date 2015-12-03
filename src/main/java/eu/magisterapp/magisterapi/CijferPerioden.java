@@ -70,14 +70,16 @@ public class CijferPerioden implements Iterable<CijferPerioden.CijferPeriode> {
 
             int current = 0;
 
-            @Override
             public boolean hasNext() {
                 return current < cijferPerioden.size();
             }
 
-            @Override
             public CijferPeriode next() {
                 return get(current++);
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException("CijferPerioden can not be altered.");
             }
         };
     }

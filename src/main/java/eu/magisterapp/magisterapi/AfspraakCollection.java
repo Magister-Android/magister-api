@@ -39,18 +39,20 @@ public class AfspraakCollection implements Iterable<Afspraak> {
 
             int current = 0;
 
-            @Override
             public boolean hasNext() {
                 return current < afspraken.size();
             }
 
-            @Override
             public Afspraak next() {
                 if (hasNext()) {
                     return afspraken.get(current++);
                 }
 
                 throw new NoSuchElementException("There are no more elements left.");
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException("Afspraken can not be altered.");
             }
         };
     }
@@ -62,13 +64,10 @@ public class AfspraakCollection implements Iterable<Afspraak> {
             int current = 0; // eerste element
             String currDay = afspraken.get(current).getDateString(); // eerste dag
 
-
-            @Override
             public boolean hasNext() {
                 return current < afspraken.size();
             }
 
-            @Override
             public AfspraakCollection next() {
 
                 if (! hasNext()) throw new NoSuchElementException("There are no more elements left.");
@@ -88,6 +87,10 @@ public class AfspraakCollection implements Iterable<Afspraak> {
             private String getCurrentDay(int i)
             {
                 return afspraken.get(i).getDateString();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException("Afspraken can not be altered.");
             }
         };
     }

@@ -25,7 +25,7 @@ public class AanmeldingenList implements Iterable<Aanmelding>
 
     public AanmeldingenList(JSONArray array) throws ParseException
     {
-        List<Aanmelding> raw = new ArrayList<>();
+        List<Aanmelding> raw = new ArrayList<Aanmelding>();
 
         for (int i = 0; i < array.length(); i++) {
             raw.add(new Aanmelding(array.getJSONObject(i)));
@@ -49,20 +49,21 @@ public class AanmeldingenList implements Iterable<Aanmelding>
         return getAanmeldingForDate(Utils.now());
     }
 
-    @Override
     public Iterator<Aanmelding> iterator() {
         return new Iterator<Aanmelding>() {
 
             int current = 0;
 
-            @Override
             public boolean hasNext() {
                 return current < aanmeldingen.size();
             }
 
-            @Override
             public Aanmelding next() {
                 return aanmeldingen.get(current++);
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException("Aanmeldingen can not be altered.");
             }
         };
     }

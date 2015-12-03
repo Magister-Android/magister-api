@@ -21,7 +21,7 @@ public class CijferList implements Iterable<Cijfer>
 
     public CijferList(JSONArray cijferJson, VakList vakken) throws ParseException
     {
-        List<Cijfer> localList = new ArrayList<>();
+        List<Cijfer> localList = new ArrayList<Cijfer>();
 
         for (int i = 0; i < cijferJson.length(); i++) {
             Cijfer cijfer = new Cijfer(cijferJson.getJSONObject(i), vakken);
@@ -37,14 +37,16 @@ public class CijferList implements Iterable<Cijfer>
 
             int current = 0;
 
-            @Override
             public boolean hasNext() {
                 return current < cijfers.size();
             }
 
-            @Override
             public Cijfer next() {
                 return cijfers.get(current++);
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException("Cijfers can not be altered.");
             }
         };
     }

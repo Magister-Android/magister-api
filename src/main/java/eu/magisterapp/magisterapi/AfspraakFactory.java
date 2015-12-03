@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -12,7 +13,7 @@ import java.util.*;
  */
 public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afspraak>
 {
-    public static AfspraakCollection fetch(MagisterConnection con, LocalDate van, LocalDate tot, boolean zonderUitval, Account account) throws ParseException
+    public static AfspraakCollection fetch(MagisterConnection con, LocalDate van, LocalDate tot, boolean zonderUitval, Account account) throws ParseException, BadResponseException, IOException
     {
         String url = URLS.afspraken(account, van, tot, zonderUitval);
 

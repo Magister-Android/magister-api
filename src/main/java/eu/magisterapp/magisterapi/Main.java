@@ -2,9 +2,7 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 
-import java.text.ParseException;
 import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * Created by max on 18-10-15.
@@ -55,9 +53,10 @@ public class Main {
 
         }
 
-        catch(ParseException | BadResponseException e)
+        catch(Exception e)
         {
-            // asdf
+            System.out.println("Oeps..");
+            e.printStackTrace();
         }
 
     }
