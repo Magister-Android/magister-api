@@ -2,6 +2,7 @@ group 'com.github.Magister-Android'
 version '1.0.69'
 
 apply plugin: 'java'
+apply plugin: 'maven'
 
 sourceCompatibility = 1.5
 
