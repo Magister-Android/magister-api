@@ -34,89 +34,64 @@ public class MagisterConnection {
         this.password = password;
     }
 
-    public Response delete(String location)
+    public Response delete(String location) throws IOException
     {
-        try
-        {
-            URL url = new URL(location);
+        URL url = new URL(location);
 
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestMethod("DELETE");
-            connection.setRequestProperty("Cookie", getCurrentCookies());
-            connection.setRequestProperty("User-Agent", API_USER_AGENT);
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Cookie", getCurrentCookies());
+        connection.setRequestProperty("User-Agent", API_USER_AGENT);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-            connection.connect();
+        connection.connect();
 
-            storeCookies(connection);
+        storeCookies(connection);
 
-            return Response.fromConnection(connection);
-        }
-
-        catch (IOException e)
-        {
-            return null;
-        }
+        return Response.fromConnection(connection);
     }
 
-    public Response post(String location, Map<String, String> data)
+    public Response post(String location, Map<String, String> data) throws IOException
     {
-        try
-        {
-            URL url = new URL(location);
+        URL url = new URL(location);
 
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Cookie", getCurrentCookies());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("User-Agent", API_USER_AGENT);
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Cookie", getCurrentCookies());
+        connection.setRequestProperty("charset", "utf-8");
+        connection.setRequestProperty("User-Agent", API_USER_AGENT);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-            byte[] data_url = convertToDataString(data).getBytes(StandardCharsets.UTF_8);
+        byte[] data_url = convertToDataString(data).getBytes(StandardCharsets.UTF_8);
 
-            DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
+        DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
 
-            dos.write(data_url);
+        dos.write(data_url);
 
-            storeCookies(connection);
+        storeCookies(connection);
 
-            return Response.fromConnection(connection);
-        }
-
-        catch (IOException e)
-        {
-            return null;
-        }
+        return Response.fromConnection(connection);
     }
 
-    public Response get(String location)
+    public Response get(String location) throws IOException
     {
         if (cache.has(location)) return cache.get(location);
 
-        try
-        {
-            URL url = new URL(location);
+        URL url = new URL(location);
 
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Cookie", getCurrentCookies());
-            connection.setRequestProperty("User-Agent", API_USER_AGENT);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Cookie", getCurrentCookies());
+        connection.setRequestProperty("User-Agent", API_USER_AGENT);
 
-            connection.connect();
+        connection.connect();
 
-            storeCookies(connection);
+        storeCookies(connection);
 
-            return cache.put(location, Response.fromConnection(connection));
-        }
-
-        catch (IOException e)
-        {
-			e.printStackTrace();
-            return null;
-        }
+        return cache.put(location, Response.fromConnection(connection));
     }
 
     protected void storeCookies(HttpsURLConnection connection)
