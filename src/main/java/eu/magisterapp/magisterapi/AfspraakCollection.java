@@ -60,7 +60,7 @@ public class AfspraakCollection implements Iterable<Afspraak> {
         return new Iterator<AfspraakCollection>() {
 
             int current = 0; // eerste element
-            String currDay = afspraken.get(current).getDateString(); // eerste dag
+            String currDay = hasNext() ? afspraken.get(current).getDateString() : ""; // eerste dag
 
 
             @Override

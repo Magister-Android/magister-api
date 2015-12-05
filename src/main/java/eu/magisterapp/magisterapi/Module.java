@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -14,27 +15,59 @@ public class Module {
     {
         if (object.isNull(key)) return null;
 
-        return object.getString(key);
+        try
+        {
+            return object.getString(key);
+        }
+
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     protected Boolean getNullableBoolean(JSONObject object, String key)
     {
         if (object.isNull(key)) return null;
 
-        return object.getBoolean(key);
+        try
+        {
+            return object.getBoolean(key);
+        }
+
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     protected Integer getNullableInt(JSONObject object, String key)
     {
         if (object.isNull(key)) return null;
 
-        return object.getInt(key);
+        try
+        {
+            return object.getInt(key);
+        }
+
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     protected LocalDate getNullableDate(JSONObject object, String key) throws ParseException
     {
         if (object.isNull(key)) return null;
 
-        return Utils.stringToDate(object.getString(key));
+        try
+        {
+            return Utils.stringToDate(object.getString(key));
+        }
+
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

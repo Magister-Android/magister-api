@@ -2,6 +2,7 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ public class AanmeldingenList implements Iterable<Aanmelding>
 {
     public final List<Aanmelding> aanmeldingen;
 
-    public static AanmeldingenList fromResponse(Response response) throws ParseException
+    public static AanmeldingenList fromResponse(Response response) throws ParseException, JSONException
     {
         JSONArray aanmeldingen = response.getJson().getJSONArray("Items");
 
         return new AanmeldingenList(aanmeldingen);
     }
 
-    public AanmeldingenList(JSONArray array) throws ParseException
+    public AanmeldingenList(JSONArray array) throws ParseException, JSONException
     {
         List<Aanmelding> raw = new ArrayList<>();
 

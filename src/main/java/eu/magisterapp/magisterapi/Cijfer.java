@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -35,7 +36,7 @@ public class Cijfer extends Module
     public final boolean VakDispensatie;
     public final boolean VakVrijstelling;
 
-    public Cijfer(JSONObject cijferJson, VakList vaklist) throws ParseException
+    public Cijfer(JSONObject cijferJson, VakList vaklist) throws ParseException, JSONException
     {
 
         CijferId = getNullableInt(cijferJson, "CijferId");

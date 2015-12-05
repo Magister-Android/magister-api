@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -14,12 +15,12 @@ public class CijferList implements Iterable<Cijfer>
 {
     public final List<Cijfer> cijfers;
 
-    public static CijferList fromResponse(Response response, VakList vakken) throws ParseException
+    public static CijferList fromResponse(Response response, VakList vakken) throws ParseException, JSONException
     {
         return new CijferList(response.getJson().getJSONArray("Items"), vakken);
     }
 
-    public CijferList(JSONArray cijferJson, VakList vakken) throws ParseException
+    public CijferList(JSONArray cijferJson, VakList vakken) throws ParseException, JSONException
     {
         List<Cijfer> localList = new ArrayList<>();
 

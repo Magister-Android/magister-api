@@ -3,6 +3,7 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -18,12 +19,12 @@ public class CijferPerioden implements Iterable<CijferPerioden.CijferPeriode> {
 
     private final List<CijferPeriode> cijferPerioden;
 
-    public static CijferPerioden fromResponse(Response response) throws ParseException
+    public static CijferPerioden fromResponse(Response response) throws ParseException, JSONException
     {
         return new CijferPerioden(response.getJson().getJSONArray("Items"));
     }
 
-    public CijferPerioden(JSONArray items) throws ParseException
+    public CijferPerioden(JSONArray items) throws ParseException, JSONException
     {
         List<CijferPeriode> perioden = new ArrayList<CijferPeriode>();
 

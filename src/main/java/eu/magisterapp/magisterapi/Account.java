@@ -1,8 +1,10 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 /**
@@ -24,7 +26,7 @@ public class Account extends Module
 
     protected MagisterConnection con;
 
-    public Account(MagisterConnection con, String url) throws ParseException
+    public Account(MagisterConnection con, String url) throws ParseException, IOException
     {
         this.con = con;
 
@@ -33,7 +35,7 @@ public class Account extends Module
         parseResponse(response);
     }
 
-    protected void parseResponse(Response response) throws ParseException
+    protected void parseResponse(Response response) throws ParseException, JSONException
     {
         JSONObject persoon = response.getJson().getJSONObject("Persoon");
 

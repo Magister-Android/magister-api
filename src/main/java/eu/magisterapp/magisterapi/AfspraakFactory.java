@@ -2,8 +2,10 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -12,7 +14,7 @@ import java.util.*;
  */
 public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afspraak>
 {
-    public static AfspraakCollection fetch(MagisterConnection con, LocalDate van, LocalDate tot, boolean zonderUitval, Account account) throws ParseException
+    public static AfspraakCollection fetch(MagisterConnection con, LocalDate van, LocalDate tot, boolean zonderUitval, Account account) throws ParseException, IOException, JSONException
     {
         String url = URLS.afspraken(account, van, tot, zonderUitval);
 
@@ -24,9 +26,9 @@ public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afs
 
         JSONArray raw = new JSONObject(body).getJSONArray("Items");
 
-        if (raw.length() == 0) return null;
-
         AfspraakCollection collection = new AfspraakCollection();
+
+        if (raw.length() == 0) return collection;
 
         for (int i = 0; i < raw.length(); i++)
             collection.add(new Afspraak(raw.getJSONObject(i)));

@@ -2,6 +2,7 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -62,7 +63,7 @@ public class Afspraak extends Module {
 	 * @param  afspraak       The JSONObject
 	 * @throws ParseException If parsing fails
 	 */
-	protected void parseResponse(JSONObject afspraak) throws ParseException {
+	protected void parseResponse(JSONObject afspraak) throws ParseException, JSONException {
 		Id = getNullableInt(afspraak, "Id");
 		Start = getNullableDate(afspraak, "Start");
 		Einde = getNullableDate(afspraak, "Einde");

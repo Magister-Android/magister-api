@@ -2,6 +2,7 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public class Main {
 
         }
 
-        catch(ParseException | BadResponseException e)
+        catch(ParseException | IOException e)
         {
             // asdf
         }

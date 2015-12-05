@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class VakList {
         return new VakList(response.getJsonList());
     }
 
-    public VakList(JSONArray list) throws ParseException
+    public VakList(JSONArray list) throws ParseException, JSONException
     {
         Map<Integer, Vak> vakList = new HashMap<>();
 

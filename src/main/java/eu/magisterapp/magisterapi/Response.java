@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,17 +39,25 @@ public class Response {
 
         if (headers.get("Content-Type").get(0).contains("application/json"))
         {
-            if (body.charAt(0) == '[')
+            try
             {
-                list = new JSONArray(body);
+                if (body.charAt(0) == '[')
+                {
+                    list = new JSONArray(body);
+                }
+
+                else
+                {
+                    parsed = new JSONObject(body);
+                }
+
+                isJson = true;
             }
 
-            else
+            catch (JSONException e)
             {
-                parsed = new JSONObject(body);
+                throw new RuntimeException(e);
             }
-
-            isJson = true;
         }
     }
 
