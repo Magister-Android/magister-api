@@ -65,6 +65,11 @@ public class AanmeldingenList implements Iterable<Aanmelding>
             public Aanmelding next() {
                 return aanmeldingen.get(current++);
             }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
         };
     }
 }

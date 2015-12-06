@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -26,7 +27,7 @@ public class Aanmelding extends Module
     // Omschrijvingen
     public final String GroepOmschrijving, StudieOmschrijving;
 
-    public Aanmelding(JSONObject aanmelding) throws ParseException
+    public Aanmelding(JSONObject aanmelding) throws ParseException, JSONException
     {
         // idk
         AanBronMelden = getNullableBoolean(aanmelding, "AanBronMelden");

@@ -80,6 +80,11 @@ public class CijferPerioden implements Iterable<CijferPerioden.CijferPeriode> {
             public CijferPeriode next() {
                 return get(current++);
             }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
         };
     }
 

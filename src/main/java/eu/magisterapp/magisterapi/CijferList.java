@@ -47,6 +47,11 @@ public class CijferList implements Iterable<Cijfer>
             public Cijfer next() {
                 return cijfers.get(current++);
             }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
         };
     }
 

@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.LocalDate;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class MagisterAPI {
         URLS.setSchool(school);
     }
 
-    public Boolean connect() throws IOException
+    public Boolean connect() throws IOException, JSONException
     {
         connection = new MagisterConnection(username, password);
 
@@ -57,7 +58,7 @@ public class MagisterAPI {
         return true;
     }
 
-    public Account getAccount() throws IOException, ParseException
+    public Account getAccount() throws IOException, ParseException, JSONException
     {
         return new Account(getConnection(), URLS.account());
     }
@@ -67,12 +68,12 @@ public class MagisterAPI {
         return getAfspraken(start, end, false);
     }
 
-    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws IOException, ParseException
+    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws IOException, ParseException, JSONException
     {
         return AfspraakFactory.fetch(getConnection(), start, end, geenUitval, getAccount());
     }
 
-    public AanmeldingenList getAanmeldingen(Account account) throws IOException, ParseException
+    public AanmeldingenList getAanmeldingen(Account account) throws IOException, ParseException, JSONException
     {
         String url = URLS.aanmeldingen(account);
 
@@ -81,17 +82,17 @@ public class MagisterAPI {
         return AanmeldingenList.fromResponse(response);
     }
 
-    public AanmeldingenList getAanmeldingen() throws IOException, ParseException
+    public AanmeldingenList getAanmeldingen() throws IOException, ParseException, JSONException
     {
         return getAanmeldingen(getAccount());
     }
 
-    public Aanmelding getCurrentAanmelding() throws IOException, ParseException
+    public Aanmelding getCurrentAanmelding() throws IOException, ParseException, JSONException
     {
         return getAanmeldingen().getCurrentAanmelding();
     }
 
-    public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws IOException, ParseException
+    public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws IOException, ParseException, JSONException
     {
         String url = URLS.cijferPerioden(account, aanmelding);
 
@@ -100,7 +101,7 @@ public class MagisterAPI {
         return CijferPerioden.fromResponse(response);
     }
 
-    public CijferList getCijfers(Account account, Aanmelding aanmelding, VakList vakken) throws IOException, ParseException
+    public CijferList getCijfers(Account account, Aanmelding aanmelding, VakList vakken) throws IOException, ParseException, JSONException
     {
         String url = URLS.cijfers(account, aanmelding);
 
@@ -109,12 +110,12 @@ public class MagisterAPI {
         return CijferList.fromResponse(response, vakken);
     }
 
-    public CijferList getCijfers() throws IOException, ParseException
+    public CijferList getCijfers() throws IOException, ParseException, JSONException
     {
         return getCijfers(getAccount(), getCurrentAanmelding(), getVakken());
     }
 
-    public VakList getVakken(Account account, Aanmelding aanmelding) throws IOException, ParseException
+    public VakList getVakken(Account account, Aanmelding aanmelding) throws IOException, ParseException, JSONException
     {
         String url = URLS.vakken(account, aanmelding);
 
@@ -123,7 +124,7 @@ public class MagisterAPI {
         return VakList.fromResponse(response);
     }
 
-    public VakList getVakken() throws IOException, ParseException
+    public VakList getVakken() throws IOException, ParseException, JSONException
     {
         return getVakken(getAccount(), getCurrentAanmelding());
     }
@@ -144,7 +145,7 @@ public class MagisterAPI {
         connectedAt = 0;
     }
 
-    public MagisterConnection getConnection() throws IOException
+    public MagisterConnection getConnection() throws IOException, JSONException
     {
         if (! isConnected()) connect();
 

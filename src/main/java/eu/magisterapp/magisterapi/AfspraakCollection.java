@@ -52,6 +52,11 @@ public class AfspraakCollection implements Iterable<Afspraak> {
 
                 throw new NoSuchElementException("There are no more elements left.");
             }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
         };
     }
 
@@ -88,6 +93,11 @@ public class AfspraakCollection implements Iterable<Afspraak> {
             private String getCurrentDay(int i)
             {
                 return afspraken.get(i).getDateString();
+            }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
             }
         };
     }

@@ -14,7 +14,7 @@ public class VakList {
 
     public final Map<Integer, Vak> vakken;
 
-    public static VakList fromResponse(Response response) throws ParseException
+    public static VakList fromResponse(Response response) throws ParseException, JSONException
     {
         return new VakList(response.getJsonList());
     }

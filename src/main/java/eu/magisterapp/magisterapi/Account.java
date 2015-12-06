@@ -26,7 +26,7 @@ public class Account extends Module
 
     protected MagisterConnection con;
 
-    public Account(MagisterConnection con, String url) throws ParseException, IOException
+    public Account(MagisterConnection con, String url) throws ParseException, IOException, JSONException
     {
         this.con = con;
 

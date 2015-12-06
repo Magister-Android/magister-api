@@ -53,7 +53,7 @@ public class Afspraak extends Module {
 	 * @param  afspraak       JSONObject as provided by org.json
 	 * @throws ParseException If parsing fails
 	 */
-	public Afspraak(JSONObject afspraak) throws ParseException
+	public Afspraak(JSONObject afspraak) throws ParseException, JSONException
 	{
 		parseResponse(afspraak);
 	}

@@ -6,8 +6,6 @@ import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +37,6 @@ public class MagisterConnection {
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setDoOutput(true);
         connection.setRequestMethod("DELETE");
         connection.setRequestProperty("Cookie", getCurrentCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
@@ -64,7 +61,7 @@ public class MagisterConnection {
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        byte[] data_url = convertToDataString(data).getBytes(StandardCharsets.UTF_8);
+        byte[] data_url = convertToDataString(data).getBytes("UTF-8");
 
         DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
 
@@ -127,9 +124,9 @@ public class MagisterConnection {
 
         for (Map.Entry entry : data.entrySet())
         {
-            result += URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8.name())
+            result += URLEncoder.encode(entry.getKey().toString(), "UTF-8")
                    + '='
-                   + URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8.name())
+                   + URLEncoder.encode(entry.getValue().toString(), "UTF-8")
                    + '&';
         }
 
