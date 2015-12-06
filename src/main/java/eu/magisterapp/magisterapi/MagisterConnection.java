@@ -79,7 +79,6 @@ public class MagisterConnection {
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setDoOutput(true);
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Cookie", getCurrentCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
