@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,12 +63,12 @@ public class MagisterAPI {
         return new Account(getConnection(), URLS.account());
     }
 
-    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end) throws IOException, ParseException
+    public AfspraakCollection getAfspraken(LocalDateTime start, LocalDateTime end) throws IOException, ParseException, JSONException
     {
         return getAfspraken(start, end, false);
     }
 
-    public AfspraakCollection getAfspraken(LocalDate start, LocalDate end, Boolean geenUitval) throws IOException, ParseException, JSONException
+    public AfspraakCollection getAfspraken(LocalDateTime start, LocalDateTime end, Boolean geenUitval) throws IOException, ParseException, JSONException
     {
         return AfspraakFactory.fetch(getConnection(), start, end, geenUitval, getAccount());
     }

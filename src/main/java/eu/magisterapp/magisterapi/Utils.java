@@ -1,7 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -23,9 +23,9 @@ public class Utils {
      * @return De date in een Date object
      * @throws ParseException
      */
-    public static LocalDate stringToDate(String date) throws ParseException
+    public static LocalDateTime stringToDate(String date) throws ParseException
     {
-        return LocalDate.parse(date, magisterToDateFormatter);
+        return LocalDateTime.parse(date, magisterToDateFormatter);
     }
 
     public static Float parseFloat(String kutfloat)
@@ -52,7 +52,7 @@ public class Utils {
         return df.format(date);
     }
 
-    public static String dateToString(LocalDate date)
+    public static String dateToString(LocalDateTime date)
     {
         return date.toString("yyyy-MM-dd");
     }
@@ -62,40 +62,40 @@ public class Utils {
      * @param date de datum die in die week zit
      * @return Date de maandag van die week
      */
-    public static LocalDate getStartOfWeek(String date)
+    public static LocalDateTime getStartOfWeek(String date)
     {
-        LocalDate day = new LocalDate(date);
+        LocalDateTime day = new LocalDateTime(date);
         return day.withDayOfWeek(DateTimeConstants.MONDAY);
     }
 
-    public static LocalDate getStartOfWeek()
+    public static LocalDateTime getStartOfWeek()
     {
-        return LocalDate.now().withDayOfWeek(DateTimeConstants.MONDAY);
+        return LocalDateTime.now().withDayOfWeek(DateTimeConstants.MONDAY);
     }
 
     /**
      * Geef de laatste dag (vrijdag) van een week waar een gegeven datum in valt.
      * @param date de datum
-     * @return LocalDate de vrijdag in die week
+     * @return LocalDateTime de vrijdag in die week
      */
-    public static LocalDate getEndOfWeek(String date)
+    public static LocalDateTime getEndOfWeek(String date)
     {
-        LocalDate day = new LocalDate(date);
+        LocalDateTime day = new LocalDateTime(date);
         return day.withDayOfWeek(DateTimeConstants.FRIDAY);
     }
 
-    public static LocalDate getEndOfWeek()
+    public static LocalDateTime getEndOfWeek()
     {
-        return LocalDate.now().withDayOfWeek(DateTimeConstants.FRIDAY);
+        return LocalDateTime.now().withDayOfWeek(DateTimeConstants.FRIDAY);
     }
 
-    public static LocalDate now()
+    public static LocalDateTime now()
     {
-        return LocalDate.now();
+        return LocalDateTime.now();
     }
 
-    public static LocalDate deltaDays(int days)
+    public static LocalDateTime deltaDays(int days)
     {
-        return LocalDate.now().plusDays(days);
+        return LocalDateTime.now().plusDays(days);
     }
 }

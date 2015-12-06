@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -19,8 +19,8 @@ public class Vak extends Module
     public final boolean dispensatie;
     public final Integer volgnr;
     public final String docent;
-    public final LocalDate begindatum;
-    public final LocalDate einddatum;
+    public final LocalDateTime begindatum;
+    public final LocalDateTime einddatum;
     public final boolean hogerNiveau;
 
 
@@ -34,8 +34,8 @@ public class Vak extends Module
     public final boolean Dispensatie;
     public final Integer Volgnr;
     public final String Docent;
-    public final LocalDate Begindatum;
-    public final LocalDate Einddatum;
+    public final LocalDateTime Begindatum;
+    public final LocalDateTime Einddatum;
     public final boolean HogerNiveau;
 
 

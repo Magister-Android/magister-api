@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +16,7 @@ public class Aanmelding extends Module
     public final boolean AanBronMelden;
 
     // Datums
-    public final LocalDate Start, Einde;
+    public final LocalDateTime Start, Einde;
 
     // Id's
     public final Integer Id, LeerlingId;

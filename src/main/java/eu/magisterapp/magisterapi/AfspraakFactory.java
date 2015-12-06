@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afspraak>
 {
-    public static AfspraakCollection fetch(MagisterConnection con, LocalDate van, LocalDate tot, boolean zonderUitval, Account account) throws ParseException, IOException, JSONException
+    public static AfspraakCollection fetch(MagisterConnection con, LocalDateTime van, LocalDateTime tot, boolean zonderUitval, Account account) throws ParseException, IOException, JSONException
     {
         String url = URLS.afspraken(account, van, tot, zonderUitval);
 

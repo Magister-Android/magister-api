@@ -65,7 +65,7 @@ while (it.hasNext())
 {
 	AfspraakCollection dag = it.next();
 
-	// dag is een collection met alle afspraken voor die dag. Je kan hiervan een JodaTime LocalDate instance krijgen:
+	// dag is een collection met alle afspraken voor die dag. Je kan hiervan een JodaTime LocalDateTime instance krijgen:
 
 	String weekdag = dag.getFirstDay().toString("EEEE"); // Monday, Tuesday.. etc
 

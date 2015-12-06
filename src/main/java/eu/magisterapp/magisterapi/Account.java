@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +20,7 @@ public class Account extends Module
     public String Voorletters;
     public String OfficieleTussenvoegsels;
     public String OfficieleAchternaam;
-    public LocalDate Geboortedatum;
+    public LocalDateTime Geboortedatum;
     public String GeboortenaamTussenvoegsel;
     public Boolean GebruikGeboortenaam;
 

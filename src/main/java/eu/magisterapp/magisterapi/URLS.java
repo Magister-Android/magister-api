@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 
 /**
@@ -40,7 +40,7 @@ public class URLS
         return api(leerling.Id);
     }
 
-    public static String afspraken(Integer leerling, LocalDate van, LocalDate tot, Boolean status)
+    public static String afspraken(Integer leerling, LocalDateTime van, LocalDateTime tot, Boolean status)
     {
         return api(leerling) + "/afspraken?status="
                 + (status ? "1" : "0")
@@ -48,7 +48,7 @@ public class URLS
                 + "&van=" + Utils.dateToString(van);
     }
 
-    public static String afspraken(Account leerling, LocalDate van, LocalDate tot, Boolean status)
+    public static String afspraken(Account leerling, LocalDateTime van, LocalDateTime tot, Boolean status)
     {
         return afspraken(leerling.Id, van, tot, status);
     }
