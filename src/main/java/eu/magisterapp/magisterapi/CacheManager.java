@@ -27,7 +27,7 @@ public class CacheManager<T> {
     {
         if (expiration.get(key) == null) return false;
 
-        if (expiration.get(key) > time())
+        if (expiration.get(key) < time())
         {
             expire(key);
             return false;
