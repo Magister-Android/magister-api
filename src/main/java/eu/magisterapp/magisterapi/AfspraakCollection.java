@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 import java.util.*;
 
@@ -27,7 +27,7 @@ public class AfspraakCollection implements Iterable<Afspraak> {
         afspraken.add(afspraak);
     }
 
-    public LocalDateTime getFirstDay()
+    public DateTime getFirstDay()
     {
         if (afspraken.size() == 0) return null;
 

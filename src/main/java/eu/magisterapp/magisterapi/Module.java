@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,7 +56,7 @@ public class Module {
         }
     }
 
-    protected LocalDateTime getNullableDate(JSONObject object, String key) throws ParseException
+    protected DateTime getNullableDate(JSONObject object, String key) throws ParseException
     {
         if (object.isNull(key)) return null;
 

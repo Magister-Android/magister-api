@@ -1,7 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +50,7 @@ public class CijferPerioden implements Iterable<CijferPerioden.CijferPeriode> {
         return cijferPerioden.isEmpty();
     }
 
-    public CijferPeriode getPeriodeForDate(LocalDateTime date)
+    public CijferPeriode getPeriodeForDate(DateTime date)
     {
         for (CijferPeriode periode : cijferPerioden)
         {
@@ -91,7 +91,7 @@ public class CijferPerioden implements Iterable<CijferPerioden.CijferPeriode> {
     public static class CijferPeriode extends Module
     {
         public final String Naam, Omschrijving;
-        public final LocalDateTime Start, Einde;
+        public final DateTime Start, Einde;
         public final Integer Id, VolgNummer;
 
         public CijferPeriode(JSONObject periode) throws ParseException

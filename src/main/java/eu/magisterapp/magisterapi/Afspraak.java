@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ public class Afspraak extends Module {
 	// Ik heb deze namen ook niet bedacht, dit is hoe ze in de API staan,
 	// en het leek me wel zo netjes om die te houden
 	public int Id;
-	public LocalDateTime Start, Einde;
+	public DateTime Start, Einde;
 	public Integer LesuurVan, LesuurTotMet;
 	public boolean DuurtHeleDag;
 	public String Omschrijving;
@@ -170,7 +170,7 @@ public class Afspraak extends Module {
 		}
 	}
 
-	public Boolean isOp(LocalDateTime dag)
+	public Boolean isOp(DateTime dag)
 	{
 		return testformat.format(Start).equals(testformat.format(dag))
 			|| testformat.format(Einde).equals(testformat.format(dag))
@@ -224,7 +224,7 @@ public class Afspraak extends Module {
 		return Status == 0;
 	}
 
-	public LocalDateTime getDay()
+	public DateTime getDay()
 	{
 		return Start;
 	}

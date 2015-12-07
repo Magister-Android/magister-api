@@ -1,7 +1,8 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -15,7 +16,9 @@ import java.util.Date;
  */
 public class Utils {
 
-    private final static DateTimeFormatter magisterToDateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'");
+    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateTimeFormatter magisterToDateFormatter =
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC);
 
     /**
      *
@@ -23,9 +26,9 @@ public class Utils {
      * @return De date in een Date object
      * @throws ParseException
      */
-    public static LocalDateTime stringToDate(String date) throws ParseException
+    public static DateTime stringToDate(String date) throws ParseException
     {
-        return LocalDateTime.parse(date, magisterToDateFormatter);
+        return DateTime.parse(date, magisterToDateFormatter).withZone(DateTimeZone.getDefault());
     }
 
     public static Float parseFloat(String kutfloat)
@@ -47,12 +50,12 @@ public class Utils {
      * @param date Een Date object
      * @return De date object naar een string om in een GET request te gebruiken
      */
-    public static String dateToString(Date date) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public static String dateToString(Date date)
+    {
         return df.format(date);
     }
 
-    public static String dateToString(LocalDateTime date)
+    public static String dateToString(DateTime date)
     {
         return date.toString("yyyy-MM-dd");
     }
@@ -62,40 +65,40 @@ public class Utils {
      * @param date de datum die in die week zit
      * @return Date de maandag van die week
      */
-    public static LocalDateTime getStartOfWeek(String date)
+    public static DateTime getStartOfWeek(String date)
     {
-        LocalDateTime day = new LocalDateTime(date);
+        DateTime day = new DateTime(date);
         return day.withDayOfWeek(DateTimeConstants.MONDAY);
     }
 
-    public static LocalDateTime getStartOfWeek()
+    public static DateTime getStartOfWeek()
     {
-        return LocalDateTime.now().withDayOfWeek(DateTimeConstants.MONDAY);
+        return DateTime.now().withDayOfWeek(DateTimeConstants.MONDAY);
     }
 
     /**
      * Geef de laatste dag (vrijdag) van een week waar een gegeven datum in valt.
      * @param date de datum
-     * @return LocalDateTime de vrijdag in die week
+     * @return DateTime de vrijdag in die week
      */
-    public static LocalDateTime getEndOfWeek(String date)
+    public static DateTime getEndOfWeek(String date)
     {
-        LocalDateTime day = new LocalDateTime(date);
+        DateTime day = new DateTime(date);
         return day.withDayOfWeek(DateTimeConstants.FRIDAY);
     }
 
-    public static LocalDateTime getEndOfWeek()
+    public static DateTime getEndOfWeek()
     {
-        return LocalDateTime.now().withDayOfWeek(DateTimeConstants.FRIDAY);
+        return DateTime.now().withDayOfWeek(DateTimeConstants.FRIDAY);
     }
 
-    public static LocalDateTime now()
+    public static DateTime now()
     {
-        return LocalDateTime.now();
+        return DateTime.now();
     }
 
-    public static LocalDateTime deltaDays(int days)
+    public static DateTime deltaDays(int days)
     {
-        return LocalDateTime.now().plusDays(days);
+        return DateTime.now().plusDays(days);
     }
 }

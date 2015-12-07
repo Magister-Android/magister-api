@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +18,7 @@ public class Cijfer extends Module
 
     // public final <iets> IngevoerdDoor; (is null bij mijn cjifers, misschien string (HAB), misschien docent Id)
 
-    public final LocalDateTime DatumIngevoerd;
+    public final DateTime DatumIngevoerd;
 
     public final Integer CijferPeriodeId;
     // Er staat CijferPeriode, maar die is vrij incompleet veregeleken met onze CijferPerioden instances.

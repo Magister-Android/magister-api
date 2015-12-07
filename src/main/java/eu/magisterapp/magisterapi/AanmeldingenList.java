@@ -1,6 +1,6 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -35,7 +35,7 @@ public class AanmeldingenList implements Iterable<Aanmelding>
         aanmeldingen = raw;
     }
 
-    public Aanmelding getAanmeldingForDate(LocalDateTime date)
+    public Aanmelding getAanmeldingForDate(DateTime date)
     {
         for (Aanmelding aanmelding : aanmeldingen)
         {
