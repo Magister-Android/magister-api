@@ -50,7 +50,7 @@ public class MagisterAPI {
             JSONObject json = loginResponse.getJson();
             String message = json != null ? json.getString("message") : "Ongeldige gebruikersnaam of wachtwoord";
 
-            throw new IOException(message);
+            throw new BadResponseException(message);
         }
 
         connectedAt = System.currentTimeMillis();
