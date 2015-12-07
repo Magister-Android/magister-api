@@ -19,6 +19,8 @@ public class MagisterAPI {
     protected String password;
     protected MagisterConnection connection;
 
+    protected Account account;
+
     protected long connectedAt;
 
     public static final Integer CONNECTION_TIMEOUT = 60*20*1000; // 20 minuten in ms
@@ -60,7 +62,12 @@ public class MagisterAPI {
 
     public Account getAccount() throws IOException, ParseException, JSONException
     {
-        return new Account(getConnection(), URLS.account());
+        if (account == null)
+        {
+            return account = new Account(getConnection(), URLS.account());
+        }
+
+        return account;
     }
 
     public AfspraakCollection getAfspraken(DateTime start, DateTime end) throws IOException, ParseException, JSONException
