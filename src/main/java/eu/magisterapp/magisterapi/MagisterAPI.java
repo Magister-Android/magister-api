@@ -19,45 +19,22 @@ public class MagisterAPI {
     protected String password;
     protected MagisterConnection connection;
 
+    protected Sessie mainSessie;
+    private final SessieManager sessies = new SessieManager();
+
     protected Account account;
 
     protected long connectedAt;
 
-    public static final Integer CONNECTION_TIMEOUT = 60*20*1000; // 20 minuten in ms
 
     public MagisterAPI(String school, String username, String password)
     {
-        this.school = school;
-        this.username = username;
-        this.password = password;
-
-        URLS.setSchool(school);
+        mainSessie = sessies.add(username, password, school);
     }
 
-    public Boolean connect() throws IOException, JSONException
+    public Sessie connect(String school, String username, String password)
     {
-        connection = new MagisterConnection(username, password);
-
-        connection.delete(URLS.session());
-
-        Map<String, String> data = new HashMap<>();
-
-        data.put("Gebruikersnaam", username);
-        data.put("Wachtwoord", password);
-
-        Response loginResponse = connection.post(URLS.login(), data);
-
-        if (loginResponse.isError())
-        {
-            JSONObject json = loginResponse.getJson();
-            String message = json != null ? json.getString("message") : "Ongeldige gebruikersnaam of wachtwoord";
-
-            throw new BadResponseException(message);
-        }
-
-        connectedAt = System.currentTimeMillis();
-
-        return true;
+        return sessies.add(school, username, password);
     }
 
     public Account getAccount() throws IOException, ParseException, JSONException
