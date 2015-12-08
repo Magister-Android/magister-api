@@ -26,13 +26,11 @@ public class Account extends Module
 
     protected MagisterConnection con;
 
-    public Account(MagisterConnection con, String url) throws ParseException, IOException, JSONException
+    public Account(MagisterConnection con, String url, Sessie sessie) throws ParseException, IOException, JSONException
     {
         this.con = con;
 
-        Response response = con.get(url);
-
-        System.out.println(response.body);
+        Response response = con.get(url, sessie);
 
         JSONObject persoon = response.getJson().getJSONObject("Persoon");
 

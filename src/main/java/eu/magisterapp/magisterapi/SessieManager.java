@@ -11,9 +11,9 @@ public class SessieManager {
 
     private Map<String, Sessie> sessies = new HashMap<>();
 
-    public Sessie add(String username, String password, String school)
+    public Sessie add(String school, String username, String password, MagisterConnection connection)
     {
-        Sessie sessie = new Sessie(username, password, school);
+        Sessie sessie = new Sessie(username, password, school, connection);
         sessies.put(username, sessie);
 
         return sessie;

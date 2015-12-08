@@ -27,17 +27,22 @@ public class Sessie {
     private final String password;
     private final Map<String, String> payload;
 
+    private MagisterConnection connection;
+
     private final URLS urls;
 
     private CookieManager cookies = new CookieManager();
 
     private Account account;
 
+    public final String id;
 
-    public Sessie(String gebruikersnaam, String wachtwoord, String school)
+
+    public Sessie(String gebruikersnaam, String wachtwoord, String school, MagisterConnection connection)
     {
         this.username = gebruikersnaam;
         this.password = wachtwoord;
+        this.connection = connection;
 
         urls = new URLS(school);
 
@@ -45,6 +50,8 @@ public class Sessie {
             put("Gebruikersnaam", username);
             put("Wachtwoord", password);
         }};
+
+        id = "un:" + gebruikersnaam + "sc:" + school;
     }
 
     public boolean loggedIn()
@@ -63,11 +70,11 @@ public class Sessie {
         return loggedInAt + (SESSION_TIMEOUT - 1000) < System.currentTimeMillis();
     }
 
-    private void login(MagisterConnection connection) throws IOException
+    private void login() throws IOException
     {
-        connection.delete(urls.session());
+        connection.delete(urls.session(), this);
 
-        Response response = connection.post(urls.login(), payload);
+        Response response = connection.post(urls.login(), payload, this);
 
         if (response.isError() && response.isJson())
         {
@@ -108,9 +115,9 @@ public class Sessie {
         }
     }
 
-    private void loginIfNotLoggedIn(MagisterConnection connection) throws IOException
+    private void loginIfNotLoggedIn() throws IOException
     {
-        if (! loggedIn()) login(connection);
+        if (! loggedIn()) login();
     }
 
     public String getCookies()
@@ -135,21 +142,21 @@ public class Sessie {
         cookies.getCookieStore().add(null, HttpCookie.parse(cookieString).get(0));
     }
 
-    public Account getAccount(MagisterConnection connection) throws IOException
+    public Account getAccount() throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
         if (account == null)
         {
             try
             {
-                System.out.println(urls.account());
-                return account = new Account(connection, urls.account());
+                return account = new Account(connection, urls.account(), this);
             }
 
             catch (ParseException | JSONException e)
             {
                 e.printStackTrace();
+
                 throw new BadResponseException("Fout bij het ophalen van account gegevens.");
             }
         }
@@ -160,20 +167,20 @@ public class Sessie {
         }
     }
 
-    public AfspraakCollection getAfspraken(MagisterConnection connection, DateTime van, DateTime tot) throws IOException
+    public AfspraakCollection getAfspraken(DateTime van, DateTime tot) throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
-        return getAfspraken(connection, van, tot, true);
+        return getAfspraken(van, tot, true);
     }
 
-    public AfspraakCollection getAfspraken(MagisterConnection connection, DateTime van, DateTime tot, boolean geenUitval) throws IOException
+    public AfspraakCollection getAfspraken(DateTime van, DateTime tot, boolean geenUitval) throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
         try
         {
-            return AfspraakFactory.fetch(connection, urls.afspraken(getAccount(connection), van, tot, geenUitval));
+            return AfspraakFactory.fetch(connection, this, urls.afspraken(getAccount(), van, tot, geenUitval));
         }
 
         catch (ParseException | JSONException e)
@@ -182,13 +189,13 @@ public class Sessie {
         }
     }
 
-    public AanmeldingenList getAanmeldingen(MagisterConnection connection) throws IOException
+    public AanmeldingenList getAanmeldingen() throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
-        String url = urls.aanmeldingen(getAccount(connection));
+        String url = urls.aanmeldingen(getAccount());
 
-        Response response = connection.get(url);
+        Response response = connection.get(url, this);
 
         try
         {
@@ -197,17 +204,18 @@ public class Sessie {
 
         catch (ParseException | JSONException e)
         {
+            e.printStackTrace();
             throw new BadResponseException("Fout bij het ophalen van aanmeldingen");
         }
     }
 
-    public CijferPerioden getCijferPerioden(MagisterConnection connection, Aanmelding aanmelding) throws IOException
+    public CijferPerioden getCijferPerioden(Aanmelding aanmelding) throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
-        String url = urls.cijferPerioden(getAccount(connection), aanmelding);
+        String url = urls.cijferPerioden(getAccount(), aanmelding);
 
-        Response response = connection.get(url);
+        Response response = connection.get(url, this);
 
         try
         {
@@ -221,13 +229,13 @@ public class Sessie {
 
     }
 
-    public VakList getVakken(MagisterConnection connection, Aanmelding aanmelding) throws IOException
+    public VakList getVakken(Aanmelding aanmelding) throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
-        String url = urls.vakken(getAccount(connection), aanmelding);
+        String url = urls.vakken(getAccount(), aanmelding);
 
-        Response response = connection.get(url);
+        Response response = connection.get(url, this);
 
         try
         {
@@ -241,13 +249,13 @@ public class Sessie {
     }
 
 
-    public CijferList getCijfers(MagisterConnection connection, Aanmelding aanmelding, VakList vakken) throws IOException
+    public CijferList getCijfers(Aanmelding aanmelding, VakList vakken) throws IOException
     {
-        loginIfNotLoggedIn(connection);
+        loginIfNotLoggedIn();
 
-        String url = urls.cijfers(getAccount(connection), aanmelding);
+        String url = urls.cijfers(getAccount(), aanmelding);
 
-        Response response = connection.get(url);
+        Response response = connection.get(url, this);
 
         try
         {
@@ -256,6 +264,7 @@ public class Sessie {
 
         catch (ParseException | JSONException e)
         {
+            e.printStackTrace();
             throw new BadResponseException("Fout bij het ophalen van cijfers");
         }
     }
