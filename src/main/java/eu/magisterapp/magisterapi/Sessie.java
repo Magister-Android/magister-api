@@ -1,12 +1,15 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.HttpCookie;
+import java.text.ParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +29,8 @@ public class Sessie {
     private final URLS urls;
 
     private CookieManager cookies = new CookieManager();
+
+    private Account account;
 
 
     public Sessie(String gebruikersnaam, String wachtwoord, String school)
@@ -59,7 +64,17 @@ public class Sessie {
 
     private void login(MagisterConnection connection) throws IOException
     {
-        connection.delete(urls.session());
+        Response deleteResponse = connection.delete(urls.session());
+
+        if (deleteResponse.isError())
+        {
+            throw new BadResponseException(ERROR_LOGIN);
+        }
+
+        else
+        {
+            bindCookies(deleteResponse.headers);
+        }
 
         Response response = connection.post(urls.login(), payload);
 
@@ -91,10 +106,7 @@ public class Sessie {
 
         if (response.headers.get("Set-Cookie") != null && response.headers.get("Set-Cookie").size() > 0)
         {
-            for(String cookie : response.headers.get("Set-Cookie"))
-            {
-                cookies.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
-            }
+            bindCookies(response.headers);
 
             loggedInAt = System.currentTimeMillis();
         }
@@ -105,16 +117,26 @@ public class Sessie {
         }
     }
 
-    public String getCookies(MagisterConnection connection) throws IOException
+    private void bindCookies(Map<String, List<String>> headers)
     {
-        if (cookies.getCookieStore().getCookies().size() > 0)
+        for(String cookie : headers.get("Set-Cookie"))
         {
-            login(connection);
+            cookies.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+        }
+    }
+
+    private void loginIfNotLoggedIn(MagisterConnection connection) throws IOException
+    {
+        if (! loggedIn()) login(connection);
+    }
+
+    public String getCookies()
+    {
+        if (cookies.getCookieStore().getCookies().size() == 0)
+        {
+            return "";
         }
 
-        // Als het goed is, zijn er op dit punt altijd
-        // cookies. Als het niet gelukt is om deze uit de
-        // headers te halen was er een exception ontstaan.
         StringBuilder builder = new StringBuilder();
 
         for (HttpCookie cookie : cookies.getCookieStore().getCookies())
@@ -123,6 +145,131 @@ public class Sessie {
         }
 
         return builder.toString();
+    }
+
+    public Account getAccount(MagisterConnection connection) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        if (account == null)
+        {
+            try
+            {
+                System.out.println(urls.account());
+                return account = new Account(connection, urls.account());
+            }
+
+            catch (ParseException | JSONException e)
+            {
+                e.printStackTrace();
+                throw new BadResponseException("Fout bij het ophalen van account gegevens.");
+            }
+        }
+
+        else
+        {
+            return account;
+        }
+    }
+
+    public AfspraakCollection getAfspraken(MagisterConnection connection, DateTime van, DateTime tot) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        return getAfspraken(connection, van, tot, true);
+    }
+
+    public AfspraakCollection getAfspraken(MagisterConnection connection, DateTime van, DateTime tot, boolean geenUitval) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        try
+        {
+            return AfspraakFactory.fetch(connection, urls.afspraken(getAccount(connection), van, tot, geenUitval));
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            throw new BadResponseException("Fout bij het ophalen van afspraken");
+        }
+    }
+
+    public AanmeldingenList getAanmeldingen(MagisterConnection connection) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        String url = urls.aanmeldingen(getAccount(connection));
+
+        Response response = connection.get(url);
+
+        try
+        {
+            return AanmeldingenList.fromResponse(response);
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            throw new BadResponseException("Fout bij het ophalen van aanmeldingen");
+        }
+    }
+
+    public CijferPerioden getCijferPerioden(MagisterConnection connection, Aanmelding aanmelding) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        String url = urls.cijferPerioden(getAccount(connection), aanmelding);
+
+        Response response = connection.get(url);
+
+        try
+        {
+            return CijferPerioden.fromResponse(response);
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            throw new BadResponseException("Fout bij het ophalen van de cijferperioden.");
+        }
+
+    }
+
+    public VakList getVakken(MagisterConnection connection, Aanmelding aanmelding) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        String url = urls.vakken(getAccount(connection), aanmelding);
+
+        Response response = connection.get(url);
+
+        try
+        {
+            return VakList.fromResponse(response);
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            throw new BadResponseException("Fout bij het ophalen van de vakken");
+        }
+    }
+
+
+    public CijferList getCijfers(MagisterConnection connection, Aanmelding aanmelding, VakList vakken) throws IOException
+    {
+        loginIfNotLoggedIn(connection);
+
+        String url = urls.cijfers(getAccount(connection), aanmelding);
+
+        Response response = connection.get(url);
+
+        try
+        {
+            return CijferList.fromResponse(response, vakken);
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            throw new BadResponseException("Fout bij het ophalen van cijfers");
+        }
     }
 
 }

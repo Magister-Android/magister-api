@@ -12,17 +12,17 @@ import java.text.ParseException;
  */
 public class Account extends Module
 {
-    public Integer Id;
-    public String Roepnaam;
-    public String Tussenvoegsel;
-    public String Achternaam;
-    public String OfficieleVoornaam;
-    public String Voorletters;
-    public String OfficieleTussenvoegsels;
-    public String OfficieleAchternaam;
-    public DateTime Geboortedatum;
-    public String GeboortenaamTussenvoegsel;
-    public Boolean GebruikGeboortenaam;
+    public final Integer Id;
+    public final String Roepnaam;
+    public final String Tussenvoegsel;
+    public final String Achternaam;
+    public final String OfficieleVoornaam;
+    public final String Voorletters;
+    public final String OfficieleTussenvoegsels;
+    public final String OfficieleAchternaam;
+    public final DateTime Geboortedatum;
+    public final String GeboortenaamTussenvoegsel;
+    public final Boolean GebruikGeboortenaam;
 
     protected MagisterConnection con;
 
@@ -32,11 +32,8 @@ public class Account extends Module
 
         Response response = con.get(url);
 
-        parseResponse(response);
-    }
+        System.out.println(response.body);
 
-    protected void parseResponse(Response response) throws ParseException, JSONException
-    {
         JSONObject persoon = response.getJson().getJSONObject("Persoon");
 
         Id = getNullableInt(persoon, "Id");

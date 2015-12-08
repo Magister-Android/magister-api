@@ -1,12 +1,11 @@
 package eu.magisterapp.magisterapi;
 
+import org.json.JSONObject;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
-import java.net.CookieManager;
-import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,22 +13,18 @@ import java.util.Map;
  */
 public class MagisterConnection {
 
-    protected String username;
-    protected String password;
-
     // TODO Doe dit globaal of in een class waar het logischer is
     public static String API_VERSION = "1.0.0";
 
     protected final String API_USER_AGENT = "Magister API/" + API_VERSION + " Java/" + System.getProperty("java.version");
 
-    protected CookieManager cookieJar = new CookieManager();
-
     private CacheManager<Response> cache = new CacheManager<>();
 
-    public MagisterConnection(String username, String password)
+    private Sessie session;
+
+    public void setSession(Sessie sessie)
     {
-        this.username = username;
-        this.password = password;
+        session = sessie;
     }
 
     public Response delete(String location) throws IOException
@@ -38,13 +33,13 @@ public class MagisterConnection {
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("DELETE");
-        connection.setRequestProperty("Cookie", getCurrentCookies());
+
+        String cookies;
+        if (! (cookies = getCurrentCookies()).isEmpty()) connection.setRequestProperty("Cookie", cookies);
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         connection.connect();
-
-        storeCookies(connection);
 
         return Response.fromConnection(connection);
     }
@@ -56,18 +51,20 @@ public class MagisterConnection {
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Cookie", getCurrentCookies());
+
+        String cookies;
+        if (! (cookies = getCurrentCookies()).isEmpty()) connection.setRequestProperty("Cookie", cookies);
         connection.setRequestProperty("charset", "utf-8");
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+        System.out.println(connection.toString());
 
         byte[] data_url = convertToDataString(data).getBytes("UTF-8");
 
         DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
 
         dos.write(data_url);
-
-        storeCookies(connection);
 
         return Response.fromConnection(connection);
     }
@@ -80,61 +77,46 @@ public class MagisterConnection {
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("Cookie", getCurrentCookies());
+
+        String cookies;
+        if (! (cookies = getCurrentCookies()).isEmpty()) connection.setRequestProperty("Cookie", cookies);
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
 
         connection.connect();
 
-        storeCookies(connection);
-
         return cache.put(location, Response.fromConnection(connection));
-    }
-
-    protected void storeCookies(HttpsURLConnection connection)
-    {
-        Map<String, List<String>> headers = connection.getHeaderFields();
-
-        List<String> cookies = headers.get("Set-Cookie");
-
-        if (cookies != null)
-        {
-            for (String cookie : cookies)
-            {
-                cookieJar.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
-            }
-        }
     }
 
     protected String getCurrentCookies()
     {
-        String result = "";
-
-        for (HttpCookie cookie : cookieJar.getCookieStore().getCookies())
-        {
-            result = result.concat(cookie.toString() + ';');
-        }
-
-        return result;
+        return session.getCookies();
     }
 
     protected String convertToDataString(Map<String, String> data) throws UnsupportedEncodingException
     {
         String result = "";
 
-        for (Map.Entry entry : data.entrySet())
+        for (Map.Entry<String, String> entry : data.entrySet())
         {
-            result += URLEncoder.encode(entry.getKey().toString(), "UTF-8")
+            result += URLEncoder.encode(entry.getKey(), "UTF-8")
                    + '='
-                   + URLEncoder.encode(entry.getValue().toString(), "UTF-8")
+                   + URLEncoder.encode(entry.getValue(), "UTF-8")
                    + '&';
         }
 
         return result.length() > 0 ? result.substring(0, result.length() - 1) : "";
     }
 
-    public Integer getCookieCount()
+    protected String convertToJSONString(Map<String, String> data)
     {
-        return cookieJar.getCookieStore().getCookies().size();
+        JSONObject object = new JSONObject();
+
+        for(Map.Entry<String, String> entry : data.entrySet())
+        {
+            object.put(entry.getKey(), entry.getValue());
+        }
+
+        return object.toString();
     }
 
 }

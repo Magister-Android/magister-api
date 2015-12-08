@@ -14,10 +14,8 @@ import java.util.*;
  */
 public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afspraak>
 {
-    public static AfspraakCollection fetch(MagisterConnection con, DateTime van, DateTime tot, boolean zonderUitval, Account account) throws ParseException, IOException, JSONException
+    public static AfspraakCollection fetch(MagisterConnection con, String url) throws ParseException, IOException, JSONException
     {
-        String url = URLS.afspraken(account, van, tot, zonderUitval);
-
         System.out.println(url);
 
         Response response = con.get(url);

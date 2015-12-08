@@ -12,17 +12,12 @@ import java.util.Map;
 /**
  * Created by max on 18-10-15.
  */
-public class MagisterAPI {
-
-    protected String school;
-    protected String username;
-    protected String password;
-    protected MagisterConnection connection;
+public class MagisterAPI
+{
+    protected MagisterConnection connection = new MagisterConnection();
 
     protected Sessie mainSessie;
     private final SessieManager sessies = new SessieManager();
-
-    protected Account account;
 
     protected long connectedAt;
 
@@ -37,90 +32,89 @@ public class MagisterAPI {
         return sessies.add(school, username, password);
     }
 
-    public Account getAccount() throws IOException, ParseException, JSONException
+    public Account getAccount() throws IOException
     {
-        if (account == null)
-        {
-            return account = new Account(getConnection(), URLS.account());
-        }
-
-        return account;
+        return getAccount(mainSessie);
     }
 
-    public AfspraakCollection getAfspraken(DateTime start, DateTime end) throws IOException, ParseException, JSONException
+    public Account getAccount(Sessie sessie) throws IOException
     {
-        return getAfspraken(start, end, false);
+        return sessie.getAccount(getConnection(sessie));
     }
 
-    public AfspraakCollection getAfspraken(DateTime start, DateTime end, Boolean geenUitval) throws IOException, ParseException, JSONException
+    public AfspraakCollection getAfspraken(DateTime start, DateTime end) throws IOException
     {
-        return AfspraakFactory.fetch(getConnection(), start, end, geenUitval, getAccount());
+        return getAfspraken(mainSessie, start, end, false);
     }
 
-    public AanmeldingenList getAanmeldingen(Account account) throws IOException, ParseException, JSONException
+    public AfspraakCollection getAfspraken(DateTime start, DateTime end, boolean geenUitval) throws IOException
     {
-        String url = URLS.aanmeldingen(account);
-
-        Response response = getConnection().get(url);
-
-        return AanmeldingenList.fromResponse(response);
+        return getAfspraken(mainSessie, start, end, geenUitval);
     }
 
-    public AanmeldingenList getAanmeldingen() throws IOException, ParseException, JSONException
+    public AfspraakCollection getAfspraken(Sessie sessie, DateTime start, DateTime end, boolean geenUitval) throws IOException
     {
-        return getAanmeldingen(getAccount());
+        return sessie.getAfspraken(getConnection(sessie), start, end, geenUitval);
     }
 
-    public Aanmelding getCurrentAanmelding() throws IOException, ParseException, JSONException
+    public AfspraakCollection getAfspraken(Sessie sessie, DateTime start, DateTime end) throws IOException
+    {
+        return getAfspraken(sessie, start, end, false);
+    }
+
+    public AanmeldingenList getAanmeldingen() throws IOException
+    {
+        return getAanmeldingen(mainSessie);
+    }
+
+    public AanmeldingenList getAanmeldingen(Sessie sessie) throws IOException
+    {
+        return sessie.getAanmeldingen(getConnection(sessie));
+    }
+
+    public Aanmelding getCurrentAanmelding() throws IOException
     {
         return getAanmeldingen().getCurrentAanmelding();
     }
 
-    public CijferPerioden getCijferPerioden(Account account, Aanmelding aanmelding) throws IOException, ParseException, JSONException
+    public CijferPerioden getCijferPerioden(Sessie sessie, Aanmelding aanmelding) throws IOException
     {
-        String url = URLS.cijferPerioden(account, aanmelding);
-
-        Response response = getConnection().get(url);
-
-        return CijferPerioden.fromResponse(response);
+        return sessie.getCijferPerioden(getConnection(sessie), aanmelding);
     }
 
-    public CijferList getCijfers(Account account, Aanmelding aanmelding, VakList vakken) throws IOException, ParseException, JSONException
+    public CijferPerioden getCijferPerioden(Aanmelding aanmelding) throws IOException
     {
-        String url = URLS.cijfers(account, aanmelding);
-
-        Response response = getConnection().get(url);
-
-        return CijferList.fromResponse(response, vakken);
+        return getCijferPerioden(mainSessie, aanmelding);
     }
 
-    public CijferList getCijfers() throws IOException, ParseException, JSONException
+    public CijferList getCijfers(Sessie sessie, Aanmelding aanmelding, VakList vakken) throws IOException
     {
-        return getCijfers(getAccount(), getCurrentAanmelding(), getVakken());
+        return sessie.getCijfers(getConnection(sessie), aanmelding, vakken);
     }
 
-    public VakList getVakken(Account account, Aanmelding aanmelding) throws IOException, ParseException, JSONException
+    public CijferList getCijfers(Aanmelding aanmelding, VakList vakken) throws IOException
     {
-        String url = URLS.vakken(account, aanmelding);
-
-        Response response = getConnection().get(url);
-
-        return VakList.fromResponse(response);
+        return getCijfers(mainSessie, aanmelding, vakken);
     }
 
-    public VakList getVakken() throws IOException, ParseException, JSONException
+    public CijferList getCijfers(Sessie sessie) throws IOException
     {
-        return getVakken(getAccount(), getCurrentAanmelding());
+        return getCijfers(sessie, getCurrentAanmelding(), getVakken(getCurrentAanmelding()));
     }
 
-    public Boolean isConnected()
+    public CijferList getCijfers() throws IOException
     {
-        return connection != null // er is een verbinding gemaakt
-                && connection.getCookieCount() > 0 // er is een sessie opgeslagen
-                && System.currentTimeMillis() - connectedAt > CONNECTION_TIMEOUT - 1000;
-                // Meer dan 1 sec over op de sessie.
-                // 1 sec ivm traag zernike internet, waar je geen request kan doen in minder dan 1 sec.
-                // Beetje lullig als je sessie halverwege je request verloopt.
+        return getCijfers(mainSessie);
+    }
+
+    public VakList getVakken(Sessie sessie, Aanmelding aanmelding) throws IOException
+    {
+        return sessie.getVakken(getConnection(sessie), aanmelding);
+    }
+
+    public VakList getVakken(Aanmelding aanmelding) throws IOException
+    {
+        return getVakken(mainSessie, aanmelding);
     }
 
     public void disconnect()
@@ -129,9 +123,9 @@ public class MagisterAPI {
         connectedAt = 0;
     }
 
-    public MagisterConnection getConnection() throws IOException, JSONException
+    public MagisterConnection getConnection(Sessie sessie) throws IOException, JSONException
     {
-        if (! isConnected()) connect();
+        connection.setSession(sessie);
 
         return connection;
     }
