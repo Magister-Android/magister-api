@@ -4,8 +4,10 @@ import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +43,8 @@ public class MagisterConnection {
 
         connection.connect();
 
+        storeCookies(connection);
+
         return Response.fromConnection(connection);
     }
 
@@ -66,6 +70,8 @@ public class MagisterConnection {
 
         dos.write(data_url);
 
+        storeCookies(connection);
+
         return Response.fromConnection(connection);
     }
 
@@ -84,12 +90,24 @@ public class MagisterConnection {
 
         connection.connect();
 
+        storeCookies(connection);
+
         return cache.put(location, Response.fromConnection(connection));
     }
 
     protected String getCurrentCookies()
     {
         return session.getCookies();
+    }
+
+    private void storeCookies(HttpURLConnection connection)
+    {
+        String cookies = connection.getHeaderField("Set-Cookie");
+
+        if (cookies != null)
+        {
+            session.storeCookies(cookies);
+        }
     }
 
     protected String convertToDataString(Map<String, String> data) throws UnsupportedEncodingException

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.HttpCookie;
+import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -64,17 +65,7 @@ public class Sessie {
 
     private void login(MagisterConnection connection) throws IOException
     {
-        Response deleteResponse = connection.delete(urls.session());
-
-        if (deleteResponse.isError())
-        {
-            throw new BadResponseException(ERROR_LOGIN);
-        }
-
-        else
-        {
-            bindCookies(deleteResponse.headers);
-        }
+        connection.delete(urls.session());
 
         Response response = connection.post(urls.login(), payload);
 
@@ -106,7 +97,7 @@ public class Sessie {
 
         if (response.headers.get("Set-Cookie") != null && response.headers.get("Set-Cookie").size() > 0)
         {
-            bindCookies(response.headers);
+            // Cookies worden op de sessie gezet door de connection.
 
             loggedInAt = System.currentTimeMillis();
         }
@@ -114,14 +105,6 @@ public class Sessie {
         else
         {
             throw new BadResponseException(ERROR_LOGIN);
-        }
-    }
-
-    private void bindCookies(Map<String, List<String>> headers)
-    {
-        for(String cookie : headers.get("Set-Cookie"))
-        {
-            cookies.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
         }
     }
 
@@ -145,6 +128,11 @@ public class Sessie {
         }
 
         return builder.toString();
+    }
+
+    public void storeCookies(String cookieString)
+    {
+        cookies.getCookieStore().add(null, HttpCookie.parse(cookieString).get(0));
     }
 
     public Account getAccount(MagisterConnection connection) throws IOException
