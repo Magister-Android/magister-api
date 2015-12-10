@@ -14,11 +14,9 @@ import java.util.*;
  */
 public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afspraak>
 {
-    public static AfspraakCollection fetch(MagisterConnection con, String url) throws ParseException, IOException, JSONException
+    public static AfspraakCollection fetch(MagisterConnection con, Sessie sessie, String url) throws ParseException, IOException, JSONException
     {
-        System.out.println(url);
-
-        Response response = con.get(url);
+        Response response = con.get(url, sessie);
 
         String body = response.getBody();
 

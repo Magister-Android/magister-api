@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,49 +19,37 @@ public class MagisterConnection {
 
     protected final String API_USER_AGENT = "Magister API/" + API_VERSION + " Java/" + System.getProperty("java.version");
 
-    private CacheManager<Response> cache = new CacheManager<>();
+    // private CacheManager<Response> cache = new CacheManager<>();
 
-    private Sessie session;
-
-    public void setSession(Sessie sessie)
-    {
-        session = sessie;
-    }
-
-    public Response delete(String location) throws IOException
+    public Response delete(String location, Sessie sessie) throws IOException
     {
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("DELETE");
-
-        String cookies;
-        if (! (cookies = getCurrentCookies()).isEmpty()) connection.setRequestProperty("Cookie", cookies);
+        connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         connection.connect();
 
-        storeCookies(connection);
+        storeCookies(connection, sessie);
 
         return Response.fromConnection(connection);
     }
 
-    public Response post(String location, Map<String, String> data) throws IOException
+    public Response post(String location, Map<String, String> data, Sessie sessie) throws IOException
     {
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");
-
-        String cookies;
-        if (! (cookies = getCurrentCookies()).isEmpty()) connection.setRequestProperty("Cookie", cookies);
+        connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("charset", "utf-8");
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        System.out.println(connection.toString());
 
         byte[] data_url = convertToDataString(data).getBytes("UTF-8");
 
@@ -70,44 +57,25 @@ public class MagisterConnection {
 
         dos.write(data_url);
 
-        storeCookies(connection);
+        storeCookies(connection, sessie);
 
         return Response.fromConnection(connection);
     }
 
-    public Response get(String location) throws IOException
+    public Response get(String location, Sessie sessie) throws IOException
     {
-        if (cache.has(location)) return cache.get(location);
-
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-
-        String cookies;
-        if (! (cookies = getCurrentCookies()).isEmpty()) connection.setRequestProperty("Cookie", cookies);
+        connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
 
         connection.connect();
 
-        storeCookies(connection);
+        storeCookies(connection, sessie);
 
-        return cache.put(location, Response.fromConnection(connection));
-    }
-
-    protected String getCurrentCookies()
-    {
-        return session.getCookies();
-    }
-
-    private void storeCookies(HttpURLConnection connection)
-    {
-        String cookies = connection.getHeaderField("Set-Cookie");
-
-        if (cookies != null)
-        {
-            session.storeCookies(cookies);
-        }
+        return Response.fromConnection(connection);
     }
 
     protected String convertToDataString(Map<String, String> data) throws UnsupportedEncodingException
@@ -135,6 +103,14 @@ public class MagisterConnection {
         }
 
         return object.toString();
+    }
+
+    private void storeCookies(HttpURLConnection connection, Sessie sessie)
+    {
+        if (connection.getHeaderField("Set-Cookie") != null)
+        {
+            sessie.storeCookies(connection.getHeaderField("Set-Cookie"));
+        }
     }
 
 }

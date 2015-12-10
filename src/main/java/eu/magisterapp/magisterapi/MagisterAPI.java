@@ -24,12 +24,17 @@ public class MagisterAPI
 
     public MagisterAPI(String school, String username, String password)
     {
-        mainSessie = sessies.add(username, password, school);
+        mainSessie = sessies.add(school, username, password, connection);
+    }
+
+    public Sessie getMainSessie()
+    {
+        return mainSessie;
     }
 
     public Sessie connect(String school, String username, String password)
     {
-        return sessies.add(school, username, password);
+        return sessies.add(school, username, password, connection);
     }
 
     public Account getAccount() throws IOException
@@ -39,7 +44,7 @@ public class MagisterAPI
 
     public Account getAccount(Sessie sessie) throws IOException
     {
-        return sessie.getAccount(getConnection(sessie));
+        return sessie.getAccount();
     }
 
     public AfspraakCollection getAfspraken(DateTime start, DateTime end) throws IOException
@@ -54,7 +59,7 @@ public class MagisterAPI
 
     public AfspraakCollection getAfspraken(Sessie sessie, DateTime start, DateTime end, boolean geenUitval) throws IOException
     {
-        return sessie.getAfspraken(getConnection(sessie), start, end, geenUitval);
+        return sessie.getAfspraken(start, end, geenUitval);
     }
 
     public AfspraakCollection getAfspraken(Sessie sessie, DateTime start, DateTime end) throws IOException
@@ -69,7 +74,7 @@ public class MagisterAPI
 
     public AanmeldingenList getAanmeldingen(Sessie sessie) throws IOException
     {
-        return sessie.getAanmeldingen(getConnection(sessie));
+        return sessie.getAanmeldingen();
     }
 
     public Aanmelding getCurrentAanmelding() throws IOException
@@ -77,9 +82,14 @@ public class MagisterAPI
         return getAanmeldingen().getCurrentAanmelding();
     }
 
+    public Aanmelding getCurrentAanmelding(Sessie sessie) throws IOException
+    {
+        return getAanmeldingen(sessie).getCurrentAanmelding();
+    }
+
     public CijferPerioden getCijferPerioden(Sessie sessie, Aanmelding aanmelding) throws IOException
     {
-        return sessie.getCijferPerioden(getConnection(sessie), aanmelding);
+        return sessie.getCijferPerioden(aanmelding);
     }
 
     public CijferPerioden getCijferPerioden(Aanmelding aanmelding) throws IOException
@@ -89,7 +99,7 @@ public class MagisterAPI
 
     public CijferList getCijfers(Sessie sessie, Aanmelding aanmelding, VakList vakken) throws IOException
     {
-        return sessie.getCijfers(getConnection(sessie), aanmelding, vakken);
+        return sessie.getCijfers(aanmelding, vakken);
     }
 
     public CijferList getCijfers(Aanmelding aanmelding, VakList vakken) throws IOException
@@ -99,7 +109,7 @@ public class MagisterAPI
 
     public CijferList getCijfers(Sessie sessie) throws IOException
     {
-        return getCijfers(sessie, getCurrentAanmelding(), getVakken(getCurrentAanmelding()));
+        return getCijfers(sessie, getCurrentAanmelding(sessie), getVakken(sessie, getCurrentAanmelding(sessie)));
     }
 
     public CijferList getCijfers() throws IOException
@@ -109,7 +119,7 @@ public class MagisterAPI
 
     public VakList getVakken(Sessie sessie, Aanmelding aanmelding) throws IOException
     {
-        return sessie.getVakken(getConnection(sessie), aanmelding);
+        return sessie.getVakken(aanmelding);
     }
 
     public VakList getVakken(Aanmelding aanmelding) throws IOException
@@ -119,15 +129,7 @@ public class MagisterAPI
 
     public void disconnect()
     {
-        connection = null;
-        connectedAt = 0;
-    }
-
-    public MagisterConnection getConnection(Sessie sessie) throws IOException, JSONException
-    {
-        connection.setSession(sessie);
-
-        return connection;
+        sessies.logOutAll();
     }
 
 }

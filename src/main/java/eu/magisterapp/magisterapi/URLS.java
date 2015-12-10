@@ -14,7 +14,7 @@ public class URLS
 
     public URLS(String school)
     {
-        System.out.println(school);
+
         base = String.format(BASE_PATTERN, school);
     }
 
