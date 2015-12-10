@@ -78,12 +78,12 @@ public class URLS
 
     public String cijfers(Integer leerling, Integer jaarlaag)
     {
-        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding", jaarlaag);
+        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding?actievePerioden=false", jaarlaag);
     }
 
     public String cijfers(Account leerling, Integer jaarlaag)
     {
-        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding", jaarlaag);
+        return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding?actievePerioden=false", jaarlaag);
     }
 
     public String cijfers(Account leerling, Aanmelding jaarlaag)

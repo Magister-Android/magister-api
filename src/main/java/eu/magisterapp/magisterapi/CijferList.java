@@ -26,6 +26,9 @@ public class CijferList implements Iterable<Cijfer>
 
         for (int i = 0; i < cijferJson.length(); i++) {
             Cijfer cijfer = new Cijfer(cijferJson.getJSONObject(i), vakken);
+
+            if (cijfer.CijferStr == null) continue; // motherfucking schoolmaster NullPointerveroorzakende teringleiers
+
             localList.add(cijfer);
         }
 
