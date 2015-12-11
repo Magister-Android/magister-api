@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,6 +64,21 @@ public class Module {
         try
         {
             return Utils.stringToDate(object.getString(key));
+        }
+
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected LocalDate getNullableLocalDate(JSONObject object, String key) throws ParseException
+    {
+        if (object.isNull(key)) return null;
+
+        try
+        {
+            return LocalDate.parse(object.getString(key), Utils.geboorteDatumFormatter);
         }
 
         catch (JSONException e)

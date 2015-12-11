@@ -1,6 +1,7 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ public class Account extends Module
     public final String Voorletters;
     public final String OfficieleTussenvoegsels;
     public final String OfficieleAchternaam;
-    public final DateTime Geboortedatum;
+    public final LocalDate Geboortedatum;
     public final String GeboortenaamTussenvoegsel;
     public final Boolean GebruikGeboortenaam;
 
@@ -42,7 +43,7 @@ public class Account extends Module
         Voorletters = getNullableString(persoon, "Voorletters");
         OfficieleTussenvoegsels = getNullableString(persoon, "OfficieleTussenvoegsels");
         OfficieleAchternaam = getNullableString(persoon, "OfficieleAchternaam");
-        Geboortedatum = getNullableDate(persoon, "Geboortedatum");
+        Geboortedatum = getNullableLocalDate(persoon, "Geboortedatum");
         GeboortenaamTussenvoegsel = getNullableString(persoon, "GeboortenaamTussenvoegsel");
         GebruikGeboortenaam = getNullableBoolean(persoon, "GebruikGeboortenaam");
     }

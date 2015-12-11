@@ -16,9 +16,11 @@ import java.util.Date;
  */
 public class Utils {
 
-    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private static final DateTimeFormatter magisterToDateFormatter =
+    public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateTimeFormatter magisterToDateFormatter =
             DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC);
+
+    public static final DateTimeFormatter geboorteDatumFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     /**
      *
