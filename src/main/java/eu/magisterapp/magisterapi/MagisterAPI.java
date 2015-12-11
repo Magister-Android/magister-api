@@ -3,11 +3,15 @@ package eu.magisterapp.magisterapi;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
+
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by max on 18-10-15.
@@ -22,16 +26,33 @@ public class MagisterAPI
     protected long connectedAt;
 
 
+    /**
+     * Constructor
+     * @param  school   De naam van je school als in de url
+     * @param  username Je username
+     * @param  password Je password
+     */
     public MagisterAPI(String school, String username, String password)
     {
         mainSessie = sessies.add(school, username, password, connection);
     }
 
+    /**
+     * Krijg de main sessie
+     * @return De main sessie
+     */
     public Sessie getMainSessie()
     {
         return mainSessie;
     }
 
+    /**
+     * Verbind met een school
+     * @param  school   De naam van je school, als in de url
+     * @param  username Je username
+     * @param  password Je password
+     * @return          Een ingeloggde sessie
+     */
     public Sessie connect(String school, String username, String password)
     {
         return sessies.add(school, username, password, connection);
@@ -132,4 +153,28 @@ public class MagisterAPI
         sessies.logOutAll();
     }
 
+
+    /**
+     * Zoek naar scholen
+     * @param  filter      De filter, moet meer dan 3 chars zijn
+     * @return             Een list met volledige schoolnamen, bijvoorbeeld "Zernike College"
+     * @throws IOException Als de anonymousGet faalt
+     */
+    public static List<String> zoekSchool(String filter) throws IOException
+    {
+        JSONArray response;
+        List<String> scholen;
+
+        scholen = new ArrayList<String>();
+
+        if(filter.length() < 3)
+            return new ArrayList<String>();
+
+        response = MagisterConnection.anonymousGet("https://mijn.magister.net/api/schools?filter=" + filter).getJsonList();
+
+        for(int i = 0; i < response.length(); i++)
+            scholen.add(response.getJSONObject(i).getString("Name"));
+
+        return scholen;
+    }
 }
