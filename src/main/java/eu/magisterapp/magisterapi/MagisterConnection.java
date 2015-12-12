@@ -17,7 +17,7 @@ public class MagisterConnection {
     // TODO Doe dit globaal of in een class waar het logischer is
     public static String API_VERSION = "1.0.0";
 
-    protected final String API_USER_AGENT = "Magister API/" + API_VERSION + " Java/" + System.getProperty("java.version");
+    protected static final String API_USER_AGENT = "Magister API/" + API_VERSION + " Java/" + System.getProperty("java.version");
 
     // private CacheManager<Response> cache = new CacheManager<>();
 
@@ -58,6 +58,19 @@ public class MagisterConnection {
         dos.write(data_url);
 
         storeCookies(connection, sessie);
+
+        return Response.fromConnection(connection);
+    }
+
+    public static Response anonymousGet(String location) throws IOException
+    {
+        URL url = new URL(location);
+
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("User-Agent", API_USER_AGENT);
+
+        connection.connect();
 
         return Response.fromConnection(connection);
     }
