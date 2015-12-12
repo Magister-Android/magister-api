@@ -40,7 +40,7 @@ public class Afspraak extends Module {
 	public int OpdrachtId;
 	public boolean HeeftBijlagen;
 
-	protected SimpleDateFormat testformat = new SimpleDateFormat("yyyy-MM-dd");
+	protected static SimpleDateFormat testformat = new SimpleDateFormat("yyyy-MM-dd");
 
 	// 6 is wss vakantie en volgens mata is 1 huiswerk, 3 tentamen, 4 schriftelijk en 13 is denk ik les
 	// TODO Maak hier een mooie enum van

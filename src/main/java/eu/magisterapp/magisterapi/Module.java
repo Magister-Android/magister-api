@@ -5,12 +5,13 @@ import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 
 /**
  * Created by max on 21-10-15.
  */
-public class Module {
+public class Module implements Serializable {
 
     protected String getNullableString(JSONObject object, String key)
     {

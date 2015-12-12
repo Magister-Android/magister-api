@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class CijferList implements Iterable<Cijfer>
 {
-    public final List<Cijfer> cijfers;
+    public List<Cijfer> cijfers;
 
     public static CijferList fromResponse(Response response, VakList vakken) throws ParseException, JSONException
     {
@@ -22,17 +22,15 @@ public class CijferList implements Iterable<Cijfer>
 
     public CijferList(JSONArray cijferJson, VakList vakken) throws ParseException, JSONException
     {
-        List<Cijfer> localList = new ArrayList<>();
+        cijfers = new ArrayList<>();
 
         for (int i = 0; i < cijferJson.length(); i++) {
             Cijfer cijfer = new Cijfer(cijferJson.getJSONObject(i), vakken);
 
-            if (cijfer.CijferStr == null) continue; // motherfucking schoolmaster NullPointerveroorzakende teringleiers
+            if (cijfer.CijferStr == null) continue; // skip bullshitcijfers
 
-            localList.add(cijfer);
+            cijfers.add(cijfer);
         }
-
-         cijfers = localList;
     }
 
     public Iterator<Cijfer> iterator()

@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 
 /**
@@ -60,7 +61,7 @@ public class Cijfer extends Module
         VakVrijstelling = getNullableBoolean(cijferJson, "VakVrijstelling");
     }
 
-    public class CijferKolom
+    public class CijferKolom implements Serializable
     {
         public final Integer Id;
         public final String KolomNaam;

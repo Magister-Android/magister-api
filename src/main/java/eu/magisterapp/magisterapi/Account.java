@@ -1,6 +1,5 @@
 package eu.magisterapp.magisterapi;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,12 +24,8 @@ public class Account extends Module
     public final String GeboortenaamTussenvoegsel;
     public final Boolean GebruikGeboortenaam;
 
-    protected MagisterConnection con;
-
     public Account(MagisterConnection con, String url, Sessie sessie) throws ParseException, IOException, JSONException
     {
-        this.con = con;
-
         Response response = con.get(url, sessie);
 
         JSONObject persoon = response.getJson().getJSONObject("Persoon");
