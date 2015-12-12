@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class Afspraak extends Module {
 	 * Subclass Vak
 	 * to store the subject and its id
 	 */
-	public class Vak
+	public class Vak implements Serializable
 	{
 		public Integer Id;
 		public String Naam;
@@ -124,7 +125,7 @@ public class Afspraak extends Module {
 	/**
 	 * Subclass Docent
 	 */
-	public class Docent
+	public class Docent implements Serializable
 	{
 		public Integer Id;
 		public String Naam;
@@ -155,7 +156,7 @@ public class Afspraak extends Module {
 	/**
 	 * Subclass Lokaal
 	 */
-	public class Lokaal
+	public class Lokaal implements Serializable
 	{
 		public String Naam;
 
