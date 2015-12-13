@@ -58,6 +58,21 @@ public class MagisterAPI
         return sessies.add(school, username, password, connection);
     }
 
+    /**
+     * Verandert de main sessie in een nieuwe (handig voor als iemand zn gegevens update)
+     *
+     * @param school    De naam van je school, als in de url
+     * @param username  Je username
+     * @param password  Je password
+     * @return          Een ingeloggde sessie
+     */
+    public Sessie reconnect(String school, String username, String password)
+    {
+        sessies.kill(mainSessie.id);
+
+        return mainSessie = connect(school, username, password);
+    }
+
     public Account getAccount() throws IOException
     {
         return getAccount(mainSessie);

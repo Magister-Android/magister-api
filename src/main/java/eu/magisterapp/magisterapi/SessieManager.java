@@ -14,7 +14,7 @@ public class SessieManager {
     public Sessie add(String school, String username, String password, MagisterConnection connection)
     {
         Sessie sessie = new Sessie(username, password, school, connection);
-        sessies.put(username, sessie);
+        sessies.put(sessie.id, sessie);
 
         return sessie;
     }
@@ -25,6 +25,11 @@ public class SessieManager {
             return sessies.get(username);
 
         throw new NoSuchElementException("That username isn't logged in.");
+    }
+
+    public void kill(String id)
+    {
+        sessies.remove(id);
     }
 
     public void logOutAll()
