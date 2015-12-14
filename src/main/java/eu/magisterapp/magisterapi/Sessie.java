@@ -70,8 +70,10 @@ public class Sessie {
         return loggedInAt + (SESSION_TIMEOUT - 1000) < System.currentTimeMillis();
     }
 
-    private void login() throws IOException
+    public void login() throws IOException
     {
+        cookies.getCookieStore().removeAll();
+
         connection.delete(urls.session(), this);
 
         Response response = connection.post(urls.login(), payload, this);
