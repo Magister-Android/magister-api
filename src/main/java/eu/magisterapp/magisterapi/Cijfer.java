@@ -111,4 +111,11 @@ public class Cijfer extends Module implements Displayable
     public String getTime() {
         return DatumIngevoerd.toString("yyyy-MM-dd");
     }
+
+    @Override
+    public Type getType() {
+        if (! IsVoldoende) return Type.NOTICE;
+
+        return Type.NORMAL;
+    }
 }

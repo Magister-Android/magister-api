@@ -252,4 +252,10 @@ public class Afspraak extends Module implements Displayable {
 	public String getTime() {
 		return Start.toString("HH:mm") + " - " + Einde.toString("HH:mm");
 	}
+
+	@Override
+	public Displayable.Type getType() {
+		// TODO: test voor uitval, en return NOTICE oid
+		return Displayable.Type.NORMAL;
+	}
 }

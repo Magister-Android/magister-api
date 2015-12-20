@@ -3,7 +3,15 @@ package eu.magisterapp.magisterapi;
 /**
  * Created by max on 20-12-15.
  */
-interface Displayable {
+public interface Displayable {
+
+    public static enum Type
+    {
+        NORMAL, // geen speciale opmaak
+        INVALID, // rode tekst met streep er doorheen
+        NOTICE, // rode tekst
+        WARNING // rode achtergrond
+    }
 
     public String getVak();
 
@@ -13,4 +21,5 @@ interface Displayable {
 
     public String getTime();
 
+    public Type getType();
 }
