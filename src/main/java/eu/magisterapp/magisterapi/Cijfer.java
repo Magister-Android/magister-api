@@ -10,7 +10,7 @@ import java.text.ParseException;
 /**
  * Created by max on 2-12-15.
  */
-public class Cijfer extends Module
+public class Cijfer extends Module implements Displayable
 {
 
     public final Integer CijferId;
@@ -92,4 +92,23 @@ public class Cijfer extends Module
 
     }
 
+    @Override
+    public String getVak() {
+        return Vak.Omschrijving;
+    }
+
+    @Override
+    public String getTitle() {
+        return CijferStr;
+    }
+
+    @Override
+    public String getDocent() {
+        return Docent;
+    }
+
+    @Override
+    public String getTime() {
+        return DatumIngevoerd.toString("yyyy-MM-dd");
+    }
 }

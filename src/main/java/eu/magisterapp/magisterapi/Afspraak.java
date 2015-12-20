@@ -15,7 +15,7 @@ import java.util.List;
  * @author Sibren Talens <me@sibrentalens.com>
  * Krijg een instance van deze class door MagisterAPI.getAfspraken();
  */
-public class Afspraak extends Module {
+public class Afspraak extends Module implements Displayable {
 	// Ik heb deze namen ook niet bedacht, dit is hoe ze in de API staan,
 	// en het leek me wel zo netjes om die te houden
 	public int Id;
@@ -83,13 +83,7 @@ public class Afspraak extends Module {
 		HeeftBijlagen = getNullableBoolean(afspraak, "HeeftBijlagen");
 		Type = getNullableInt(afspraak, "Type");
 
-		// JSONArray.forEach werkt niet - je krijgt dan instances van Object ipv JSONObject. ripperino..
-		// dan maar for loops lol
-
 		JSONArray vakArray = afspraak.getJSONArray("Vakken");
-
-
-
 
 		for (Integer i = 0; i < vakArray.length(); i++) {
 			Vakken.add(new Vak(vakArray.getJSONObject(i)));
@@ -163,7 +157,6 @@ public class Afspraak extends Module {
 		/**
 		 * [Lokaal description]
 		 * @param  lokaal [description]
-		 * @return        [description]
 		 */
 		public Lokaal(JSONObject lokaal)
 		{
@@ -238,5 +231,25 @@ public class Afspraak extends Module {
 	public Integer getDayConstant()
 	{
 		return getDay().dayOfWeek().get();
+	}
+
+	@Override
+	public String getVak() {
+		return getVakken();
+	}
+
+	@Override
+	public String getTitle() {
+		return getLokalen();
+	}
+
+	@Override
+	public String getDocent() {
+		return getDocenten();
+	}
+
+	@Override
+	public String getTime() {
+		return Start.toString("HH:mm") + " - " + Einde.toString("HH:mm");
 	}
 }

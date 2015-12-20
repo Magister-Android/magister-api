@@ -8,56 +8,20 @@ import java.util.*;
 /**
  * Created by max on 24-11-15.
  */
-public class AfspraakCollection implements Iterable<Afspraak> {
+public class AfspraakCollection extends ArrayList<Afspraak> {
 
-    public List<Afspraak> afspraken;
-
-    public AfspraakCollection()
-    {
-        this.afspraken = new ArrayList<Afspraak>();
-    }
+    public AfspraakCollection() {}
 
     public AfspraakCollection(List<Afspraak> afspraken)
     {
-        this.afspraken = afspraken;
-    }
-
-    public void add(Afspraak afspraak)
-    {
-        afspraken.add(afspraak);
+        this.addAll(afspraken);
     }
 
     public DateTime getFirstDay()
     {
-        if (afspraken.size() == 0) return null;
+        if (this.size() == 0) return null;
 
-        return afspraken.get(0).getDay();
-    }
-
-    public Iterator<Afspraak> iterator() {
-        return new Iterator<Afspraak>() {
-
-            int current = 0;
-
-            @Override
-            public boolean hasNext() {
-                return current < afspraken.size();
-            }
-
-            @Override
-            public Afspraak next() {
-                if (hasNext()) {
-                    return afspraken.get(current++);
-                }
-
-                throw new NoSuchElementException("There are no more elements left.");
-            }
-
-            public void remove()
-            {
-                throw new UnsupportedOperationException();
-            }
-        };
+        return this.get(0).getDay();
     }
 
     public Iterator<AfspraakCollection> dayIterator()
@@ -65,12 +29,12 @@ public class AfspraakCollection implements Iterable<Afspraak> {
         return new Iterator<AfspraakCollection>() {
 
             int current = 0; // eerste element
-            String currDay = hasNext() ? afspraken.get(current).getDateString() : ""; // eerste dag
+            String currDay = hasNext() ? get(current).getDateString() : ""; // eerste dag
 
 
             @Override
             public boolean hasNext() {
-                return current < afspraken.size();
+                return current < size();
             }
 
             @Override
@@ -84,7 +48,7 @@ public class AfspraakCollection implements Iterable<Afspraak> {
                 {
                     if (!Objects.equals(currDay, currDay = getCurrentDay(current))) break;
 
-                    collection.add(afspraken.get(current++));
+                    collection.add(get(current++));
                 }
 
                 return collection;
@@ -92,7 +56,7 @@ public class AfspraakCollection implements Iterable<Afspraak> {
 
             private String getCurrentDay(int i)
             {
-                return afspraken.get(i).getDateString();
+                return get(i).getDateString();
             }
 
             public void remove()
@@ -101,6 +65,4 @@ public class AfspraakCollection implements Iterable<Afspraak> {
             }
         };
     }
-
-
 }
