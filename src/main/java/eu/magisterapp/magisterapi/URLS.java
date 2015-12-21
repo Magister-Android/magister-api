@@ -100,4 +100,9 @@ public class URLS
     {
         return api(account) + String.format("/aanmeldingen/%d/vakken", jaarlaag.Id);
     }
+
+    public String recentCijfers(Account account, Aanmelding jaarlaag)
+    {
+        return api(account) + String.format("/aanmeldingen/%d/cijfers", jaarlaag.Id);
+    }
 }

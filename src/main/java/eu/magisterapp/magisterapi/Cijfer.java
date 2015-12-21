@@ -15,7 +15,7 @@ public class Cijfer extends Module implements Displayable
 
     public final Integer CijferId;
     public final String CijferStr;
-    public final boolean IsVoldoende;
+    public final Boolean IsVoldoende;
 
     // public final <iets> IngevoerdDoor; (is null bij mijn cjifers, misschien string (HAB), misschien docent Id)
 
@@ -26,23 +26,26 @@ public class Cijfer extends Module implements Displayable
     // TODO: maak hier een instance van CijferPerioden.CijferPeriode
 
     public final Vak Vak;
-    public final boolean Inhalen;
-    public final boolean Vrijstelling;
-    public final boolean TeltMee;
+    public final Boolean Inhalen;
+    public final Boolean Vrijstelling;
+    public final Boolean TeltMee;
 
     public final CijferKolom CijferKolom;
     public final Integer CijferKolomIdEloOpdracht;
     public final String Docent;
     public final String Docentcode; // hetzelfde als docent, maar dan voor consitency met Afspraak.Docent
-    public final boolean VakDispensatie;
-    public final boolean VakVrijstelling;
+    public final Boolean VakDispensatie;
+    public final Boolean VakVrijstelling;
 
     public Cijfer(JSONObject cijferJson, VakList vaklist) throws ParseException, JSONException
     {
 
         CijferId = getNullableInt(cijferJson, "CijferId");
         CijferStr = getNullableString(cijferJson, "CijferStr");
-        IsVoldoende = getNullableBoolean(cijferJson, "IsVoldoende");
+        IsVoldoende = getNullableBoolean(cijferJson, "IsVoldoende") != null
+                ? getNullableBoolean(cijferJson, "IsVoldoende")
+                : getNullableBoolean(cijferJson, "IsCijferVoldoende");
+
         DatumIngevoerd = getNullableDate(cijferJson, "DatumIngevoerd");
         CijferPeriodeId = getNullableInt(cijferJson, "CijferPeriodeId");
 
@@ -53,7 +56,10 @@ public class Cijfer extends Module implements Displayable
         Vrijstelling = getNullableBoolean(cijferJson, "Vrijstelling");
         TeltMee = getNullableBoolean(cijferJson, "TeltMee");
 
-        CijferKolom = new CijferKolom(cijferJson.getJSONObject("CijferKolom"));
+        if (! cijferJson.isNull("CijferKolom"))
+            CijferKolom = new CijferKolom(cijferJson.getJSONObject("CijferKolom"));
+        else
+            CijferKolom = null;
 
         CijferKolomIdEloOpdracht = getNullableInt(cijferJson, "CijferKolomIdEloOpdracht");
         Docent = Docentcode = getNullableString(cijferJson, "Docent");
@@ -104,7 +110,7 @@ public class Cijfer extends Module implements Displayable
 
     @Override
     public String getDocent() {
-        return Docent;
+        return Docent != null ? Docent : Vak.Docent;
     }
 
     @Override

@@ -153,6 +153,18 @@ public class MagisterAPI
         return getCijfers(mainSessie);
     }
 
+    public CijferList getRecentCijfers(Sessie sessie) throws IOException
+    {
+        Aanmelding aanmelding = sessie.getAanmeldingen().getCurrentAanmelding();
+
+        return sessie.getRecentCijfers(aanmelding, sessie.getVakken(aanmelding));
+    }
+
+    public CijferList getRecentCijfers() throws IOException
+    {
+        return getRecentCijfers(mainSessie);
+    }
+
     public VakList getVakken(Sessie sessie, Aanmelding aanmelding) throws IOException
     {
         return sessie.getVakken(aanmelding);

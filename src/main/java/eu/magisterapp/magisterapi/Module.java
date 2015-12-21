@@ -24,7 +24,7 @@ public class Module implements Serializable {
 
         catch (JSONException e)
         {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -39,7 +39,7 @@ public class Module implements Serializable {
 
         catch (JSONException e)
         {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -54,7 +54,7 @@ public class Module implements Serializable {
 
         catch (JSONException e)
         {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -69,7 +69,7 @@ public class Module implements Serializable {
 
         catch (JSONException e)
         {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -84,7 +84,7 @@ public class Module implements Serializable {
 
         catch (JSONException e)
         {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

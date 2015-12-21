@@ -271,4 +271,24 @@ public class Sessie {
         }
     }
 
+    public CijferList getRecentCijfers(Aanmelding aanmelding, VakList vakken) throws IOException
+    {
+        loginIfNotLoggedIn();
+
+        String url = urls.recentCijfers(getAccount(), aanmelding);
+
+        Response response = connection.get(url, this);
+
+        try
+        {
+            return CijferList.fromResponse(response, vakken);
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            e.printStackTrace();
+            throw new BadResponseException("Fout bij het ophalen van recente cijfers.");
+        }
+    }
+
 }
