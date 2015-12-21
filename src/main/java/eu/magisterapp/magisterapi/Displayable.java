@@ -1,5 +1,7 @@
 package eu.magisterapp.magisterapi;
 
+import org.joda.time.DateTime;
+
 /**
  * Created by max on 20-12-15.
  */
@@ -20,6 +22,8 @@ public interface Displayable {
     public String getDocent();
 
     public String getTime();
+
+    public DateTime getTimeInstance();
 
     public Type getType();
 }

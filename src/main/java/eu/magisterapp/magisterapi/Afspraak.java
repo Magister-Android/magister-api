@@ -258,4 +258,9 @@ public class Afspraak extends Module implements Displayable {
 		// TODO: test voor uitval, en return NOTICE oid
 		return Displayable.Type.NORMAL;
 	}
+
+	@Override
+	public DateTime getTimeInstance() {
+		return Start;
+	}
 }

@@ -118,4 +118,9 @@ public class Cijfer extends Module implements Displayable
 
         return Type.NORMAL;
     }
+
+    @Override
+    public DateTime getTimeInstance() {
+        return DatumIngevoerd;
+    }
 }
