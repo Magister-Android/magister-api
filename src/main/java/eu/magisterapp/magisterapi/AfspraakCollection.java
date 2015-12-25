@@ -46,7 +46,7 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
 
                 while (hasNext())
                 {
-                    if (!Objects.equals(currDay, currDay = getCurrentDay(current))) break;
+                    if (! currDay.equals(currDay = getCurrentDay(current))) break;
 
                     collection.add(get(current++));
                 }

@@ -16,6 +16,8 @@ public class CijferList extends ArrayList<Cijfer>
         return new CijferList(response.getJson().getJSONArray("Items"), vakken);
     }
 
+    public CijferList() {}
+
     public CijferList(JSONArray cijferJson, VakList vakken) throws ParseException, JSONException
     {
         for (int i = 0; i < cijferJson.length(); i++) {
