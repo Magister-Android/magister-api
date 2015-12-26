@@ -79,7 +79,7 @@ public class Module implements Serializable {
 
         try
         {
-            return LocalDate.parse(object.getString(key), Utils.geboorteDatumFormatter);
+            return LocalDate.parse(object.getString(key), Utils.magisterToDateFormatter);
         }
 
         catch (JSONException e)

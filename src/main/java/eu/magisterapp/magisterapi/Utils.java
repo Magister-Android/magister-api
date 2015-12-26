@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.format.DateTimeParser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,10 +19,14 @@ import java.util.Date;
 public class Utils {
 
     public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    public static final DateTimeFormatter magisterToDateFormatter =
-            DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC);
 
-    public static final DateTimeFormatter geboorteDatumFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static DateTimeParser[] parsers = {
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC).getParser(),
+            DateTimeFormat.forPattern("yyyy-MM-dd").getParser()
+    };
+
+    public static final DateTimeFormatter magisterToDateFormatter =
+            new DateTimeFormatterBuilder().append(null, parsers).toFormatter();
 
     /**
      *

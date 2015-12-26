@@ -38,6 +38,10 @@ public class Account extends Module
         Voorletters = getNullableString(persoon, "Voorletters");
         OfficieleTussenvoegsels = getNullableString(persoon, "OfficieleTussenvoegsels");
         OfficieleAchternaam = getNullableString(persoon, "OfficieleAchternaam");
+
+        String unparsedDate = persoon.getString("Geboortedatum");
+        
+
         Geboortedatum = getNullableLocalDate(persoon, "Geboortedatum");
         GeboortenaamTussenvoegsel = getNullableString(persoon, "GeboortenaamTussenvoegsel");
         GebruikGeboortenaam = getNullableBoolean(persoon, "GebruikGeboortenaam");
