@@ -25,8 +25,12 @@ public class Utils {
             DateTimeFormat.forPattern("yyyy-MM-dd").getParser()
     };
 
+    public static DateTimeFormatter geboorteDatumFormatter = new DateTimeFormatterBuilder()
+            .append(null, parsers).toFormatter();
+
     public static final DateTimeFormatter magisterToDateFormatter =
-            new DateTimeFormatterBuilder().append(null, parsers).toFormatter();
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC);
+
 
     /**
      *
