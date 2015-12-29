@@ -304,7 +304,7 @@ public class Sessie {
 
         try
         {
-            return new Cijfer.CijferInfo(response);
+            return cijfer.new CijferInfo(response);
         }
 
         catch (ParseException | JSONException e)

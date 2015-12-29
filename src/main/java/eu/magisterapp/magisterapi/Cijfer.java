@@ -39,7 +39,7 @@ public class Cijfer extends Module implements Displayable
     public final Boolean VakDispensatie;
     public final Boolean VakVrijstelling;
 
-    public CijferInfo info = null;
+    public transient CijferInfo info = null;
 
     public Cijfer(JSONObject cijferJson, VakList vaklist, Aanmelding aanmelding) throws ParseException, JSONException
     {
@@ -103,8 +103,10 @@ public class Cijfer extends Module implements Displayable
 
     }
 
-    public static class CijferInfo implements Serializable
+    public class CijferInfo implements Serializable
     {
+        public final Integer parent = CijferId;
+
         public final Integer KolomSoortKolom;
         public final String KolomNaam;
         public final String KolomKopnaam;

@@ -108,6 +108,6 @@ public class URLS
 
     public String cijferDetails(Account account, Aanmelding aanmelding, Cijfer cijfer)
     {
-        return api(account) + String.format("/aanmeldingen/%d/cijfers/extracijferkolominfo/%d", aanmelding.Id, cijfer.CijferId);
+        return api(account) + String.format("/aanmeldingen/%d/cijfers/extracijferkolominfo/%d", aanmelding.Id, cijfer.CijferKolom.Id);
     }
 }
