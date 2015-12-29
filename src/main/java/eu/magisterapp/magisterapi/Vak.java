@@ -77,9 +77,9 @@ public class Vak extends Module
 
         for (Float cijfer : cijfers)
         {
-            som += cijfer;
+            som += cijfer * 10;
         }
 
-        return som / cijfers.size();
+        return som / (cijfers.size() * 10);
     }
 }
