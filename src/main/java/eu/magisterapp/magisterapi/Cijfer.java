@@ -138,6 +138,11 @@ public class Cijfer extends Module implements Displayable
     public void setInfo(CijferInfo info)
     {
         this.info = info;
+
+        // Nu is er genoeg informatie om gemiddelde uit te rekenen
+        if (CijferKolom.KolomSoort == 3) // PTA kolom (denk ik)
+
+            Vak.addCijfer(Utils.parseFloat(CijferStr), info.Weging);
     }
 
     @Override
