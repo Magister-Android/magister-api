@@ -146,26 +146,20 @@ public class Sessie {
 
     public Account getAccount() throws IOException
     {
+        if (account != null) return account;
+
         loginIfNotLoggedIn();
 
-        if (account == null)
+        try
         {
-            try
-            {
-                return account = new Account(connection, urls.account(), this);
-            }
-
-            catch (ParseException | JSONException e)
-            {
-                e.printStackTrace();
-
-                throw new BadResponseException("Fout bij het ophalen van account gegevens.");
-            }
+            return account = new Account(connection, urls.account(), this);
         }
 
-        else
+        catch (ParseException | JSONException e)
         {
-            return account;
+            e.printStackTrace();
+
+            throw new BadResponseException("Fout bij het ophalen van account gegevens.");
         }
     }
 
@@ -261,7 +255,7 @@ public class Sessie {
 
         try
         {
-            return CijferList.fromResponse(response, vakken);
+            return CijferList.fromResponse(response, vakken, aanmelding);
         }
 
         catch (ParseException | JSONException e)
@@ -269,6 +263,13 @@ public class Sessie {
             e.printStackTrace();
             throw new BadResponseException("Fout bij het ophalen van cijfers");
         }
+    }
+
+    public CijferList getCijfers() throws IOException
+    {
+        Aanmelding aanmelding = getAanmeldingen().getCurrentAanmelding();
+
+        return getCijfers(aanmelding, getVakken(aanmelding));
     }
 
     public CijferList getRecentCijfers(Aanmelding aanmelding, VakList vakken) throws IOException
@@ -281,7 +282,7 @@ public class Sessie {
 
         try
         {
-            return CijferList.fromResponse(response, vakken);
+            return CijferList.fromResponse(response, vakken, aanmelding);
         }
 
         catch (ParseException | JSONException e)
@@ -289,6 +290,40 @@ public class Sessie {
             e.printStackTrace();
             throw new BadResponseException("Fout bij het ophalen van recente cijfers.");
         }
+    }
+
+    public Cijfer.CijferInfo getCijferInfo(Cijfer cijfer) throws IOException
+    {
+        Aanmelding aanmelding = cijfer.aanmelding;
+
+        loginIfNotLoggedIn();
+
+        String url = urls.cijferDetails(getAccount(), aanmelding, cijfer);
+
+        Response response = connection.get(url, this);
+
+        try
+        {
+            return new Cijfer.CijferInfo(response);
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            e.printStackTrace();
+            throw new BadResponseException("Fout bij het ophalen van cijfer gegevens");
+        }
+    }
+
+    public Cijfer attachCijferInfo(Cijfer cijfer) throws IOException
+    {
+        return attachCijferInfo(getCijferInfo(cijfer), cijfer);
+    }
+
+    public Cijfer attachCijferInfo(Cijfer.CijferInfo info, Cijfer cijfer)
+    {
+        cijfer.setInfo(info);
+
+        return cijfer;
     }
 
 }

@@ -105,4 +105,9 @@ public class URLS
     {
         return api(account) + String.format("/aanmeldingen/%d/cijfers", jaarlaag.Id);
     }
+
+    public String cijferDetails(Account account, Aanmelding aanmelding, Cijfer cijfer)
+    {
+        return api(account) + String.format("/aanmeldingen/%d/cijfers/extracijferkolominfo/%d", aanmelding.Id, cijfer.CijferId);
+    }
 }

@@ -3,6 +3,7 @@ package eu.magisterapp.magisterapi;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,21 +12,27 @@ import java.util.Map;
 /**
  * Created by max on 2-12-15.
  */
-public class CijferList extends ArrayList<Cijfer>
+public class CijferList extends ArrayList<Cijfer> implements Serializable
 {
     public final Map<Integer, CijferList> vakSorted = new HashMap<>();
 
-    public static CijferList fromResponse(Response response, VakList vakken) throws ParseException, JSONException
+    public final Aanmelding aanmelding;
+
+    public static CijferList fromResponse(Response response, VakList vakken, Aanmelding aanmelding) throws ParseException, JSONException
     {
-        return new CijferList(response.getJson().getJSONArray("Items"), vakken);
+        return new CijferList(response.getJson().getJSONArray("Items"), vakken, aanmelding);
     }
 
-    public CijferList() {}
+    public CijferList() {
+        this.aanmelding = null;
+    }
 
-    public CijferList(JSONArray cijferJson, VakList vakken) throws ParseException, JSONException
+    public CijferList(JSONArray cijferJson, VakList vakken, Aanmelding aanmelding) throws ParseException, JSONException
     {
+        this.aanmelding = aanmelding;
+
         for (int i = 0; i < cijferJson.length(); i++) {
-            Cijfer cijfer = new Cijfer(cijferJson.getJSONObject(i), vakken);
+            Cijfer cijfer = new Cijfer(cijferJson.getJSONObject(i), vakken, aanmelding);
 
             if (cijfer.CijferStr == null) continue; // skip bullshitcijfers
 

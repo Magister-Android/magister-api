@@ -13,7 +13,7 @@ import java.text.ParseException;
  */
 public class Module implements Serializable {
 
-    protected String getNullableString(JSONObject object, String key)
+    protected static String getNullableString(JSONObject object, String key)
     {
         if (object.isNull(key)) return null;
 
@@ -28,7 +28,7 @@ public class Module implements Serializable {
         }
     }
 
-    protected Boolean getNullableBoolean(JSONObject object, String key)
+    protected static Boolean getNullableBoolean(JSONObject object, String key)
     {
         if (object.isNull(key)) return null;
 
@@ -43,7 +43,7 @@ public class Module implements Serializable {
         }
     }
 
-    protected Integer getNullableInt(JSONObject object, String key)
+    protected static Integer getNullableInt(JSONObject object, String key)
     {
         if (object.isNull(key)) return null;
 
@@ -58,7 +58,7 @@ public class Module implements Serializable {
         }
     }
 
-    protected DateTime getNullableDate(JSONObject object, String key) throws ParseException
+    protected static DateTime getNullableDate(JSONObject object, String key) throws ParseException
     {
         if (object.isNull(key)) return null;
 
@@ -73,7 +73,7 @@ public class Module implements Serializable {
         }
     }
 
-    protected LocalDate getNullableLocalDate(JSONObject object, String key) throws ParseException
+    protected static LocalDate getNullableLocalDate(JSONObject object, String key) throws ParseException
     {
         if (object.isNull(key)) return null;
 

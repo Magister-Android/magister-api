@@ -13,6 +13,8 @@ import java.text.ParseException;
 public class Cijfer extends Module implements Displayable
 {
 
+    public final Aanmelding aanmelding;
+
     public final Integer CijferId;
     public final String CijferStr;
     public final Boolean IsVoldoende;
@@ -37,8 +39,11 @@ public class Cijfer extends Module implements Displayable
     public final Boolean VakDispensatie;
     public final Boolean VakVrijstelling;
 
-    public Cijfer(JSONObject cijferJson, VakList vaklist) throws ParseException, JSONException
+    public CijferInfo info = null;
+
+    public Cijfer(JSONObject cijferJson, VakList vaklist, Aanmelding aanmelding) throws ParseException, JSONException
     {
+        this.aanmelding = aanmelding;
 
         CijferId = getNullableInt(cijferJson, "CijferId");
         CijferStr = getNullableString(cijferJson, "CijferStr");
@@ -76,10 +81,10 @@ public class Cijfer extends Module implements Displayable
         public final String KolomKop;
         public final String KolomOmschrijving;
         public final Integer KolomSoort;
-        public final boolean IsHerkansingKolom;
-        public final boolean IsDocentKolom;
-        public final boolean HeeftOnderliggendeKolommen;
-        public final boolean IsPTAKolom;
+        public final Boolean IsHerkansingKolom;
+        public final Boolean IsDocentKolom;
+        public final Boolean HeeftOnderliggendeKolommen;
+        public final Boolean IsPTAKolom;
 
         public CijferKolom(JSONObject kolomJson)
         {
@@ -96,6 +101,41 @@ public class Cijfer extends Module implements Displayable
             IsPTAKolom = getNullableBoolean(kolomJson, "IsPTAKolom");
         }
 
+    }
+
+    public static class CijferInfo implements Serializable
+    {
+        public final Integer KolomSoortKolom;
+        public final String KolomNaam;
+        public final String KolomKopnaam;
+        // public final Object KolomNiveau;
+        public final String KolomOmschrijving;
+        public final Integer Weging;
+        public final DateTime WerkinformatieDatumIngevoerd;
+        public final String WerkInformatieOmschrijving;
+
+        public CijferInfo(Response response) throws ParseException
+        {
+            JSONObject json = response.getJson();
+
+            KolomSoortKolom = getNullableInt(json, "KolomSoortKolom");
+            KolomNaam = getNullableString(json, "KolomNaam");
+            KolomKopnaam = getNullableString(json, "KolomKopnaam");
+            KolomOmschrijving = getNullableString(json, "KolomOmschrijving");
+            Weging = getNullableInt(json, "Weging");
+            WerkinformatieDatumIngevoerd = getNullableDate(json, "WerkinformatieDatumIngevoerd");
+            WerkInformatieOmschrijving = getNullableString(json, "WerkInformatieOmschrijving");
+        }
+    }
+
+    public boolean hasInfo()
+    {
+        return this.info != null;
+    }
+
+    public void setInfo(CijferInfo info)
+    {
+        this.info = info;
     }
 
     @Override
