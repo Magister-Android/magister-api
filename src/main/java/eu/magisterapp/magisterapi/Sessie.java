@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.magisterapp.magisterapi.afwijkingen.ZernikeAfwijking;
+
 /**
  * Created by max on 7-12-15.
  */
@@ -25,6 +27,7 @@ public class Sessie {
 
     private final String username;
     private final String password;
+    private final String school;
     private final Map<String, String> payload;
 
     private MagisterConnection connection;
@@ -34,6 +37,7 @@ public class Sessie {
     private CookieManager cookies = new CookieManager();
 
     private Account account;
+    private AanmeldingenList aanmeldingen;
 
     public final String id;
 
@@ -42,6 +46,7 @@ public class Sessie {
     {
         this.username = gebruikersnaam;
         this.password = wachtwoord;
+        this.school = school;
         this.connection = connection;
 
         urls = new URLS(school);
@@ -176,7 +181,14 @@ public class Sessie {
 
         try
         {
-            return AfspraakFactory.fetch(connection, this, urls.afspraken(getAccount(), van, tot, geenUitval));
+            AfspraakCollection afspraken = AfspraakFactory.fetch(connection, this, urls.afspraken(getAccount(), van, tot, geenUitval));
+
+            if (school.equals("zernike"))
+            {
+                afspraken.scewTimeTable(new ZernikeAfwijking(getAanmeldingen().getCurrentAanmelding()));
+            }
+
+            return afspraken;
         }
 
         catch (ParseException | JSONException e)
@@ -187,6 +199,8 @@ public class Sessie {
 
     public AanmeldingenList getAanmeldingen() throws IOException
     {
+        if (aanmeldingen != null) return aanmeldingen;
+
         loginIfNotLoggedIn();
 
         String url = urls.aanmeldingen(getAccount());
@@ -195,7 +209,7 @@ public class Sessie {
 
         try
         {
-            return AanmeldingenList.fromResponse(response);
+            return aanmeldingen = AanmeldingenList.fromResponse(response);
         }
 
         catch (ParseException | JSONException e)

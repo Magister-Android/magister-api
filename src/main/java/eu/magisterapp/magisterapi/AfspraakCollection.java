@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 
 import java.util.*;
 
+import eu.magisterapp.magisterapi.afwijkingen.AfwijkingInterface;
+
 
 /**
  * Created by max on 24-11-15.
@@ -22,6 +24,16 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
         if (this.size() == 0) return null;
 
         return this.get(0).getDay();
+    }
+
+    public AfspraakCollection scewTimeTable(AfwijkingInterface fixer)
+    {
+        for (Afspraak afspraak : this)
+        {
+            fixer.modify(afspraak);
+        }
+
+        return this;
     }
 
     public Iterator<AfspraakCollection> dayIterator()
