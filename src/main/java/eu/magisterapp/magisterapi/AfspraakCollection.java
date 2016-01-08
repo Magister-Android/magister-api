@@ -19,7 +19,14 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
         this.addAll(afspraken);
     }
 
-    public DateTime getFirstDay()
+    public Afspraak first()
+    {
+        if (this.size() == 0) return null;
+
+        return get(0);
+    }
+
+    public DateTime getFirstDayTime()
     {
         if (this.size() == 0) return null;
 

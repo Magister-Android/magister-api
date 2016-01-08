@@ -21,7 +21,7 @@ public class ZernikeAfwijking implements AfwijkingInterface {
 
     @Override
     public void modify(Afspraak afspraak) {
-        if ((! doModify ) || afspraak.LesuurTotMet == null || jaar == 0) return;
+        if ((! doModify ) || afspraak.LesuurTotMet == null || afspraak.LesuurVan == null || jaar == 0) return;
 
         if (jaar > 4) modifyBovenbouw(afspraak);
 
@@ -30,15 +30,26 @@ public class ZernikeAfwijking implements AfwijkingInterface {
 
     public void modifyOnderbouw(Afspraak afspraak)
     {
-        switch (afspraak.LesuurTotMet)
+        switch (afspraak.LesuurVan)
         {
             case 7:
                 afspraak.Start = afspraak.Start.withTime(14, 20, 0, 0);
-                afspraak.Einde = afspraak.Einde.withTime(15, 20, 0, 0);
                 break;
 
             case 8:
                 afspraak.Start = afspraak.Start.withTime(15, 20, 0, 0);
+                break;
+        }
+
+
+
+        switch (afspraak.LesuurTotMet)
+        {
+            case 7:
+                afspraak.Einde = afspraak.Einde.withTime(15, 20, 0, 0);
+                break;
+
+            case 8:
                 afspraak.Einde = afspraak.Einde.withTime(16, 20, 0, 0);
                 break;
         }
@@ -46,30 +57,48 @@ public class ZernikeAfwijking implements AfwijkingInterface {
 
     public void modifyBovenbouw(Afspraak afspraak)
     {
-        switch (afspraak.LesuurTotMet)
+        switch (afspraak.LesuurVan)
         {
             case 3:
                 afspraak.Start = afspraak.Start.withTime(9, 30, 0, 0);
-                afspraak.Einde = afspraak.Einde.withTime(10, 30, 0, 0);
                 break;
 
             case 4:
                 afspraak.Start = afspraak.Start.withTime(10, 50, 0, 0);
-                afspraak.Einde = afspraak.Einde.withTime(11, 50, 0, 0);
                 break;
 
             case 5:
                 afspraak.Start = afspraak.Start.withTime(11, 50, 0, 0);
-                afspraak.Einde = afspraak.Einde.withTime(12, 50, 0, 0);
                 break;
 
             case 7:
                 afspraak.Start = afspraak.Start.withTime(14, 20, 0, 0);
-                afspraak.Einde = afspraak.Einde.withTime(15, 20, 0, 0);
                 break;
 
             case 8:
                 afspraak.Start = afspraak.Start.withTime(15, 20, 0, 0);
+                break;
+        }
+
+        switch (afspraak.LesuurTotMet)
+        {
+            case 3:
+                afspraak.Einde = afspraak.Einde.withTime(10, 30, 0, 0);
+                break;
+
+            case 4:
+                afspraak.Einde = afspraak.Einde.withTime(11, 50, 0, 0);
+                break;
+
+            case 5:
+                afspraak.Einde = afspraak.Einde.withTime(12, 50, 0, 0);
+                break;
+
+            case 7:
+                afspraak.Einde = afspraak.Einde.withTime(15, 20, 0, 0);
+                break;
+
+            case 8:
                 afspraak.Einde = afspraak.Einde.withTime(16, 20, 0, 0);
                 break;
         }
