@@ -10,11 +10,11 @@ import eu.magisterapp.magisterapi.afwijkingen.AfwijkingInterface;
 /**
  * Created by max on 24-11-15.
  */
-public class AfspraakCollection extends ArrayList<Afspraak> {
+public class AfspraakList extends ArrayList<Afspraak> {
 
-    public AfspraakCollection() {}
+    public AfspraakList() {}
 
-    public AfspraakCollection(List<Afspraak> afspraken)
+    public AfspraakList(List<Afspraak> afspraken)
     {
         this.addAll(afspraken);
     }
@@ -33,7 +33,7 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
         return this.get(0).getDay();
     }
 
-    public AfspraakCollection scewTimeTable(AfwijkingInterface fixer)
+    public AfspraakList scewTimeTable(AfwijkingInterface fixer)
     {
         for (Afspraak afspraak : this)
         {
@@ -43,9 +43,9 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
         return this;
     }
 
-    public Iterator<AfspraakCollection> dayIterator()
+    public Iterator<AfspraakList> dayIterator()
     {
-        return new Iterator<AfspraakCollection>() {
+        return new Iterator<AfspraakList>() {
 
             int current = 0; // eerste element
             String currDay = hasNext() ? get(current).getDateString() : ""; // eerste dag
@@ -57,11 +57,11 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
             }
 
             @Override
-            public AfspraakCollection next() {
+            public AfspraakList next() {
 
                 if (! hasNext()) throw new NoSuchElementException("There are no more elements left.");
 
-                AfspraakCollection collection = new AfspraakCollection();
+                AfspraakList collection = new AfspraakList();
 
                 while (hasNext())
                 {
@@ -84,4 +84,26 @@ public class AfspraakCollection extends ArrayList<Afspraak> {
             }
         };
     }
+
+    public void applyRoosterWijzigingen(AfspraakList wijzigingen)
+    {
+        Map<Integer, Integer> idToIndex = new HashMap<>();
+
+        for (int i = 0; i < size(); i++)
+        {
+            idToIndex.put(get(i).Id, i);
+        }
+
+        for (Afspraak wijziging : wijzigingen)
+        {
+            Integer index;
+
+            if ((index = idToIndex.get(wijziging.Id)) != null) // als er een overeenkomstig id in die lijst zit
+            {
+                set(index, wijziging); // tyf oude weg, en zet nieuwe er voor in de plaats.
+            }
+        }
+    }
+
+
 }

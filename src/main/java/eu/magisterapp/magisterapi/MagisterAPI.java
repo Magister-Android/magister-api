@@ -1,15 +1,10 @@
 package eu.magisterapp.magisterapi;
 
 import org.joda.time.DateTime;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.JSONArray;
 
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -83,22 +78,22 @@ public class MagisterAPI
         return sessie.getAccount();
     }
 
-    public AfspraakCollection getAfspraken(DateTime start, DateTime end) throws IOException
+    public AfspraakList getAfspraken(DateTime start, DateTime end) throws IOException
     {
         return getAfspraken(mainSessie, start, end, false);
     }
 
-    public AfspraakCollection getAfspraken(DateTime start, DateTime end, boolean geenUitval) throws IOException
+    public AfspraakList getAfspraken(DateTime start, DateTime end, boolean geenUitval) throws IOException
     {
         return getAfspraken(mainSessie, start, end, geenUitval);
     }
 
-    public AfspraakCollection getAfspraken(Sessie sessie, DateTime start, DateTime end, boolean geenUitval) throws IOException
+    public AfspraakList getAfspraken(Sessie sessie, DateTime start, DateTime end, boolean geenUitval) throws IOException
     {
         return sessie.getAfspraken(start, end, geenUitval);
     }
 
-    public AfspraakCollection getAfspraken(Sessie sessie, DateTime start, DateTime end) throws IOException
+    public AfspraakList getAfspraken(Sessie sessie, DateTime start, DateTime end) throws IOException
     {
         return getAfspraken(sessie, start, end, false);
     }

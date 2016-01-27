@@ -7,6 +7,6 @@ import eu.magisterapp.magisterapi.Afspraak;
  */
 public interface AfwijkingInterface {
 
-    public abstract void modify(Afspraak afspraak);
+    public void modify(Afspraak afspraak);
 
 }

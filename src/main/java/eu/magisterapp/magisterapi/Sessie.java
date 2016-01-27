@@ -7,10 +7,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.HttpCookie;
-import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import eu.magisterapp.magisterapi.afwijkingen.ZernikeAfwijking;
@@ -168,30 +166,25 @@ public class Sessie {
         }
     }
 
-    public AfspraakCollection getAfspraken(DateTime van, DateTime tot) throws IOException
+    public AfspraakList getAfspraken(DateTime van, DateTime tot) throws IOException
     {
-        loginIfNotLoggedIn();
-
         return getAfspraken(van, tot, true);
     }
 
-    public AfspraakCollection getAfspraken(DateTime van, DateTime tot, boolean geenUitval) throws IOException
+    public AfspraakList getAfspraken(DateTime van, DateTime tot, boolean geenUitval) throws IOException
     {
         loginIfNotLoggedIn();
 
+        String url = urls.afspraken(getAccount(), van, tot, geenUitval);
+
+        Response response = connection.get(url, this);
+
         try
         {
-            AfspraakCollection afspraken = AfspraakFactory.fetch(connection, this, urls.afspraken(getAccount(), van, tot, geenUitval));
-
-            if (school.equals("zernike"))
-            {
-                afspraken.scewTimeTable(new ZernikeAfwijking(getAanmeldingen().getCurrentAanmelding()));
-            }
-
-            return afspraken;
+            return AfspraakFactory.make(response, school, getAanmeldingen().getCurrentAanmelding());
         }
 
-        catch (ParseException | JSONException e)
+        catch (ParseException e)
         {
             throw new BadResponseException("Fout bij het ophalen van afspraken");
         }
@@ -338,6 +331,25 @@ public class Sessie {
         cijfer.setInfo(info);
 
         return cijfer;
+    }
+
+    public AfspraakList getRoosterWijzigingen(DateTime van, DateTime tot) throws IOException
+    {
+        loginIfNotLoggedIn();
+
+        String url = urls.roosterWijzigingen(getAccount(), van, tot);
+
+        Response response = connection.get(url, this);
+
+        try
+        {
+            return AfspraakFactory.make(response, school, getAanmeldingen().getCurrentAanmelding());
+        }
+
+        catch (ParseException | JSONException e)
+        {
+            throw new BadResponseException("Fout bij het ophalen van roosterwijzigingen");
+        }
     }
 
 }
