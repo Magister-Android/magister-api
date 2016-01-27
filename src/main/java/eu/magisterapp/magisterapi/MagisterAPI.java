@@ -63,7 +63,8 @@ public class MagisterAPI
      */
     public Sessie reconnect(String school, String username, String password)
     {
-        sessies.kill(mainSessie.id);
+        if (mainSessie != null)
+            sessies.kill(mainSessie.id);
 
         return mainSessie = connect(school, username, password);
     }
@@ -172,9 +173,9 @@ public class MagisterAPI
 
     public void disconnect()
     {
+        mainSessie = null;
         sessies.logOutAll();
     }
-
 
     /**
      * Zoek naar scholen
