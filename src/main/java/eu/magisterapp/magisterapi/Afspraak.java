@@ -9,13 +9,100 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sibren Talens <me@sibrentalens.com>
  * Krijg een instance van deze class door MagisterAPI.getAfspraken();
  */
 public class Afspraak extends Module implements Displayable {
+
+	public static Map<Integer, Type> typeMap = new HashMap<>();
+	public static Map<Integer, Status> statusMap = new HashMap<>();
+	public static Map<Integer, InfoType> infoTypeMap = new HashMap<>();
+	public static Map<Integer, WeergaveType> weergaveTypeMap = new HashMap<>();
+
+	public enum Type
+	{
+		NONE(0),
+		PERSOONLIJK(1),
+		ALGEMEEN(2),
+		SCHOOLBREED(3),
+		STAGE(4),
+		INTAKE(5),
+		ROOSTERVRIJ(6),
+		KWT(7),
+		STANDBY(8),
+		BLOKKADE(9),
+		OVERIG(10),
+		BLOKKADELOKAAL(11),
+		BLOKKADEKLAS(12),
+		LES(13),
+		STUDIEHUIS(14),
+		ROOSTERVRIJESTUDIE(15),
+		PLANNING(16),
+		MAATREGELEN(101),
+		PRESENTIES(102),
+		EXAMENROOSTER(103);
+
+		Type(int id)
+		{
+			typeMap.put(id, this);
+		}
+	}
+
+	public enum Status
+	{
+		GEENSTATUS(0),
+		GEROOSTERDAUTOMATISCH(1),
+		GEROOSTERDHANDMATIG(2),
+		GEWIJZIGD(3),
+		VERVALLENHANDMATIG(4),
+		VERVALLENAUTOMATISCH(5),
+		INGEBRUIK(6),
+		AFGESLOTEN(7),
+		INGEZET(8),
+		VERPLAATST(9),
+		GEWIJZIGDENVERPLAATST(10);
+
+		Status(int id)
+		{
+			statusMap.put(id, this);
+		}
+	}
+
+	public enum InfoType
+	{
+		NONE(0),
+		HUISWERK(1),
+		PROEFWERK(2),
+		TENTAMEN(3),
+		SCHIFTELIJKEOVERHORING(4),
+		MONDELINGEOVERHORING(5),
+		INFORMATIE(6),
+		AANTEKENING(7);
+
+		InfoType(int id)
+		{
+			infoTypeMap.put(id, this);
+		}
+	}
+
+	public enum WeergaveType
+	{
+		VRIJ(1),
+		VOORLOPIGBEZET(2),
+		BEZET(3),
+		NIETAANWEZIG(4);
+
+		WeergaveType(int id)
+		{
+			weergaveTypeMap.put(id, this);
+		}
+	}
+
 	// Ik heb deze namen ook niet bedacht, dit is hoe ze in de API staan,
 	// en het leek me wel zo netjes om die te houden
 	public int Id;
@@ -25,10 +112,10 @@ public class Afspraak extends Module implements Displayable {
 	public String Omschrijving;
 	public String Lokatie;
 	public String Locatie; // Do you even spelling?? Schoolmaster?? Hello bic boi??
-	public int Status;
-	public int WeergaveType;
+	public Status Status;
+	public WeergaveType WeergaveType;
 	public String Inhoud;
-	public int InfoType;
+	public InfoType InfoType;
 	public String Aantekening;
 	public boolean Afgerond;
 
@@ -44,8 +131,7 @@ public class Afspraak extends Module implements Displayable {
 	protected static SimpleDateFormat testformat = new SimpleDateFormat("yyyy-MM-dd");
 
 	// 6 is wss vakantie en volgens mata is 1 huiswerk, 3 tentamen, 4 schriftelijk en 13 is denk ik les
-	// TODO Maak hier een mooie enum van
-	public int Type;
+	public Type Type;
 
 	// TODO Vind de datatypen uit van de velden die null zijn
 
@@ -73,15 +159,15 @@ public class Afspraak extends Module implements Displayable {
 		DuurtHeleDag = getNullableBoolean(afspraak, "DuurtHeleDag");
 		Omschrijving = getNullableString(afspraak, "Omschrijving");
 		Lokatie = Locatie = getNullableString(afspraak, "Lokatie");
-		Status = getNullableInt(afspraak, "Status");
-		WeergaveType = getNullableInt(afspraak, "WeergaveType");
+		Status = statusMap.get(getNullableInt(afspraak, "Status"));
+		WeergaveType = weergaveTypeMap.get(getNullableInt(afspraak, "WeergaveType"));
 		Inhoud = getNullableString(afspraak, "Inhoud");
-		InfoType = getNullableInt(afspraak, "InfoType");
+		InfoType = infoTypeMap.get(getNullableInt(afspraak, "InfoType"));
 		Aantekening = getNullableString(afspraak, "Aantekening");
 		Afgerond = getNullableBoolean(afspraak, "Afgerond");
 		OpdrachtId = getNullableInt(afspraak, "OpdrachtId");
 		HeeftBijlagen = getNullableBoolean(afspraak, "HeeftBijlagen");
-		Type = getNullableInt(afspraak, "Type");
+		Type = typeMap.get(getNullableInt(afspraak, "Type"));
 
 		JSONArray vakArray = afspraak.getJSONArray("Vakken");
 
@@ -215,7 +301,7 @@ public class Afspraak extends Module implements Displayable {
 
 	public Boolean valtUit()
 	{
-		return Status == 0;
+		return Status == Status.GEENSTATUS || Status == Status.VERVALLENAUTOMATISCH || Status == Status.VERVALLENHANDMATIG;
 	}
 
 	public DateTime getDay()
