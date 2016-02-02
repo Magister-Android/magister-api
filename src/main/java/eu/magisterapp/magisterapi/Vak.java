@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.rmi.runtime.Log;
+
 /**
  * Created by max on 2-12-15.
  */
@@ -73,13 +75,13 @@ public class Vak extends Module
     {
         if (cijfers.size() == 0) return 0F;
 
-        Float som = 0F;
+        int som = 0;
 
         for (Float cijfer : cijfers)
         {
             som += cijfer * 10;
-        }
+		}
 
-        return som / (cijfers.size() * 10);
+		return som / (cijfers.size() * 10f);
     }
 }
