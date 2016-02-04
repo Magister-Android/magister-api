@@ -105,5 +105,10 @@ public class AfspraakList extends ArrayList<Afspraak> {
         }
     }
 
+    public void filterBullshitAfspraken()
+    {
+        Iterator<Afspraak> it = iterator();
 
+        while (it.hasNext()) if (it.next().Id < 0) it.remove();
+    }
 }

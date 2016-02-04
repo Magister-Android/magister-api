@@ -181,7 +181,11 @@ public class Sessie {
 
         try
         {
-            return AfspraakFactory.make(response, school, getAanmeldingen().getCurrentAanmelding());
+            AfspraakList afspraken = AfspraakFactory.make(response, school, getAanmeldingen().getCurrentAanmelding());
+
+            afspraken.filterBullshitAfspraken();
+
+            return afspraken;
         }
 
         catch (ParseException e)
