@@ -348,6 +348,7 @@ public class Sessie {
 
         catch (ParseException | JSONException e)
         {
+			e.printStackTrace();
             throw new BadResponseException("Fout bij het ophalen van roosterwijzigingen");
         }
     }

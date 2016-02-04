@@ -20,7 +20,7 @@ import java.util.Map;
 public class Afspraak extends Module implements Displayable {
 
 	public static Map<Integer, Type> typeMap = new HashMap<>();
-	public static Map<Integer, Status> statusMap = new HashMap<>();
+	public static Map<Integer, StatusEnum> statusMap = new HashMap<>();
 	public static Map<Integer, InfoType> infoTypeMap = new HashMap<>();
 	public static Map<Integer, WeergaveType> weergaveTypeMap = new HashMap<>();
 
@@ -53,7 +53,7 @@ public class Afspraak extends Module implements Displayable {
 		}
 	}
 
-	public enum Status
+	public enum StatusEnum
 	{
 		GEENSTATUS(0),
 		GEROOSTERDAUTOMATISCH(1),
@@ -67,7 +67,7 @@ public class Afspraak extends Module implements Displayable {
 		VERPLAATST(9),
 		GEWIJZIGDENVERPLAATST(10);
 
-		Status(int id)
+		StatusEnum(int id)
 		{
 			statusMap.put(id, this);
 		}
@@ -112,7 +112,7 @@ public class Afspraak extends Module implements Displayable {
 	public String Omschrijving;
 	public String Lokatie;
 	public String Locatie; // Do you even spelling?? Schoolmaster?? Hello bic boi??
-	public Status Status;
+	public StatusEnum Status;
 	public WeergaveType WeergaveType;
 	public String Inhoud;
 	public InfoType InfoType;
@@ -169,18 +169,18 @@ public class Afspraak extends Module implements Displayable {
 		HeeftBijlagen = getNullableBoolean(afspraak, "HeeftBijlagen");
 		Type = typeMap.get(getNullableInt(afspraak, "Type"));
 
-		JSONArray vakArray = afspraak.getJSONArray("Vakken");
+		JSONArray vakArray = getNullableJSONArray(afspraak, "Vakken");
 
 		for (Integer i = 0; i < vakArray.length(); i++) {
 			Vakken.add(new Vak(vakArray.getJSONObject(i)));
 		}
 
-		JSONArray docentArray = afspraak.getJSONArray("Docenten");
+		JSONArray docentArray = getNullableJSONArray(afspraak, "Docenten");
 		for (Integer i = 0; i < docentArray.length(); i++) {
 			Docenten.add(new Docent(docentArray.getJSONObject(i)));
 		}
 
-		JSONArray lokaalArray = afspraak.getJSONArray("Lokalen");
+		JSONArray lokaalArray = getNullableJSONArray(afspraak, "Lokalen");
 		for (Integer i = 0; i < lokaalArray.length(); i++) {
 			Lokalen.add(new Lokaal(lokaalArray.getJSONObject(i)));
 		}
@@ -341,8 +341,19 @@ public class Afspraak extends Module implements Displayable {
 
 	@Override
 	public Displayable.Type getType() {
-		// TODO: test voor uitval, en return NOTICE oid
-		return Displayable.Type.NORMAL;
+
+		if (Status == null) return Displayable.Type.NORMAL;
+
+		switch (Status)
+		{
+			case GEENSTATUS:
+			case VERVALLENAUTOMATISCH:
+			case VERVALLENHANDMATIG:
+				return Displayable.Type.INVALID;
+
+			default:
+				return Displayable.Type.NORMAL;
+		}
 	}
 
 	@Override
