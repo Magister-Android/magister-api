@@ -43,7 +43,7 @@ public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afs
 
             if (a.Id < 0) continue; // bullshit afspraak..
 
-            if (fixer != null) fixer.modify(a);
+            // if (fixer != null) fixer.modify(a);
 
             list.add(a);
         }

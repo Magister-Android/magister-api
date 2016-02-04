@@ -21,20 +21,15 @@ public class Utils {
     public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     private static DateTimeParser[] parsers = {
-            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC).getParser(),
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").getParser(),
             DateTimeFormat.forPattern("yyyy-MM-dd").getParser()
     };
-
-	private static DateTimeParser[] hourparsers = {
-		// DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC).getParser(),
-		DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC).getParser()
-	};
 
     public static DateTimeFormatter geboorteDatumFormatter = new DateTimeFormatterBuilder()
             .append(null, parsers).toFormatter();
 
     public static final DateTimeFormatter magisterToDateFormatter =
-            new DateTimeFormatterBuilder().append(null, hourparsers).toFormatter();
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").withZoneUTC().withOffsetParsed();
 
 
     /**
