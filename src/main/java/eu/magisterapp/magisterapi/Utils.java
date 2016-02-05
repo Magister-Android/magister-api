@@ -29,7 +29,7 @@ public class Utils {
             .append(null, parsers).toFormatter();
 
     public static final DateTimeFormatter magisterToDateFormatter =
-            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").withZoneUTC().withOffsetParsed();
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").withZoneUTC();
 
 
     /**

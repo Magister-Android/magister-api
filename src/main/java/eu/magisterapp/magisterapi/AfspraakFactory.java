@@ -41,7 +41,7 @@ public class AfspraakFactory extends ArrayList<Afspraak> implements Iterable<Afs
         {
             Afspraak a = new Afspraak(json.getJSONObject(i));
 
-            // if (fixer != null) fixer.modify(a);
+            if (fixer != null) fixer.modify(a);
 
             list.add(a);
         }

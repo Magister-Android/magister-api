@@ -133,7 +133,8 @@ public class Afspraak extends Module implements Displayable {
 	// 6 is wss vakantie en volgens mata is 1 huiswerk, 3 tentamen, 4 schriftelijk en 13 is denk ik les
 	public Type Type;
 
-	// TODO Vind de datatypen uit van de velden die null zijn
+	// Een boolean die zegt of gegevens zijn gewijzigd (voor markering)
+	public boolean isLokaalGewijzigd = false;
 
 	/**
 	 * Create a new afspraak form a JSONObject
@@ -350,10 +351,11 @@ public class Afspraak extends Module implements Displayable {
 			case VERVALLENAUTOMATISCH:
 			case VERVALLENHANDMATIG:
 				return Displayable.Type.INVALID;
-
-			default:
-				return Displayable.Type.NORMAL;
 		}
+
+        if (isLokaalGewijzigd) return Displayable.Type.NOTICE;
+
+        return Displayable.Type.NORMAL;
 	}
 
 	@Override

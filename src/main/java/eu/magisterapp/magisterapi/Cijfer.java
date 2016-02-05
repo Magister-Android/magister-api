@@ -196,7 +196,7 @@ public class Cijfer extends Module implements Displayable
 
     @Override
     public Type getType() {
-        if (IsVoldoende != null && ! IsVoldoende) return Type.NOTICE;
+        if (IsVoldoende != null && ! IsVoldoende) return Type.WARNING;
 
         return Type.NORMAL;
     }

@@ -7,8 +7,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.rmi.runtime.Log;
-
 /**
  * Created by max on 2-12-15.
  */
