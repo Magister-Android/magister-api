@@ -62,7 +62,7 @@ public class Sessie {
         return ! isExpired() && cookies.getCookieStore().getCookies().size() > 0;
     }
 
-    public void logOut()
+    public synchronized void logOut()
     {
         cookies.getCookieStore().removeAll();
         loggedInAt = 0L;
@@ -73,7 +73,7 @@ public class Sessie {
         return loggedInAt + (SESSION_TIMEOUT - 1000) < System.currentTimeMillis();
     }
 
-    public void login() throws IOException
+    public synchronized void login() throws IOException
     {
         cookies.getCookieStore().removeAll();
 
@@ -120,7 +120,7 @@ public class Sessie {
         }
     }
 
-    private void loginIfNotLoggedIn() throws IOException
+    private synchronized void loginIfNotLoggedIn() throws IOException
     {
         if (! loggedIn()) login();
     }
@@ -142,7 +142,7 @@ public class Sessie {
         return builder.toString();
     }
 
-    public void storeCookies(String cookieString)
+    public synchronized void storeCookies(String cookieString)
     {
         cookies.getCookieStore().add(null, HttpCookie.parse(cookieString).get(0));
     }
