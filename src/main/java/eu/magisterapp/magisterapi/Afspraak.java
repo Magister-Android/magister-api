@@ -343,6 +343,8 @@ public class Afspraak extends Module implements Displayable {
 	@Override
 	public Displayable.Type getType() {
 
+		if (Status == null && isLokaalGewijzigd) return Displayable.Type.NOTICE;
+
 		if (Status == null) return Displayable.Type.NORMAL;
 
 		switch (Status)
@@ -353,7 +355,7 @@ public class Afspraak extends Module implements Displayable {
 				return Displayable.Type.INVALID;
 		}
 
-        if (isLokaalGewijzigd) return Displayable.Type.NOTICE;
+		if (isLokaalGewijzigd) return Displayable.Type.NOTICE;
 
         return Displayable.Type.NORMAL;
 	}
