@@ -48,7 +48,7 @@ public class MagisterConnection {
         connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("charset", "utf-8");
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 
 
         byte[] data_url = convertToDataString(data).getBytes("UTF-8");
@@ -93,17 +93,13 @@ public class MagisterConnection {
 
     protected String convertToDataString(Map<String, String> data) throws UnsupportedEncodingException
     {
-        String result = "";
+        JSONObject object = new JSONObject();
 
-        for (Map.Entry<String, String> entry : data.entrySet())
-        {
-            result += URLEncoder.encode(entry.getKey(), "UTF-8")
-                   + '='
-                   + URLEncoder.encode(entry.getValue(), "UTF-8")
-                   + '&';
+        for (Map.Entry<String, String> item : data.entrySet()) {
+            object.put(item.getKey(), URLEncoder.encode(item.getValue(), "UTF-8"));
         }
 
-        return result.length() > 0 ? result.substring(0, result.length() - 1) : "";
+        return object.toString();
     }
 
     protected String convertToJSONString(Map<String, String> data)
