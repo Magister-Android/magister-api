@@ -21,7 +21,7 @@ public class Utils {
     public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     private static DateTimeParser[] parsers = {
-            DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC).getParser(),
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").getParser(),
             DateTimeFormat.forPattern("yyyy-MM-dd").getParser()
     };
 
@@ -29,7 +29,7 @@ public class Utils {
             .append(null, parsers).toFormatter();
 
     public static final DateTimeFormatter magisterToDateFormatter =
-            DateTimeFormat.forPattern("yyyy-MM-dd'T'kk:mm:ss.SSSSSSS'Z'").withZone(DateTimeZone.UTC);
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'").withZoneUTC();
 
 
     /**

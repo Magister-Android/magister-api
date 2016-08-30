@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by max on 2-12-15.
@@ -30,13 +32,15 @@ public class Vak extends Module
     public final Integer StudieId;
     public final String Afkorting; // inf
     public final String Omschrijving; // informatica
-    public final boolean Vrijstelling;
-    public final boolean Dispensatie;
+    public final Boolean Vrijstelling;
+    public final Boolean Dispensatie;
     public final Integer Volgnr;
     public final String Docent;
     public final DateTime Begindatum;
     public final DateTime Einddatum;
-    public final boolean HogerNiveau;
+    public final Boolean HogerNiveau;
+
+    private List<Float> cijfers = new ArrayList<>();
 
 
     public Vak(JSONObject vak) throws ParseException
@@ -53,5 +57,29 @@ public class Vak extends Module
         Begindatum = begindatum = getNullableDate(vak, "begindatum");
         Einddatum = einddatum = getNullableDate(vak, "einddatum");
         HogerNiveau = hogerNiveau = getNullableBoolean(vak, "hogerNiveau");
+    }
+
+    public void addCijfer(Float cijfer, Integer weging)
+    {
+        if (cijfer == null || weging == null) return;
+
+        for (int i = 0; i < weging; i++)
+        {
+            cijfers.add(cijfer);
+        }
+    }
+
+    public Float getGemiddelde()
+    {
+        if (cijfers.size() == 0) return 0F;
+
+        int som = 0;
+
+        for (Float cijfer : cijfers)
+        {
+            som += cijfer * 10;
+		}
+
+		return som / (cijfers.size() * 10f);
     }
 }

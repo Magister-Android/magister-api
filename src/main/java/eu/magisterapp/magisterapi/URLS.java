@@ -71,11 +71,6 @@ public class URLS
         return api(leerling) + "/roosterwijzigingen";
     }
 
-    public String roosterwijzigingen(Account leerling)
-    {
-        return roosterwijzigingen(leerling.Id);
-    }
-
     public String cijfers(Integer leerling, Integer jaarlaag)
     {
         return String.format(api(leerling) + "/aanmeldingen/%d/cijfers/cijferoverzichtvooraanmelding?actievePerioden=false", jaarlaag);
@@ -108,6 +103,11 @@ public class URLS
 
     public String cijferDetails(Account account, Aanmelding aanmelding, Cijfer cijfer)
     {
-        return api(account) + String.format("/aanmeldingen/%d/cijfers/extracijferkolominfo/%d", aanmelding.Id, cijfer.CijferId);
+        return api(account) + String.format("/aanmeldingen/%d/cijfers/extracijferkolominfo/%d", aanmelding.Id, cijfer.CijferKolom.Id);
+    }
+
+    public String roosterWijzigingen(Account account, DateTime van, DateTime tot)
+    {
+        return api(account) + String.format("/roosterwijzigingen?van=%s&tot=%s", Utils.dateToString(van), Utils.dateToString(tot));
     }
 }

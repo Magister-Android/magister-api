@@ -10,9 +10,9 @@ public interface Displayable {
     public static enum Type
     {
         NORMAL, // geen speciale opmaak
-        INVALID, // rode tekst met streep er doorheen
-        NOTICE, // rode tekst
-        WARNING // rode achtergrond
+        INVALID, // rode tekst (vak, title) + strikethru
+        NOTICE, // accent title (lokaal, cijfer)
+        WARNING // rode title (onvoldoende)
     }
 
     public String getVak();

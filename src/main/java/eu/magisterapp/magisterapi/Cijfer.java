@@ -6,12 +6,41 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by max on 2-12-15.
  */
 public class Cijfer extends Module implements Displayable
 {
+    public static Map<Integer, KolomSoort> kolomSoortMap = new HashMap<>();
+
+    public enum KolomSoort
+    {
+        UNKOWN(0),
+        CIJFER(1),
+        GEMIDDELDE(2),
+        MAXIMUM(3),
+        FORMULE(4),
+        MINIMUM(5),
+        SOM(6),
+        TEL(7),
+        CEVO(8),
+        VRIJETEKST(9),
+        CEVOCPE(10),
+        CEVOCIE(11),
+        WEEGFACTOR(12),
+        EINDCIJFER(13),
+        TEKORTPUNTEN(14),
+        BOOMTOP(15),
+        VAKVOORWAARDE(16);
+
+        KolomSoort(int id)
+        {
+            kolomSoortMap.put(id, this);
+        }
+    }
 
     public final Aanmelding aanmelding;
 
@@ -39,7 +68,7 @@ public class Cijfer extends Module implements Displayable
     public final Boolean VakDispensatie;
     public final Boolean VakVrijstelling;
 
-    public CijferInfo info = null;
+    public transient CijferInfo info = null;
 
     public Cijfer(JSONObject cijferJson, VakList vaklist, Aanmelding aanmelding) throws ParseException, JSONException
     {
@@ -80,7 +109,7 @@ public class Cijfer extends Module implements Displayable
         public final String KolomVolgNummer;
         public final String KolomKop;
         public final String KolomOmschrijving;
-        public final Integer KolomSoort;
+        public final KolomSoort KolomSoort;
         public final Boolean IsHerkansingKolom;
         public final Boolean IsDocentKolom;
         public final Boolean HeeftOnderliggendeKolommen;
@@ -94,7 +123,7 @@ public class Cijfer extends Module implements Displayable
             KolomVolgNummer = getNullableString(kolomJson, "KolomVolgNummer");
             KolomKop = getNullableString(kolomJson, "KolomKop");
             KolomOmschrijving = getNullableString(kolomJson, "KolomOmschrijving");
-            KolomSoort = getNullableInt(kolomJson, "KolomSoort");
+            KolomSoort = kolomSoortMap.get(getNullableInt(kolomJson, "KolomSoort"));
             IsHerkansingKolom = getNullableBoolean(kolomJson, "IsHerkansingKolom");
             IsDocentKolom = getNullableBoolean(kolomJson, "IsDocentKolom");
             HeeftOnderliggendeKolommen = getNullableBoolean(kolomJson, "HeeftOnderliggendeKolommen");
@@ -103,8 +132,10 @@ public class Cijfer extends Module implements Displayable
 
     }
 
-    public static class CijferInfo implements Serializable
+    public class CijferInfo implements Serializable
     {
+        public final Integer parent = CijferId;
+
         public final Integer KolomSoortKolom;
         public final String KolomNaam;
         public final String KolomKopnaam;
@@ -136,6 +167,11 @@ public class Cijfer extends Module implements Displayable
     public void setInfo(CijferInfo info)
     {
         this.info = info;
+
+        // Nu is er genoeg informatie om gemiddelde uit te rekenen
+        if (CijferKolom.KolomSoort == KolomSoort.MAXIMUM) // idk
+
+            Vak.addCijfer(Utils.parseFloat(CijferStr), info.Weging);
     }
 
     @Override
@@ -160,7 +196,7 @@ public class Cijfer extends Module implements Displayable
 
     @Override
     public Type getType() {
-        if (IsVoldoende != null && ! IsVoldoende) return Type.NOTICE;
+        if (IsVoldoende != null && ! IsVoldoende) return Type.WARNING;
 
         return Type.NORMAL;
     }

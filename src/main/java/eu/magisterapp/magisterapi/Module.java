@@ -2,6 +2,7 @@ package eu.magisterapp.magisterapi;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,4 +88,21 @@ public class Module implements Serializable {
             return null;
         }
     }
+
+	protected static JSONArray getNullableJSONArray(JSONObject object, String key) throws ParseException
+	{
+		try
+		{
+			if (object.isNull(key)) return new JSONArray();
+
+			return object.getJSONArray(key);
+		}
+
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+
+			return new JSONArray();
+		}
+	}
 }
