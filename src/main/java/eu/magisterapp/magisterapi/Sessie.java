@@ -163,7 +163,7 @@ public class Sessie {
 
     private boolean shouldRefresh()
     {
-        return "".equals(apiKeyHeader) || "".equals(apiKey);
+        return apiKeyHeader == null || "".equals(apiKeyHeader) || apiKey == null || "".equals(apiKey);
     }
 
     private void refresh() throws IOException
