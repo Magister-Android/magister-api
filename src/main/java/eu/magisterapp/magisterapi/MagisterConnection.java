@@ -23,6 +23,9 @@ public class MagisterConnection {
 
     public Response delete(String location, Sessie sessie) throws IOException
     {
+        String apiKeyHeader = "X-".concat(sessie.getApiKeyHeader());
+        String apiKey = sessie.getApiKey();
+
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -30,7 +33,7 @@ public class MagisterConnection {
         connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        connection.setRequestProperty("X-".concat(sessie.getApiKeyHeader()), sessie.getApiKey());
+        connection.setRequestProperty(apiKeyHeader, apiKey);
 
         connection.connect();
 
@@ -41,6 +44,9 @@ public class MagisterConnection {
 
     public Response post(String location, Map<String, String> data, Sessie sessie) throws IOException
     {
+        String apiKeyHeader = "X-".concat(sessie.getApiKeyHeader());
+        String apiKey = sessie.getApiKey();
+
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -50,7 +56,7 @@ public class MagisterConnection {
         connection.setRequestProperty("charset", "utf-8");
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-        connection.setRequestProperty("X-".concat(sessie.getApiKeyHeader()), sessie.getApiKey());
+        connection.setRequestProperty(apiKeyHeader, apiKey);
 
 
         byte[] data_url = convertToDataString(data).getBytes("UTF-8");
@@ -79,13 +85,16 @@ public class MagisterConnection {
 
     public Response get(String location, Sessie sessie) throws IOException
     {
+        String apiKeyHeader = "X-".concat(sessie.getApiKeyHeader());
+        String apiKey = sessie.getApiKey();
+
         URL url = new URL(location);
 
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
-        connection.setRequestProperty("X-".concat(sessie.getApiKeyHeader()), sessie.getApiKey());
+        connection.setRequestProperty(apiKeyHeader, apiKey);
 
         connection.connect();
 

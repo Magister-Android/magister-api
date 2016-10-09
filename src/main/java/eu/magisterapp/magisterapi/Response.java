@@ -80,6 +80,9 @@ public class Response {
         Map<String, List<String>> headers = connection.getHeaderFields();
         String body = sb.toString();
 
+        is.close();
+        connection.disconnect();
+
         return new Response(status, headers, body);
     }
 

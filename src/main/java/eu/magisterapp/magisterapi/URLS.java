@@ -8,19 +8,21 @@ import org.joda.time.DateTime;
  */
 public class URLS
 {
-    private static final String BASE_PATTERN = "https://%s.magister.net/api";
+    private static final String SCHOOL_PATTERN = "https://%s.magister.net";
 
+    private final String school;
     private final String base;
 
     public URLS(String school)
     {
 
-        base = String.format(BASE_PATTERN, school);
+        this.school = String.format(SCHOOL_PATTERN, school);
+        base = this.school.concat("/api");
     }
 
     public String base()
     {
-        return base;
+        return school;
     }
 
     public String login()
