@@ -18,6 +18,11 @@ public class URLS
         base = String.format(BASE_PATTERN, school);
     }
 
+    public String base()
+    {
+        return base;
+    }
+
     public String login()
     {
         return base + "/sessies";

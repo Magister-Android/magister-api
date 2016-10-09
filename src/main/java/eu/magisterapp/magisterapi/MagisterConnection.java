@@ -30,6 +30,7 @@ public class MagisterConnection {
         connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("X-".concat(sessie.getApiKeyHeader()), sessie.getApiKey());
 
         connection.connect();
 
@@ -49,6 +50,7 @@ public class MagisterConnection {
         connection.setRequestProperty("charset", "utf-8");
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
         connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+        connection.setRequestProperty("X-".concat(sessie.getApiKeyHeader()), sessie.getApiKey());
 
 
         byte[] data_url = convertToDataString(data).getBytes("UTF-8");
@@ -83,6 +85,7 @@ public class MagisterConnection {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Cookie", sessie.getCookies());
         connection.setRequestProperty("User-Agent", API_USER_AGENT);
+        connection.setRequestProperty("X-".concat(sessie.getApiKeyHeader()), sessie.getApiKey());
 
         connection.connect();
 

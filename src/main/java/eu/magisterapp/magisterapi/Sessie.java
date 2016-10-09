@@ -10,6 +10,7 @@ import java.net.HttpCookie;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import eu.magisterapp.magisterapi.afwijkingen.ZernikeAfwijking;
 
@@ -27,6 +28,9 @@ public class Sessie {
     private final String password;
     private final String school;
     private final Map<String, String> payload;
+
+    private String apiKeyHeader;
+    private String apiKey;
 
     private MagisterConnection connection;
 
@@ -140,6 +144,37 @@ public class Sessie {
         }
 
         return builder.toString();
+    }
+
+    public String getApiKeyHeader() throws IOException
+    {
+        if (shouldRefresh()) refresh();
+
+        return apiKeyHeader;
+    }
+
+    public String getApiKey() throws IOException
+    {
+        if (shouldRefresh()) refresh();
+
+        return apiKey;
+
+    }
+
+    private boolean shouldRefresh()
+    {
+        return "".equals(apiKeyHeader) || "".equals(apiKey);
+    }
+
+    private void refresh() throws IOException
+    {
+        String body = MagisterConnection.anonymousGet(urls.base()).body;
+
+        Pattern headerPattern = Pattern.compile("apiKeyHeader: '([a-zA-Z0-9-])',");
+        Pattern keyPattern = Pattern.compile("apiKey: '([a-zA-Z0-9-])',");
+
+        apiKeyHeader = headerPattern.matcher(body).group(1);
+        apiKey = keyPattern.matcher(body).group(1);
     }
 
     public synchronized void storeCookies(String cookieString)
